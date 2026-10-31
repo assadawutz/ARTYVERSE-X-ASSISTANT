@@ -1,0 +1,1 @@
+- [Assistant visual source](assistant-visual-source.md) — For this assistant UI, the supplied screenshot takes precedence over conflicting theme tokens.

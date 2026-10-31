@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f3f1ec">
+<meta name="description" content="ผู้ช่วยตอบคำถามสดและเตรียมบทพูดภาษาไทย ไฟล์เดียว ใช้งานในเครื่อง">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%230d1017%27/%3E%3Cpath d=%27M16 6l8 20h-4l-1.6-4.4h-4.8L12 26H8z M14.4 18.4h3.2L16 13.6z%27 fill=%27%23ff5b2e%27/%3E%3C/svg%3E">
+<title>ARTYVERSE X AI ASSISTANT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f1ec; --bg2:#fbfaf7; --panel:#ffffff; --ink:#0d1017; --mut:rgba(13,16,23,.74); --faint:rgba(13,16,23,.52);
+  --line:rgba(13,16,23,.10); --line2:rgba(13,16,23,.18);
+  --s1:rgba(255,255,255,.72); --s2:rgba(13,16,23,.045); --s3:rgba(13,16,23,.085);
+  --accent:#3d35ff; --accent-2:#ff5b2e; --accent-ink:#fff; --accent-soft:rgba(61,53,255,.09); --accent-line:rgba(61,53,255,.32);
+  --ok:#0f8a52; --bad:#d6264a;
+  --glass:rgba(255,255,255,.66); --glass-b:rgba(255,255,255,.9);
+  --sh1:0 1px 2px rgba(13,16,23,.05),0 8px 24px -12px rgba(13,16,23,.14);
+  --sh2:0 2px 4px rgba(13,16,23,.05),0 24px 48px -20px rgba(13,16,23,.26);
+  --ease:cubic-bezier(.2,.7,.2,1); --spring:cubic-bezier(.34,1.56,.64,1);
+  --f-head:"Space Grotesk","IBM Plex Sans Thai",system-ui,sans-serif; --f-body:"IBM Plex Sans Thai","Sarabun",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,monospace;
+  --para:17px; --r:22px; --gut:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:
+  radial-gradient(60rem 36rem at 105% -10%,rgba(61,53,255,.10),transparent 60%),
+  radial-gradient(48rem 30rem at -10% 40%,rgba(255,91,46,.07),transparent 60%),
+  var(--bg);
+  color:var(--ink);font:400 16px/1.75 var(--f-body);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overflow:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(70% 55% at 50% 0%,#000,transparent);mask-image:radial-gradient(70% 55% at 50% 0%,#000,transparent)}
+button,input,textarea,select{font:inherit;color:inherit;background:none;border:0}
+button{cursor:pointer;touch-action:manipulation;position:relative;overflow:hidden}
+select{background:var(--panel);border-radius:12px;padding:10px 12px;border:1px solid var(--line);width:100%;outline:none}
+input[type=text],input[type=search],textarea{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%;outline:none;font-size:15px}
+input:focus,textarea:focus,select:focus{border-color:var(--accent-line);box-shadow:0 0 0 4px var(--accent-soft)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ico{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.rip{position:absolute;border-radius:50%;background:currentColor;opacity:.18;transform:scale(0);pointer-events:none;animation:rip .6s var(--ease) forwards}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+
+/* Shell */
+.app{position:relative;z-index:1;height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+.top{position:relative;z-index:30;display:flex;align-items:center;gap:6px;margin:max(env(safe-area-inset-top),8px) var(--gut) 0;padding:7px 8px 7px 10px;border:1px solid var(--glass-b);border-radius:20px;background:var(--glass);backdrop-filter:blur(22px) saturate(1.6);-webkit-backdrop-filter:blur(22px) saturate(1.6);box-shadow:var(--sh1)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.mark{width:36px;height:36px;border-radius:12px;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none;transition:transform .5s var(--spring)}
+.mark svg{width:22px;height:22px}
+.brand:hover .mark{transform:rotate(-8deg) scale(1.06)}
+.brand-name{font:700 12.5px/1.1 var(--f-head);letter-spacing:.14em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-name b{color:var(--accent-2)}
+.brand-sub{font:500 11px/1.3 var(--f-mono);letter-spacing:.06em;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status{display:flex;align-items:center;gap:7px;font:500 11.5px var(--f-mono);color:var(--faint);letter-spacing:.05em;white-space:nowrap;padding:0 6px}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(15,138,82,.5);animation:pulse 2.4s infinite}
+.status.demo i{background:var(--faint);animation:none}
+.status.off i{background:var(--bad);animation:none}
+@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(15,138,82,0)}100%{box-shadow:0 0 0 0 rgba(15,138,82,0)}}
+.top-btn{min-height:40px;min-width:40px;padding:0;justify-content:center;border-radius:14px;border:1px solid transparent;color:var(--mut);font-size:13.5px;font-weight:500;display:inline-flex;align-items:center;gap:7px;transition:background .2s,color .2s,transform .3s var(--spring)}
+.top-btn:hover{background:var(--s2);color:var(--ink)}
+.top-btn:active{transform:scale(.92)}
+.top-btn[aria-pressed="true"]{background:var(--ink);color:#fff}
+.top-btn.warn{color:var(--bad)}
+.top-btn .lbl{display:none}
+
+.body{min-height:0;display:grid;grid-template-columns:minmax(0,1fr)}
+.thread{min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:18px var(--gut) 28px;scroll-behavior:smooth}
+.col{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:26px}
+
+/* Side panel : bottom sheet on mobile */
+.side{position:fixed;left:8px;right:8px;bottom:8px;height:min(74dvh,640px);z-index:60;border:1px solid var(--glass-b);border-radius:26px;background:var(--glass);backdrop-filter:blur(26px) saturate(1.6);-webkit-backdrop-filter:blur(26px) saturate(1.6);box-shadow:var(--sh2);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:translateY(24px) scale(.98);pointer-events:none;transition:opacity .35s var(--ease),transform .5s var(--spring)}
+.side::before{content:"";width:38px;height:4px;border-radius:9px;background:var(--line2);margin:8px auto 0;flex:none}
+.body.panel-on .side{opacity:1;transform:none;pointer-events:auto}
+.body.panel-on .thread{opacity:.5;transition:opacity .3s var(--ease)}
+.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.tab{min-height:38px;border-radius:12px;font:600 12.5px var(--f-head);color:var(--mut);transition:background .2s,color .2s}
+.tab:hover{background:var(--s2)}
+.tab[aria-selected="true"]{background:var(--ink);color:#fff}
+.side-body{overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:0}
+.side-item{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:12px 14px;text-align:left;transition:transform .3s var(--spring),box-shadow .3s}
+.side-item:hover{transform:translateY(-2px);box-shadow:var(--sh1)}
+.side-h{font:600 13px var(--f-head);color:var(--ink);margin-top:4px}
+.field{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}
+.field label{font-size:13.5px;color:var(--mut)}
+.field input[type=range]{width:100%;accent-color:var(--accent)}
+.stepper{display:flex;align-items:center;gap:10px}
+.stepper button{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--panel);font:600 14px var(--f-head);transition:transform .25s var(--spring)}
+.stepper button:hover{background:var(--s2)}
+.stepper button:active{transform:scale(.9)}
+.stepper output{min-width:64px;text-align:center;font:500 13px var(--f-mono);color:var(--mut)}
+.row{display:flex;flex-wrap:wrap;gap:6px}
+.tool{min-height:40px;padding:0 14px;border-radius:999px;color:var(--ink);background:var(--panel);font-size:13.5px;font-weight:500;display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);transition:background .2s,color .2s,transform .3s var(--spring),border-color .2s}
+.tool:hover{border-color:var(--line2);background:var(--bg2)}
+.tool:active{transform:scale(.94)}
+.tool.ok{color:var(--ok);border-color:rgba(15,138,82,.4)}
+.tool.danger{color:var(--bad)}
+.tool:disabled{opacity:.35;cursor:not-allowed}
+
+/* Empty state : minimal */
+.empty{display:flex;flex-direction:column;gap:18px;padding:clamp(8px,6vh,56px) 0 12px;animation:rise .6s var(--ease) both}
+.empty h1{font:700 clamp(2rem,8vw,3.2rem)/1.05 var(--f-head);letter-spacing:-.03em;text-wrap:balance}
+.empty h1 em{font-style:normal;color:var(--accent)}
+.empty p{color:var(--mut);max-width:42ch;font-size:15.5px}
+.sugg{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.chip{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:56px;padding:12px 18px;border-radius:18px;border:1px solid var(--glass-b);background:var(--glass);box-shadow:var(--sh1);font:600 15.5px/1.4 var(--f-body);text-align:left;transition:transform .4s var(--spring),box-shadow .3s,border-color .2s}
+.chip svg{color:var(--accent);transition:transform .4s var(--spring)}
+.chip:hover{transform:translateY(-2px);border-color:var(--accent-line);box-shadow:var(--sh2)}
+.chip:hover svg{transform:translateX(4px)}
+.chip:active{transform:scale(.98)}
+@media (min-width:900px){.sugg{flex-direction:row}.chip{flex:1;align-items:flex-start;flex-direction:column;min-height:104px}}
+
+/* Question & pipeline */
+.q{display:flex;flex-direction:column;gap:8px;animation:rise .5s var(--ease) both}
+.q-label{font:500 11.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.q-text{font:700 clamp(1.4rem,6vw,2.1rem)/1.2 var(--f-head);letter-spacing:-.02em;text-wrap:balance}
+.pipe{border:1px solid var(--glass-b);border-radius:var(--r);background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:var(--sh1);padding:20px 22px;display:flex;flex-direction:column;gap:14px;animation:rise .4s var(--ease) both}
+.pipe-title{font:500 12.5px var(--f-mono);color:var(--mut)}
+.stages{display:flex;flex-direction:column;gap:9px;list-style:none}
+.stages li{display:flex;align-items:center;gap:12px;font-size:14.5px;color:var(--faint);transition:color .3s}
+.stages .dot{width:22px;height:22px;border-radius:50%;border:1px solid var(--line2);display:grid;place-items:center;flex:none;font:500 11.5px var(--f-mono);transition:all .4s var(--spring)}
+.stages li.on{color:var(--ink)}
+.stages li.on .dot{border-color:var(--accent);color:var(--accent);transform:scale(1.15);box-shadow:0 0 0 4px var(--accent-soft)}
+.stages li.done{color:var(--mut)}
+.stages li.done .dot{background:var(--ink);border-color:var(--ink);color:#fff}
+.pipe .bar{height:4px;border-radius:99px;background:var(--s2);overflow:hidden}
+.pipe .bar span{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .5s var(--ease)}
+.pv{font-size:15px;color:var(--mut);min-height:1.6em}
+
+/* Answer card : bento */
+.card{border-radius:26px;border:1px solid var(--glass-b);background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--sh2);overflow:hidden;animation:rise .6s var(--ease) both;padding-bottom:2px}
+.card-head{padding:22px 20px 0}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.badge{font:500 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border-radius:999px;border:1px solid var(--line2);color:var(--mut);background:var(--panel)}
+.badge.web{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
+.badge.high{color:var(--ok);border-color:rgba(15,138,82,.4)}
+.badge.low{color:var(--bad);border-color:rgba(214,38,74,.4)}
+.badge.alt{color:var(--faint)}
+.card-title{margin-top:14px;font:700 clamp(1.45rem,5.6vw,2.2rem)/1.15 var(--f-head);letter-spacing:-.025em;text-wrap:balance}
+.meta{margin-top:10px;display:flex;flex-wrap:wrap;gap:4px 16px;font:500 12px var(--f-mono);color:var(--faint)}
+.legend{color:var(--faint)}
+.live-box{position:relative;margin:20px 14px 0;padding:20px 20px 18px;border-radius:20px;background:var(--ink);color:#fff;overflow:hidden}
+.live-box::after{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(143,139,255,.55),transparent 70%);pointer-events:none}
+.live-label{display:flex;align-items:center;gap:8px;font:500 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:10px}
+.live-label::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent-2);animation:pulse2 1.8s infinite}
+@keyframes pulse2{50%{opacity:.35;transform:scale(.7)}}
+.live-text{font:600 clamp(19px,5vw,26px)/1.55 var(--f-body);text-wrap:pretty;position:relative}
+.live-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;position:relative}
+.live-box .tool{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.2)}
+.live-box .tool:hover{background:rgba(255,255,255,.2)}
+.live-box .tool.ok{color:#8affc0}
+.progress{margin:16px 20px 0;height:3px;border-radius:99px;background:var(--s2);overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .5s var(--ease)}
+.script{padding:18px 20px 6px;display:flex;flex-direction:column;gap:14px}
+.para{font-size:var(--para);line-height:1.95;color:var(--ink);padding:10px 14px;margin:0 -14px;border-radius:14px;opacity:0;transform:translateY(10px);cursor:pointer;transition:background .4s var(--ease),color .3s,opacity .6s var(--ease),transform .6s var(--ease),box-shadow .3s}
+.para.in{opacity:1;transform:none}
+.para:hover{background:var(--s2)}
+.para.now{background:var(--accent-soft);color:var(--ink);box-shadow:inset 3px 0 0 var(--accent)}
+.para.past{color:var(--faint)}
+.para:focus-visible{outline-offset:-2px}
+.en,.th{color:inherit}
+.spell{font-size:.88em;font-weight:400;font-style:normal;color:var(--mut)}
+.num{font-weight:600;font-variant-numeric:tabular-nums;font-family:var(--f-head)}
+.key{font-weight:600;color:var(--ink);background:linear-gradient(transparent 55%,rgba(255,91,46,.28) 55%);border-radius:2px;padding:0 2px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.cite{color:var(--accent);font-size:.78em;vertical-align:super;text-decoration:none;padding:0 2px;font-variant-numeric:tabular-nums}
+.cite:hover{text-decoration:underline}
+.plain{margin:18px 14px 0}
+.plain summary{cursor:pointer;list-style:none;font:600 13.5px var(--f-head);color:var(--mut);padding:12px 16px;border:1px solid var(--line);border-radius:16px;background:var(--panel);transition:border-color .2s}
+.plain summary:hover{border-color:var(--line2)}
+.plain summary::-webkit-details-marker{display:none}
+.plain p{padding:12px 16px 4px;font-size:15.5px;line-height:1.8}
+.summary{margin:18px 14px 0;padding:18px 20px;border-radius:20px;background:var(--accent-soft);border:1px solid var(--accent-line)}
+.summary b{display:block;font:500 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.summary p{font:600 17px/1.6 var(--f-body)}
+.follow{margin:18px 14px 0;display:grid;grid-template-columns:1fr;gap:10px}
+.fu{border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:16px;display:flex;flex-direction:column;gap:6px;transition:transform .4s var(--spring),box-shadow .3s}
+.fu:hover{transform:translateY(-2px);box-shadow:var(--sh1)}
+.fu q{font:600 15px var(--f-body);quotes:none}
+.fu p{font-size:15px;color:var(--mut)}
+.fu .row{margin-top:4px}
+.notes{margin:12px 14px 0;display:grid;gap:10px;grid-template-columns:1fr}
+.note{border-radius:18px;border:1px solid var(--line);background:var(--panel);padding:14px 16px}
+.note h4{font:500 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.note ul{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--mut)}
+.note.warn{border-color:rgba(214,38,74,.3);background:rgba(214,38,74,.04)}
+.note.warn h4{color:var(--bad)}
+.sources{margin:12px 14px 0;padding:14px 16px;border-radius:18px;border:1px solid var(--line);background:var(--panel)}
+.sources h4{font:500 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.sources ol{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px;counter-reset:s}
+.sources li{counter-increment:s}
+.sources li::before{content:"[" counter(s) "] ";color:var(--faint);font-family:var(--f-mono);font-size:12px}
+.sources a{color:var(--accent);text-decoration:none;word-break:break-word}
+.sources a:hover{text-decoration:underline}
+.card-foot{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:12px 12px 14px;margin-top:16px;border-top:1px solid var(--line)}
+.spacer{flex:1}
+
+/* Clarify / error / stall */
+.clarify-box{padding:18px 20px;border-radius:22px;border:1px solid var(--glass-b);background:var(--glass);box-shadow:var(--sh1);display:flex;flex-direction:column;gap:12px}
+.clarify-q{font-size:15px;color:var(--mut)}
+.err{border:1px solid rgba(214,38,74,.35);background:rgba(214,38,74,.05);border-radius:22px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;animation:rise .4s var(--ease) both}
+.err strong{font:700 15px var(--f-head);color:var(--bad)}
+.err p{color:var(--mut);font-size:14.5px}
+.err button{align-self:flex-start;min-height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--line2);background:var(--panel);font-weight:500}
+.err button:hover{background:var(--bg2)}
+.stall{position:fixed;left:50%;bottom:210px;transform:translateX(-50%);max-width:92vw;width:max-content;padding:14px 20px;border-radius:20px;background:var(--glass-b);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:var(--sh2);border:1px solid var(--accent-line);font:600 19px/1.5 var(--f-body);text-align:center;z-index:85;display:none}
+
+/* Dock */
+.dock{position:relative;z-index:20;padding:4px var(--gut) max(10px,env(safe-area-inset-bottom))}
+.dock::before{content:"";position:absolute;left:0;right:0;bottom:0;height:140%;background:linear-gradient(transparent,var(--bg) 62%);pointer-events:none;z-index:-1}
+.dock-in{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:6px}
+.player{display:flex;align-items:center;gap:2px;min-height:48px;padding:4px;border:1px solid var(--glass-b);border-radius:999px;background:var(--glass);backdrop-filter:blur(22px) saturate(1.6);-webkit-backdrop-filter:blur(22px) saturate(1.6);box-shadow:var(--sh1);animation:rise .4s var(--ease) both}
+.play{min-height:40px;padding:0 20px 0 16px;border-radius:999px;background:var(--ink);color:#fff;font:600 14px var(--f-head);display:inline-flex;align-items:center;gap:8px;transition:transform .35s var(--spring),background .2s}
+.play:hover{background:#232838}
+.play:active{transform:scale(.94)}
+.play[data-on="true"]{background:var(--accent)}
+.round,.speed,.present{height:40px;min-width:40px;border-radius:999px;display:inline-grid;place-items:center;padding:0 10px;color:var(--mut);border:0;background:transparent;font:500 13px var(--f-mono);transition:background .2s,color .2s,transform .3s var(--spring)}
+.present{display:inline-flex;gap:6px;align-items:center}
+.round:hover,.speed:hover,.present:hover{background:var(--s2);color:var(--ink)}
+.round:active,.speed:active,.present:active{transform:scale(.88)}
+#prev{margin-left:auto}
+.play:disabled,.round:disabled,.speed:disabled,.present:disabled,.mic:disabled{opacity:.35;cursor:not-allowed}
+.present .lbl,.now-label{display:none}
+.mods{display:flex;gap:6px;overflow-x:auto;padding:2px 2px;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 90%,transparent);mask-image:linear-gradient(90deg,#000 90%,transparent)}
+.mods:empty{display:none}
+.mods::-webkit-scrollbar{display:none}
+.mod{flex:none;min-height:32px;padding:0 13px;border-radius:999px;border:1px solid var(--glass-b);background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font:500 12px var(--f-body);color:var(--mut);transition:background .2s,color .2s,transform .3s var(--spring)}
+.mod:hover{color:var(--ink);background:var(--panel)}
+.mod:active{transform:scale(.94)}
+.composer{display:flex;align-items:flex-end;gap:6px;padding:6px;border-radius:28px;border:1px solid var(--glass-b);background:rgba(255,255,255,.92);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);box-shadow:var(--sh2);transition:border-color .25s,box-shadow .25s}
+.composer:focus-within{border-color:var(--accent-line);box-shadow:0 0 0 4px var(--accent-soft),var(--sh2)}
+.composer.listening{border-color:var(--bad);box-shadow:0 0 0 4px rgba(214,38,74,.12),var(--sh2)}
+textarea#input{flex:1;min-width:0;resize:none;min-height:44px;max-height:140px;padding:11px 6px 11px 14px;font-size:16px;line-height:1.5;border:0;background:none;box-shadow:none;border-radius:0}
+textarea#input:focus{box-shadow:none}
+textarea#input::placeholder{color:var(--faint)}
+textarea.interim{color:var(--mut)}
+.mic,.send{width:44px;height:44px;min-height:44px;padding:0;border-radius:50%;display:grid;place-items:center;flex:none;transition:transform .35s var(--spring),background .2s,opacity .2s}
+.mic{background:var(--s2);color:var(--ink)}
+.mic:hover{background:var(--s3)}
+.mic:active,.send:active{transform:scale(.88)}
+.mic .ico{width:19px;height:19px}
+.mic[aria-pressed="true"]{background:var(--bad);color:#fff;animation:mic 1.4s infinite}
+@keyframes mic{0%{box-shadow:0 0 0 0 rgba(214,38,74,.45)}100%{box-shadow:0 0 0 12px rgba(214,38,74,0)}}
+.send{background:linear-gradient(135deg,var(--accent),#6a5cff);color:#fff;box-shadow:0 6px 16px -6px rgba(61,53,255,.7)}
+.send:hover:not(:disabled){transform:translateY(-2px) scale(1.05)}
+.send:disabled{opacity:1;background:var(--s2);color:var(--faint);box-shadow:none;cursor:not-allowed}
+.send[data-stop="true"]{background:var(--ink);color:#fff;box-shadow:none}
+.foot{display:flex;justify-content:flex-end;font:500 11.5px var(--f-mono);color:var(--faint);padding:0 12px;min-height:0}
+.foot:has(#count:empty){display:none}
+.player{display:none!important}
+
+
+/* Question suggestions */
+.qsug{display:flex;flex-direction:column;gap:2px;padding:6px;border:1px solid var(--glass-b);border-radius:22px;background:rgba(255,255,255,.94);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:var(--sh2);animation:rise .25s var(--ease) both}
+.qsug[hidden]{display:none}
+.qs{display:flex;align-items:center;gap:10px;min-height:44px;padding:8px 12px;border-radius:16px;text-align:left;font-size:14.5px;line-height:1.4;transition:background .2s}
+.qs:hover,.qs:focus-visible{background:var(--accent-soft)}
+.qs i,.chip .ct i{flex:none;font:500 10.5px/1 var(--f-mono);font-style:normal;letter-spacing:.05em;color:var(--accent);background:var(--accent-soft);padding:5px 9px;border-radius:99px;white-space:nowrap}
+.chip .ct{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+@media (min-width:900px){.sugg{flex-wrap:wrap}.chip{flex:1 1 calc(50% - 8px);flex-direction:row;align-items:center;min-height:76px}}
+
+/* Presentation */
+.pres{position:fixed;inset:0;z-index:80;background:var(--bg);display:none;flex-direction:column;padding:max(env(safe-area-inset-top),20px) 22px max(env(safe-area-inset-bottom),20px)}
+.pres.open{display:flex;animation:rise .35s var(--ease) both}
+.pres-top{display:flex;align-items:center;justify-content:space-between;gap:12px;font:500 12px var(--f-mono);color:var(--faint)}
+.pres-bar{height:3px;background:var(--s2);border-radius:99px;overflow:hidden;margin:12px 0 0}
+.pres-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0;transition:width .5s var(--ease)}
+.pres-body{flex:1;display:flex;align-items:center;justify-content:center;padding:24px 0;overflow:hidden}
+.pres-text{max-width:26ch;font:600 clamp(1.7rem,6vw,3.4rem)/1.4 var(--f-body);text-align:center;text-wrap:balance;letter-spacing:-.01em}
+.pres-ctrl{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pres-ctrl .play{flex:1;justify-content:center}
+.toasts{position:fixed;top:78px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:90;pointer-events:none;width:max-content;max-width:92vw}
+.toast{padding:10px 18px;border-radius:999px;background:var(--ink);color:#fff;box-shadow:var(--sh2);font-size:14px;animation:toast .5s var(--spring) both}
+@keyframes toast{from{opacity:0;transform:translateY(-14px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.thread,.side-body{scrollbar-width:thin;scrollbar-color:var(--s3) transparent}
+
+/* ---- Breakpoints (mobile first) ---- */
+@media (min-width:640px){ /* sm */
+  :root{--gut:20px}
+  .top-btn{padding:0 14px;min-width:0}.top-btn .lbl,.present .lbl{display:inline}
+  .notes{grid-template-columns:1fr 1fr}
+  .follow{grid-template-columns:1fr 1fr}
+  .card-head{padding:26px 26px 0}.live-box{margin:22px 18px 0;padding:24px 26px}
+  .progress,.script,.plain,.summary,.follow,.notes,.sources{margin-left:18px;margin-right:18px}.progress{margin-top:18px}
+  .script{padding:20px 26px 6px}
+  .tabs{grid-template-columns:repeat(4,1fr)}
+}
+@media (min-width:900px){ /* md : docked side panel */
+  .thread{padding:26px 32px 36px}
+  .body{grid-template-columns:minmax(0,1fr) 0;transition:grid-template-columns .5s var(--ease)}
+  .body.panel-on{grid-template-columns:minmax(0,1fr) min(380px,36vw)}
+  .body.panel-on .thread{opacity:1}
+  .side{position:relative;inset:auto;height:auto;margin:14px 14px 0 0;min-width:0;transform:translateX(16px)}
+  .side::before{display:none}
+  .body.panel-on .side{transform:none}
+}
+@media (min-width:1280px){ /* lg */
+  :root{--gut:28px;--para:18px}
+  .body.panel-on{grid-template-columns:minmax(0,1fr) 400px}
+  .col{max-width:900px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.para{opacity:1;transform:none}}
+</style>
+<body>
+<noscript><p style="padding:24px;color:#0d1017;background:#f3f1ec">ต้องเปิดใช้ JavaScript เพื่อใช้งานแอปนี้</p></noscript>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 5l9 22h-4.2l-1.8-4.8h-6L11.2 27H7zM14.2 18.6h3.6L16 13.8z" fill="currentColor"/><circle cx="25" cy="8" r="2.4" fill="#ff5b2e"/></svg></span>
+      <div style="min-width:0;display:flex;align-items:center">
+        <div class="brand-name">ARTYVERSE <b>X</b> AI ASSISTANT</div>
+      </div>
+    </div>
+    <div class="status" id="status" role="status" aria-live="polite"><i></i><span class="lbl" id="statusTxt">ออนไลน์</span></div>
+    <button id="panelBtn" class="top-btn" type="button" aria-pressed="false" aria-controls="side">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M4 5h16M4 12h10M4 19h16"/></svg><span class="lbl">เครื่องมือ</span></button>
+    <button id="newBtn" class="top-btn" type="button" aria-label="เริ่มคำถามใหม่">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span class="lbl">คำถามใหม่</span></button>
+  </header>
+
+  <div class="body" id="body">
+    <main id="thread" class="thread" role="log" aria-label="บทสนทนา" aria-busy="false">
+      <div id="col" class="col"></div>
+    </main>
+    <aside id="side" class="side" aria-label="เครื่องมือ">
+      <div class="tabs" role="tablist">
+        <button class="tab" id="tabGloss" role="tab" aria-selected="true" data-tab="gloss">คำศัพท์</button>
+        <button class="tab" id="tabKey" role="tab" aria-selected="false" data-tab="key">จุดสำคัญ</button>
+        <button class="tab" id="tabData" role="tab" aria-selected="false" data-tab="data">ข้อมูล</button>
+        <button class="tab" id="tabRead" role="tab" aria-selected="false" data-tab="read">การอ่าน</button>
+      </div>
+      <div id="sideBody" class="side-body"></div>
+    </aside>
+  </div>
+
+  <footer class="dock">
+    <div class="dock-in">
+      <div class="player">
+        <button id="play" class="play" type="button" disabled data-on="false">
+          <svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px"><path d="M8 5l11 7-11 7z" fill="currentColor" stroke="none"/></svg><span>อ่านบทพูด</span></button>
+        <button id="prev" class="round" type="button" aria-label="ย่อหน้าก่อนหน้า" disabled>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button id="next" class="round" type="button" aria-label="ย่อหน้าถัดไป" disabled>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button id="speed" class="speed" type="button" aria-label="ความเร็วการอ่าน" disabled>1x</button>
+        <button id="present" class="present" type="button" disabled aria-label="โหมดนำเสนอ">
+          <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span class="lbl">โหมดนำเสนอ</span></button>
+        <span id="nowLabel" class="now-label"></span>
+      </div>
+      <div id="mods" class="mods" aria-label="ตั้งค่าบทพูด"></div>
+      <div id="qsug" class="qsug" role="listbox" aria-label="คำถามที่แนะนำ" hidden></div>
+      <form id="form" class="composer" autocomplete="off">
+        <label for="input" class="sr">คำถาม</label>
+        <textarea id="input" rows="1" maxlength="2000" placeholder="พิมพ์หรือพูดคำถาม"></textarea>
+        <button id="mic" class="mic" type="button" aria-pressed="false" aria-label="พูดคำถาม">
+          <svg class="ico" viewBox="0 0 24 24" ><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg><span id="micTxt" class="sr">พูด</span></button>
+        <button id="send" class="send" type="submit" aria-label="ส่ง" disabled>
+          <svg id="sendIco" class="ico" viewBox="0 0 24 24" style="stroke-width:2.2"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+      </form>
+      <div class="foot"><span id="count"></span></div>
+    </div>
+  </footer>
+</div>
+
+<div id="pres" class="pres" role="dialog" aria-modal="true" aria-label="โหมดนำเสนอ">
+  <div class="pres-top"><span id="presCount"></span><button id="presClose" class="top-btn" type="button" aria-label="ปิดโหมดนำเสนอ"><span class="lbl">ปิด</span></button></div>
+  <div class="pres-bar" aria-hidden="true"><span id="presBar"></span></div>
+  <div class="pres-body"><p id="presText" class="pres-text" aria-live="polite"></p></div>
+  <div class="pres-ctrl">
+    <button id="presPrev" class="round" type="button" aria-label="ย่อหน้าก่อนหน้า"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <button id="presPlay" class="play" type="button">อ่านให้ฟัง</button>
+    <button id="presAuto" class="present" type="button">เลื่อนอัตโนมัติ</button>
+    <button id="presNext" class="round" type="button" aria-label="ย่อหน้าถัดไป"><svg class="ico" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+
+<div id="stall" class="stall" role="status"></div>
+<div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =====================================================================
+     1. CONSTANTS
+     ===================================================================== */
+  const VERSION = 'v20';
+  const KEY = 'artyverse.' + VERSION;
+  const LEGACY = 'artyverse.v17';
+  const API_URL = '/api/chat';
+  const API_TIMEOUT_MS = 60000;
+  const MAX_TURNS = 50;
+  const MAX_DS = 30;
+  const RATES = [0.9, 1, 1.15];
+  const SIZES = [15, 17, 19, 21];
+  const KINDS = ['explain','compare','how-to','debug','design','interview','opinion','fact'];
+  const KIND_LABEL = { explain:'อธิบายแนวคิด', compare:'เปรียบเทียบ', 'how-to':'ขั้นตอน', debug:'แก้ปัญหา', design:'ออกแบบระบบ', interview:'STAR', opinion:'ความเห็น', fact:'ข้อเท็จจริง' };
+  const CONF = ['high','medium','low'];
+  const CONF_LABEL = { high:'มั่นใจสูง', medium:'มั่นใจปานกลาง', low:'ควรตรวจก่อนพูด' };
+  const STAGES = ['รับอินพุต','ค้นชุดข้อมูล','เขียนบทพูด','ตรวจสอบ','แสดงผล'];
+  const OPTS = { spd:['ด่วน','เต็ม'], len:['กลาง','สั้น','ยาว'], aud:['ทั่วไป','ผู้บริหาร','ทีมเทคนิค','สัมภาษณ์งาน'] };
+  const LEN_RULE = { 'กลาง':'5–8 ย่อหน้า', 'สั้น':'2–3 ย่อหน้า', 'ยาว':'8–10 ย่อหน้า' };
+  const STALLS = [
+    'ขอเรียบเรียงสักครู่นะครับ แล้วจะตอบให้ครบทุกประเด็น',
+    'คำถามนี้สำคัญครับ ขอยืนยันข้อมูลให้แม่นยำก่อน',
+    'ขออนุญาตแยกตอบเป็นสองส่วนนะครับ ส่วนแรกคือ',
+    'ขอทวนคำถามให้ตรงกันก่อนนะครับ ที่ถามคือ'
+  ];
+  const BRIDGE = 'ขอยืนยันข้อมูลก่อนแล้วจะแจ้งกลับภายในวันนี้ครับ';
+  const synth = 'speechSynthesis' in window ? window.speechSynthesis : null;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ICON = {
+    play:'<path d="M8 5l11 7-11 7z" fill="currentColor" stroke="none"/>',
+    stop:'<rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/>',
+    send:'<path d="M12 19V5M6 11l6-6 6 6"/>'
+  };
+
+  /* =====================================================================
+     2. PROFILE (facts about the user; the only source for personal claims)
+     ===================================================================== */
+  const PROFILE = [
+    'ชื่อ Assadawut Sarakul (Art) หรือ KC Dev ตำแหน่ง Senior Flutter & Mobile Developer อยู่กรุงเทพฯ',
+    'ตัวเลขจากเรซูเม่: ประสบการณ์พัฒนาซอฟต์แวร์ 11+ ปี / สร้างระบบและแอป 66+ รายการ (รวม white-label) / 64 subsystems ข้ามโครงการ / ลูกค้าภาครัฐและองค์กร 15+ ราย / แอป AR ท่องเที่ยวให้บริการ 15+ จังหวัด',
+    'สรุป: เชี่ยวชาญ Flutter สำหรับงานภาครัฐและองค์กร (MOPH, MRTA, EXAT, PEA, กองทัพเรือ) เน้น Clean Architecture, offline-first GIS และการจัดการข้อมูลปลอดภัยด้วย AES-256-GCM / RSA-4096 ทำเว็บด้วย React, Next.js, TypeScript และทำ native iOS/Android',
+    'ทักษะ Flutter/Dart: Clean Architecture, MVVM, Bloc, Riverpod, Provider, offline-first SQLite sync, GIS/spatial (Mapbox, Google Maps), Google ML Kit OCR, FCM push queues, AR frameworks',
+    'ทักษะ Web/Backend: React, Next.js, TypeScript, Tailwind CSS, Zustand, Framer Motion, RESTful API (Swagger, Postman), WebSockets, OAuth2, LINE Messaging API / LIFF, Meta Graph API, BullMQ, Redis, Firebase, GCP, Vercel, Cloudflare R2',
+    'ทักษะ AI: Gemini API pipelines, RAG architecture, Vision Engine Studio, WhisperX audio transcription, ใช้ Claude / ChatGPT / Codex ในงานพัฒนา',
+    'ทักษะ Native: Swift, Objective-C, Kotlin, Java',
+    'คุณภาพและการส่งมอบ: Jest, Vitest, Playwright, Zod, hybrid AES-256-GCM / RSA-4096, Stripe payments, GitHub Actions, App Store Connect, TestFlight, Google Play Console',
+    'ดีไซน์: Figma, responsive multi-screen layouts, ทำ design system, server-driven dynamic UI',
+    'งานล่าสุด Senior Software Developer ที่ Knight Club Co., Ltd. (พฤษภาคม 2022 ถึง พฤษภาคม 2026 กรุงเทพฯ): ออกแบบ Flutter แบบ modular ด้วย Clean Architecture และ MVVM / เชื่อม MOPH Health ID, ASP Open Account (Asia Plus Securities), TUORCA Medical Calendar, LED Portal, NBTC CMS / ตั้ง CI/CD ด้วย GitHub Actions, App Store Connect, Google Play Console พร้อมเทสต์อัตโนมัติ Jest, Vitest, Playwright, Zod',
+    'งานก่อนหน้า Senior Mobile Applications Developer ที่ 2Fellows Network and Design Co., Ltd. (มิถุนายน 2015 ถึง พฤษภาคม 2022 กรุงเทพฯ): ทำโมดูล offline GIS mapping และ navigation ด้วย SQLite และ Mapbox ให้ DNP Scout Rangers ใช้งานโดยไม่มีสัญญาณ / ทำ hybrid AES-256-GCM และ RSA-4096 encryption ในแอปกองทัพเรือ / ปรับ Firebase Cloud Messaging dispatch queues สำหรับแจ้งเตือน PEA SmartCare / ทำ server-driven Dynamic UI Layout Engine ให้ผู้ดูแลระบบ CMS อัปเดตเลย์เอาต์มือถือได้โดยไม่ต้องผ่าน app store / ทำ on-device Google ML Kit license plate OCR ควบคุมการเข้าออก SRITRANG / ร่วมพัฒนา See Thru Thailand AR tourism framework',
+    'ผลงานเด่น: DNP National Park Thailand (Flutter, Mapbox, Bloc, FCM รองรับ 5 ภาษา GPS SOS นำทาง CCTV สด แคชแผนที่ออฟไลน์) / Royal Thai Navy Encryption (Flutter, AES-256-GCM / RSA-4096, API Spec V2) / ASP Open Account (เปิดบัญชีลงทุนออนไลน์พร้อมตรวจสอบตัวตนดิจิทัล KYC) / DNP Scout Rangers (บันทึกลาดตระเวนป่าแบบ offline-first GIS ซิงก์เมื่อมีสัญญาณ) / MOPH Health ID (REST API และระบบยืนยันตัวตนปลอดภัยของกระทรวงสาธารณสุข) / PEA SmartPlus, SmartCare, MWF CRM (ระบบบิลลิ่งและ CRM ภาคสนามของการไฟฟ้าส่วนภูมิภาค)',
+    'โครงการ Flutter: DNP National Park และ DNP Scout Rangers, Royal Thai Navy, EXAT Portal, DIP IP Mart, SRITRANG Access Control, ERC Thailand, MRTA Application (ที่จอดรถ QR code แจ้งเตือนการเดินทาง), TUORCA Medical Calendar',
+    'โครงการเว็บ: MOPH Health ID, ASP Open Account และ E-Service, NBTC CMS, OKMD Knowledge Portal, Sports Almanac (กระทรวงการท่องเที่ยวและกีฬา), MB Brandname e-commerce',
+    'โครงการ native iOS/Android: LED Portal (กรมบังคับคดี ข้อมูลทรัพย์ขายทอดตลาดและโมดูล Bluetooth BLE คุมไฟคลังสินค้า), MWA-OnMobile (การประปานครหลวง ชำระค่าน้ำ ขอติดตั้งมิเตอร์ แจ้งน้ำรั่ว), PEA SmartPlus/SmartCare/MWF CRM, BMTA Transit Tracking, กองทุนการออมแห่งชาติ (NSF), PWA E-Service, MNRE E-Service, EnviRAD, Water4Thai, SOS Tourism (ตำรวจท่องเที่ยว), Pro-Check (NBTC), Buy Burapha, MD to Travel, Muangthai Leasing, NBT2HD Streaming, SAT Platform',
+    'โครงการท่องเที่ยว AR แบบ white-label: See Thru Thailand และ Discovery AR ใน 15+ จังหวัด เช่น เชียงใหม่ นนทบุรี น่าน พังงา พิษณุโลก เพชรบุรี',
+    'การเรียนรู้และภาษา: เรียนรู้ด้วยตนเองต่อเนื่องตั้งแต่ปี 2015 ร่วมชุมชน GDG Bangkok และ AI BKK / ภาษาไทยเป็นภาษาแม่ อังกฤษระดับใช้งานอ่านเขียนเทคนิคได้ ใช้เครื่องมือแปลและ AI ช่วยงานเอกสาร'
+  ].join('\n');
+  const STACK_CORE = ['Flutter','Dart','Clean Architecture','MVVM','Bloc','Riverpod','Provider','Next.js','React','TypeScript','Tailwind','REST API','Redis','BullMQ','Firebase','GCP','Vercel','Cloudflare R2','Jest','Vitest','Playwright','Zod','GitHub Actions','Mapbox','SQLite','AES-256-GCM','RSA-4096'];
+
+  /* =====================================================================
+     3. SYSTEM PROMPT (lockspec v2.0). Sent as the system message on every call.
+     ===================================================================== */
+  const SYSTEM_PROMPT = [
+'[ARTYVERSE X AI ASSISTANT · SYSTEM PROMPT · v2.0 · LOCKSPEC]',
+'',
+'## 0. ตัวตน',
+'คุณคือผู้ช่วยตอบสดระดับหัวหน้าทีมเทคนิค (Tech Lead) ผู้ใช้กำลังถูกถามกลางที่ประชุม onsite หรือสัมภาษณ์ และต้องพูดตามคำตอบของคุณทันที ทุกคำตอบคือบทพูดจริง ต้องถูกต้อง ตรงคำถาม และพูดออกเสียงลื่น',
+'ลำดับความสำคัญ: 1) ถูกต้องและไม่แต่งเรื่อง 2) ตอบตรงคำถามตั้งแต่ประโยคแรก 3) พูดได้ลื่นในหนึ่งลมหายใจ 4) ครบประเด็น 5) กระชับ',
+'ตอบเป็นภาษาไทยเสมอ ใช้สรรพนาม ผม และลงท้าย ครับ เว้นแต่ข้อมูลของผู้ใช้ระบุเป็นอย่างอื่น หรือผู้ใช้ขอภาษาอื่น',
+'',
+'## 1. ทำความเข้าใจอินพุต (ทำในใจ ห้ามแสดง)',
+'- อินพุตอาจมาจากเสียงที่ถอดผิด ให้แก้ศัพท์เทคนิคเป็นรูปสะกดที่ถูกโดยไม่ต้องบอก เช่น ฟลัตเตอร์ คือ Flutter',
+'- จำแนกประเภท: explain / compare / how-to / debug / design / interview / opinion / fact',
+'- ถ้ามีบริบทบทสนทนาก่อนหน้า ให้ตีความคำอ้างอิงตามบริบทนั้น',
+'- กำกวมแต่เดาได้ ให้เลือกความหมายที่น่าจะเป็นที่สุด บันทึกใน assumptions แล้วตอบทันที ใช้ clarify เฉพาะเมื่อสองความหมายให้คำตอบต่างกันมาก ปกติให้เป็นอาร์เรย์ว่าง',
+'- หลายคำถามปนกัน แยกเป็นย่อหน้าละคำถาม เรียงจากที่ตอบง่ายที่สุด',
+'',
+'## 2. ความจริงและความไม่แน่นอน',
+'- ห้ามแต่งตัวเลข ชื่อโครงการ ชื่อลูกค้า ผลลัพธ์ หรือประสบการณ์ส่วนตัวที่ไม่มีในข้อมูลของผู้ใช้ ถ้าต้องใช้ตัวเลขตัวอย่างให้ใช้ [ใส่ตัวเลขจริง]',
+'- คำถามที่ถามถึงประสบการณ์ของผู้ใช้แต่ไม่มีข้อมูล ให้ตอบเชิงหลักการหรือแนวทางที่จะทำ แล้วบอกใน assumptions ห้ามเล่าเหตุการณ์ที่แต่งขึ้น',
+'- ข้อเท็จจริงที่เปลี่ยนตามเวลา (ราคา เวอร์ชัน กฎหมาย กำหนดการ) ให้เลี่ยงตัวเลขเจาะจงและใส่ใน needs_check',
+'- ไม่รู้จริงหรือไม่มั่นใจ ให้ใช้ประโยคที่ซื่อสัตย์และดูมืออาชีพ เช่น ขอยืนยันตัวเลขที่แน่นอนแล้วแจ้งกลับภายในวันนี้ครับ ดีกว่าการเดา',
+'- การแพทย์ กฎหมาย การเงินเฉพาะบุคคล ตอบข้อมูลทั่วไปและแนะนำผู้เชี่ยวชาญในประโยคสุดท้าย',
+'- ไม่ให้ข้อมูลที่ช่วยก่อความเสียหาย ปฏิเสธสั้นๆ และเสนอทางเลือกที่ปลอดภัย',
+'',
+'## 3. การเขียนบทพูด',
+'- ย่อหน้าแรกคือคำตอบหลัก ไม่ทวนคำถาม ไม่ขึ้นต้นด้วยคำชมคำถาม ขยายด้วยเหตุผลและตัวอย่างตามหลัง',
+'- หนึ่งย่อหน้าหนึ่งแนวคิด 1–3 ประโยค ประโยคไม่เกินประมาณ 35 คำ ภาษาพูดธรรมชาติ ไม่ใช้ bullet ตัวหนา หรือสัญลักษณ์ที่อ่านออกเสียงไม่ได้',
+'- ศัพท์เทคนิคให้เขียนรูปอังกฤษตรงๆ ระบบเติมคำอ่านไทยให้เอง ศัพท์ที่ไม่ใช่ของมาตรฐานในวงการให้แปลไทยสั้นๆ ในวงเล็บครั้งแรก',
+'- ตัวเลขต้องมีหน่วยและเงื่อนไข ระบุว่าเป็นค่าประมาณหรือค่าที่วัดได้จริง',
+'- ย่อหน้าสุดท้ายสรุปตอบคำถามหลักซ้ำหนึ่งประโยค ไม่เปิดประเด็นใหม่',
+'- ความยาวเริ่มต้น 5–8 ย่อหน้า คำถามสั้นหรือข้อเท็จจริง 2–3 ย่อหน้า',
+'',
+'## 4. ตั้งค่าบทพูดจากผู้ใช้',
+'อินพุตอาจขึ้นต้นด้วย [ตั้งค่าบทพูด] ให้ยึดตามนั้นเหนือกฎความยาวในข้อ 3',
+'- โหมดด่วน: live ตอบตรงใน 1–2 ประโยคที่พูดได้ทันที แล้ว paras 2–3 ย่อหน้าเท่านั้น',
+'- ผู้ฟังเป็นผู้บริหาร: เน้นผลกระทบธุรกิจ ต้นทุน ความเสี่ยง ระยะเวลา ลดศัพท์เทคนิค',
+'- ผู้ฟังเป็นทีมเทคนิค: ลงลึกที่ข้อแลกเปลี่ยน การทดสอบ ความปลอดภัย ประสิทธิภาพ',
+'- ผู้ฟังเป็นผู้สัมภาษณ์: ใช้โครง STAR คือ Situation Task Action Result ตามด้วยสิ่งที่เรียนรู้',
+'',
+'## 5. แม่แบบตามประเภท',
+'- explain: นิยาม / ทำงานอย่างไร / ทำไมต้องใช้ / ข้อจำกัด / ตัวอย่างจริง',
+'- compare: เกณฑ์ / แต่ละตัวเลือกเด่นที่ใด / ข้อแลกเปลี่ยน / ควรเลือกเมื่อไร / คำแนะนำ',
+'- how-to: ข้อกำหนดเบื้องต้น / ขั้นตอนตามลำดับ / ตรวจอะไรหลังแต่ละขั้น / ข้อผิดพลาดที่พบบ่อย',
+'- debug: อาการ / สมมติฐานเรียงตามความน่าจะเป็น / วิธีตรวจ / วิธีแก้ / วิธีป้องกัน',
+'- design: ข้อกำหนดและข้อจำกัด / ส่วนประกอบ / การไหลของข้อมูล / คอขวด / ความปลอดภัยและการทดสอบ / สิ่งที่แลกไป',
+'- interview: STAR พร้อมผลลัพธ์เชิงตัวเลขหรือคุณภาพ',
+'- opinion: มุมมองที่สมดุล เหตุผลแต่ละฝั่ง และเกณฑ์ตัดสินใจ',
+'- fact: ตอบตรง 1–2 ประโยค เพิ่มบริบทที่จำเป็นหนึ่งย่อหน้า',
+'',
+'## 6. มาตรฐานหัวหน้าทีมเทคนิค',
+'- คำแนะนำทางเทคนิคต้องมี ทางเลือกที่พิจารณา เกณฑ์ตัดสิน ความเสี่ยงหลัก สิ่งที่แลกไป และบอกว่าย้อนกลับได้ง่ายหรือยาก',
+'- ยึดขนาดทีม งบ และเวลาของผู้ใช้เป็นหลัก ไม่แนะนำเทคโนโลยีที่ไม่มีเหตุผลรองรับ',
+'- พิจารณาเมื่อเกี่ยวข้อง: การทดสอบ ความปลอดภัยและข้อมูลส่วนบุคคล (PDPA) ประสิทธิภาพ ต้นทุนตลอดอายุ การสังเกตการณ์ระบบ การทยอยปล่อยใช้งาน',
+'',
+'## 7. คำถามกดดันและคำถามเสี่ยง',
+'- ถูกตำหนิหรือถามว่าทำไมช้า ทำไมล่ม ให้ตอบสงบ รับผิดชอบเท่าที่เป็นจริง บอกสาเหตุที่ทราบ แผนแก้ และกำหนดเวลาเป็น [ใส่กำหนดจริง] ห้ามโทษผู้อื่นและห้ามอ้างสาเหตุที่ไม่ทราบ',
+'- ราคา สัญญา ขอบเขตงาน หรือคำมั่นที่มีผลทางกฎหมาย ห้ามให้คำมั่นเกินข้อมูลที่มี ให้ใช้ประโยคขอกลับไปยืนยันกับทีมและแจ้งกำหนดเวลา',
+'',
+'## 8. รูปแบบผลลัพธ์ (บังคับ)',
+'ตอบเป็น JSON ที่ถูกต้องอย่างเดียว ไม่มีข้อความนำ ไม่มี markdown ไม่มีโค้ดบล็อก ไม่มี comma ท้ายสุด เรียงฟิลด์ตามนี้ โดย live ต้องมาก่อนเสมอ',
+'{',
+'  "live": "ประโยคพูดได้ทันที 1–2 ประโยค ตอบคำถามหลักตรงๆ",',
+'  "title": "ชื่อเรื่องสั้นไม่เกิน 60 ตัวอักษร",',
+'  "kind": "explain | compare | how-to | debug | design | interview | opinion | fact",',
+'  "paras": ["ย่อหน้าที่ 1", "ย่อหน้าที่ 2"],',
+'  "summary": "ประโยคสรุปหนึ่งประโยค",',
+'  "key_points": ["ไม่เกิน 4 ประโยคที่ต้องพูดให้ถูก คัดลอกจากพาราทีละตัวอักษรให้เป็นส่วนหนึ่งของข้อความในพาราใดพาราหนึ่ง"],',
+'  "confidence": "high | medium | low (ความมั่นใจว่าคำตอบถูกและมีที่มา)",',
+'  "plain": "คำอธิบายภาษาง่าย 2–3 ประโยค พร้อมเปรียบเทียบ สำหรับอ่านตามให้เจ้าของคำถามที่ไม่ใช่สายเทคนิคเข้าใจ",',
+'  "followups": [{"q": "คำถามที่น่าจะโดนซักต่อ", "a": "คำตอบสั้นที่พูดได้ทันที"}],',
+'  "from_data": ["ชื่อชุดข้อมูลที่ใช้อ้างอิง หรืออาร์เรย์ว่าง"],',
+'  "clarify": [],',
+'  "assumptions": [],',
+'  "needs_check": [],',
+'  "sources": [{"title": "ชื่อแหล่งข้อมูล", "url": "https://..."}]',
+'}',
+'- paras ไม่มีหัวข้อหรือเลขนำหน้า live ต้องสอดคล้องกับ paras ทุกประโยค',
+'- web=true เสมอ ต้องค้นหาเว็บทุกคำถามก่อนเขียน แล้วใช้ผลการค้นหาเป็นฐานของ live และ paras ทุกย่อหน้า สรุปเป็นภาษาพูดของตัวเอง ไม่คัดลอกประโยคต้นฉบับ ใส่เลขอ้างอิง [n] ท้ายประโยคที่มาจากเว็บให้ตรงลำดับใน sources ถ้าแหล่งขัดกันให้บันทึกใน needs_check',
+'- ถ้ามี [ชุดข้อมูลโครงการ] ให้ผสมข้อเท็จจริงของผู้ใช้กับผลค้นหา โดยข้อมูลส่วนตัวไม่ต้องมีเลขอ้างอิง',
+'- sources ต้องมาจากผลการค้นหาจริงเท่านั้น ห้ามสร้าง URL ถ้าค้นหาแล้วไม่พบ ให้เป็นอาร์เรย์ว่างและเตือนใน needs_check',
+'',
+'## 8.1 ชุดข้อมูลและการกันพลาด',
+'- อินพุตอาจมี [ชุดข้อมูลโครงการ] ซึ่งเป็นข้อเท็จจริงของผู้ใช้ ถ้าเกี่ยวข้องให้ยึดตามนั้นก่อนความรู้ทั่วไปและใส่ชื่อใน from_data ถ้าขัดกับความรู้ทั่วไปให้ยึดชุดข้อมูลและเตือนใน needs_check',
+'- confidence เป็น high เฉพาะเมื่อมีที่มาจากชุดข้อมูลหรือเป็นความรู้พื้นฐานที่แน่นอน เป็น low เมื่อต้องเดา ข้อมูลขัดกัน หรือถามเรื่องเฉพาะของโครงการที่ไม่มีข้อมูล และเมื่อเป็น low ให้ live เป็นประโยคซื้อเวลาที่สุภาพ ห้ามพูดตัวเลขหรือชื่อที่ยังไม่มีที่มา',
+'- plain ต้องไม่มีศัพท์เทคนิคที่ไม่อธิบาย ใช้การเปรียบเทียบจากชีวิตจริง',
+'- followups 2–4 ข้อ เป็นคำถามซักต่อที่น่าจะเจอจริง พร้อมคำตอบสั้นที่ซื่อสัตย์',
+'',
+'## 8.2 ตัวตนและความสามารถของผู้ใช้',
+'ผู้ใช้คือเจ้าของ [โปรไฟล์ผู้ใช้] ที่แนบมาในอินพุต ให้พูดในมุมมองผู้ใช้ด้วยสรรพนาม ผม ได้เมื่อเล่าประสบการณ์ที่อยู่ในโปรไฟล์',
+'- ถามถึงประสบการณ์ ให้เลือกโครงการที่ตรงที่สุดจากโปรไฟล์ แล้วเล่าด้วยรายละเอียดเทคนิคที่มีจริงเท่านั้น',
+'- ห้ามแต่งผลลัพธ์เชิงตัวเลข (เปอร์เซ็นต์ที่ดีขึ้น จำนวนผู้ใช้ ระยะเวลา งบ) ที่ไม่มีในโปรไฟล์ ให้ใช้ [ใส่ตัวเลขจริง]',
+'- เทคโนโลยีที่ไม่อยู่ในโปรไฟล์ ห้ามอ้างว่าเคยใช้จริง ให้ยอมรับตรงๆ แล้วเชื่อมกับสิ่งใกล้เคียงที่ทำจริง',
+'- โครงการภาครัฐหรือลูกค้าองค์กรให้พูดในระดับที่เปิดเผยได้ ไม่ลงรายละเอียดเชิงลึกของระบบรักษาความปลอดภัย โครงสร้างภายใน หรือข้อมูลที่อาจเป็นความลับของลูกค้า',
+'- ถูกถามจุดอ่อน ให้ตอบจริงเท่าที่โปรไฟล์รองรับ พร้อมวิธีที่ชดเชย ไม่โอ้อวดและไม่ถ่อมเกินไป',
+'- ทุกคำตอบเชิงเทคนิคต้องอิงสแตกจริงในโปรไฟล์ ตัวเลือกนอกสแตกต้องบอกชัดว่าเป็นนอกสแตกของผม และไม่อ้างว่าเคยใช้',
+'- ห้ามอ้างระดับความเชี่ยวชาญที่โปรไฟล์ไม่ได้ระบุ ให้บรรยายงานที่ทำจริงแทน',
+'- ทุกตัวเลขในคำตอบต้องมาจากโปรไฟล์ ชุดข้อมูล ข้อมูลของผู้ใช้ หรือคำถาม ถ้าไม่ใช่ให้ใช้ [ใส่ตัวเลขจริง]',
+'',
+'## 9. เช็กลิสต์ก่อนส่ง',
+'ตอบตรงคำถามในประโยคแรก / ไม่มีข้อเท็จจริงที่ไม่มีที่มา / ตัวเลขมีหน่วยและเงื่อนไข / ไม่แต่งประสบการณ์ผู้ใช้ / ความยาวตรงตามตั้งค่า / key_points ตรงกับข้อความในพารา / JSON ถูกต้อง',
+'',
+'## 10. อินพุตว่าง ไม่ชัด หรือภาษาอื่น',
+'- ว่างหรืออ่านไม่ออก: title ขอข้อมูลเพิ่มเติม และ paras มีประโยคเดียวที่ถามคำถามเจาะจงที่สุด',
+'- ภาษาอื่น: ตอบด้วยภาษานั้นโดยใช้โครงเดียวกัน',
+'',
+'## 11. น้ำเสียง',
+'อบอุ่น มั่นใจ ให้เกียรติ ตรงไปตรงมา ไม่ประจบ ไม่ขู่ ปิดทุกบทด้วยประโยคที่ผู้ใช้พูดต่อได้ทันที'
+  ].join('\n');
+
+  /* =====================================================================
+     4. GLOSSARY: spelling, Thai reading, meaning
+     ===================================================================== */
+  const TERMS = [
+    { en:'Clean Architecture', th:'คลีน อาร์คิเทกเจอร์', gloss:'สถาปัตยกรรมแบบสะอาด แบ่งโค้ดเป็นชั้นตามหน้าที่' },
+    { en:'MVC', th:'เอ็มวีซี', gloss:'Model-View-Controller แบ่งเป็นข้อมูล หน้าจอ และตัวควบคุม' },
+    { en:'MVVM', th:'เอ็มวีวีเอ็ม', gloss:'Model-View-ViewModel แยกตรรกะการแสดงผลออกจากหน้าจอ' },
+    { en:'Riverpod', th:'ริเวอร์พอด', gloss:'ไลบรารีจัดการสถานะของ Flutter' },
+    { en:'Bloc', th:'บล็อก', gloss:'ไลบรารีจัดการสถานะแบบแยกเหตุการณ์กับสถานะ' },
+    { en:'Provider', th:'โพรไวเดอร์', gloss:'วิธีส่งข้อมูลและบริการลงไปในแผนผังของ Flutter' },
+    { en:'Flutter', th:'ฟลัตเตอร์', gloss:'เฟรมเวิร์กสร้างแอปข้ามแพลตฟอร์มจากโค้ดชุดเดียว' },
+    { en:'framework', th:'เฟรมเวิร์ก', gloss:'ชุดโครงสร้างและเครื่องมือสำเร็จรูปสำหรับพัฒนาซอฟต์แวร์' },
+    { en:'domain', th:'โดเมน', gloss:'ชั้นกฎและลอจิกทางธุรกิจ' },
+    { en:'presentation', th:'เพรเซนเทชัน', gloss:'ชั้นหน้าจอและการแสดงผลต่อผู้ใช้' },
+    { en:'repository', th:'รีโพซิทอรี', gloss:'ตัวกลางที่ซ่อนรายละเอียดการเข้าถึงข้อมูล' },
+    { en:'use case', th:'ยูสเคส', gloss:'กรณีการใช้งานหนึ่งอย่างของระบบ' },
+    { en:'dependency injection', th:'ดีเพนเดนซี อินเจกชัน', gloss:'การส่งสิ่งที่ต้องใช้เข้ามาจากภายนอก' },
+    { en:'state management', th:'สเตต แมเนจเมนต์', gloss:'การจัดการข้อมูลสถานะที่เปลี่ยนไปมาในแอป' },
+    { en:'unit test', th:'ยูนิตเทสต์', gloss:'เทสต์หน่วยย่อย ตรวจทีละฟังก์ชันหรือคลาส' },
+    { en:'API', th:'เอพีไอ', gloss:'ส่วนติดต่อโปรแกรมให้ระบบคุยกันตามข้อตกลง' },
+    { en:'REST', th:'เรสต์', gloss:'รูปแบบการออกแบบ API ผ่าน HTTP ด้วยทรัพยากรและเมธอด' },
+    { en:'latency', th:'เลเทนซี', gloss:'ความหน่วง เวลาตั้งแต่ส่งคำขอจนได้ผลลัพธ์' },
+    { en:'throughput', th:'ธรูพุต', gloss:'ปริมาณงานที่ระบบทำได้ต่อหน่วยเวลา' },
+    { en:'push notification', th:'พุช โนติฟิเคชัน', gloss:'การแจ้งเตือนที่ส่งตรงถึงอุปกรณ์ของผู้ใช้' },
+    { en:'deploy', th:'ดีพลอย', gloss:'นำระบบขึ้นให้ผู้ใช้งานจริงได้' },
+    { en:'B2C', th:'บีทูซี', gloss:'Business to Consumer ธุรกิจที่ขายตรงถึงผู้บริโภค' },
+    { en:'STAR', th:'สตาร์', gloss:'Situation Task Action Result สถานการณ์ งาน การกระทำ ผลลัพธ์' },
+    { en:'UX', th:'ยูเอ็กซ์', gloss:'User Experience ประสบการณ์โดยรวมของผู้ใช้' },
+    { en:'UI', th:'ยูไอ', gloss:'User Interface ส่วนที่ผู้ใช้เห็นและโต้ตอบด้วย' },
+    { en:'Next.js', th:'เน็กซ์ เจเอส', gloss:'เฟรมเวิร์กเว็บที่สร้างบน React' },
+    { en:'TypeScript', th:'ไทป์สคริปต์', gloss:'JavaScript ที่มีระบบชนิดข้อมูล' },
+    { en:'Docker', th:'ดอกเกอร์', gloss:'แพ็กแอปพร้อมสภาพแวดล้อมเป็นคอนเทนเนอร์' },
+    { en:'Kubernetes', th:'คูเบอร์เนทีส', gloss:'ระบบจัดการคอนเทนเนอร์จำนวนมาก' },
+    { en:'CI/CD', th:'ซีไอ ซีดี', gloss:'ระบบทดสอบและปล่อยงานอัตโนมัติ' },
+    { en:'microservices', th:'ไมโครเซอร์วิส', gloss:'แยกระบบเป็นบริการเล็กที่ทำงานอิสระ' },
+    { en:'GraphQL', th:'กราฟคิวแอล', gloss:'ภาษาคิวรี API ที่ให้ผู้เรียกเลือกฟิลด์เอง' },
+    { en:'OAuth', th:'โอออธ', gloss:'มาตรฐานมอบสิทธิ์เข้าถึงโดยไม่แชร์รหัสผ่าน' },
+    { en:'JWT', th:'เจดับเบิลยูที', gloss:'โทเค็นยืนยันตัวตนที่เซ็นกำกับ' },
+    { en:'PDPA', th:'พีดีพีเอ', gloss:'กฎหมายคุ้มครองข้อมูลส่วนบุคคล' },
+    { en:'SLA', th:'เอสแอลเอ', gloss:'ข้อตกลงระดับการให้บริการ' },
+    { en:'TOR', th:'ทีโออาร์', gloss:'ขอบเขตงานที่ผู้ว่าจ้างกำหนด' },
+    { en:'load balancer', th:'โหลดบาลานเซอร์', gloss:'ตัวกระจายคำขอไปหลายเซิร์ฟเวอร์' },
+    { en:'cache', th:'แคช', gloss:'ที่พักข้อมูลเพื่อเรียกซ้ำได้เร็ว' },
+    { en:'scalability', th:'สเกลลาบิลิตี', gloss:'ความสามารถรองรับงานที่เพิ่มขึ้น' }
+  ];
+  const TERM_BY_EN = new Map(TERMS.map(t => [t.en.toLowerCase(), t]));
+  const TERM_BY_TH = new Map(TERMS.map(t => [t.th, t]));
+  const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const TERM_KEYS = TERMS.flatMap(t => [t.en, t.th]).sort((a, b) => b.length - a.length);
+  const TERM_RE = new RegExp('(?<![A-Za-z0-9])(' + TERM_KEYS.map(esc).join('|') + ')(?![A-Za-z0-9])|\\[(\\d{1,2})\\]|(\\d+(?:\\.\\d+)?\\s?(?:%|เปอร์เซ็นต์|สัปดาห์|วัน|ms|มิลลิวินาที|เท่า|คน|ช่วง|ข้อ|ชั่วโมง|นาที)?)', 'gi');
+
+  /* =====================================================================
+     5. HELPERS
+     ===================================================================== */
+  const $ = id => document.getElementById(id);
+  const h = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined && text !== null) n.textContent = text; return n; };
+  const uid = () => Math.random().toString(36).slice(2, 10);
+  const sleep = (ms, signal) => new Promise((res, rej) => {
+    const t = setTimeout(res, ms);
+    if (signal) signal.addEventListener('abort', () => { clearTimeout(t); rej(new DOMException('aborted', 'AbortError')); }, { once:true });
+  });
+  const str = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
+  const strArr = (v, max, lim) => (Array.isArray(v) ? v.map(x => str(x, max)).filter(Boolean).slice(0, lim) : []);
+  const firstSentence = p => (p || '').split(/(?<=[.!?])\s+|(?<=ครับ)\s+/)[0].slice(0, 300);
+  const minutesOf = paras => Math.max(1, Math.round(paras.reduce((n, p) => n + p.length, 0) / 420));
+  const plainText = s => (s || '').replace(/\s+/g, '');
+  const store = {
+    get(k, def) {
+      try { const v = localStorage.getItem(k); return v === null ? (LEGACY_OF(k, def)) : JSON.parse(v); }
+      catch (_) { return def; }
+    },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (_) { return false; } }
+  };
+  function LEGACY_OF(k, def){
+    const old = k.replace(KEY, LEGACY);
+    if (old === k) return def;
+    try { const v = localStorage.getItem(old); return v === null ? def : JSON.parse(v); } catch (_) { return def; }
+  }
+  function toast(msg){
+    const t = h('div', 'toast', msg);
+    $('toasts').appendChild(t);
+    setTimeout(() => { t.style.transition = 'opacity .3s'; t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2300);
+  }
+  async function copyText(text){ try { await navigator.clipboard.writeText(text); return true; } catch (_) { return false; } }
+
+  /* =====================================================================
+     6. STATE
+     ===================================================================== */
+  const S = {
+    busy:false, ctrl:null, listening:false, base:'', play:null,
+    rate:1, size:1, voice:'', tab:'gloss', panel:false, web:true,
+    active:null, demo:false, presIdx:0, presOpen:false, presTimer:null,
+    stallI:0, stallT:null, pv:null
+  };
+  const MODE = { spd:0, len:0, aud:0 };
+  let db = { turns: [] };
+  let DS = [];
+
+  function loadAll(){
+    const d = store.get(KEY, null);
+    db = d && Array.isArray(d.turns) ? { turns: d.turns.filter(validTurn).slice(-MAX_TURNS) } : { turns: [] };
+    if (!db.turns.length) {
+      const old = store.get(LEGACY, null);
+      if (old && Array.isArray(old.turns)) db.turns = old.turns.filter(validTurn).slice(-MAX_TURNS);
+    }
+    const ds = store.get(KEY + '.ds', null) || store.get(LEGACY + '.ds', []);
+    DS = Array.isArray(ds) ? ds.filter(x => x && typeof x.id === 'string' && typeof x.title === 'string' && typeof x.text === 'string').slice(0, MAX_DS) : [];
+    const pr = store.get(KEY + '.prefs', null) || store.get(LEGACY + '.prefs', null) || {};
+    S.rate = RATES.includes(pr.rate) ? pr.rate : 1;
+    S.size = Number.isInteger(pr.size) && pr.size >= 0 && pr.size < SIZES.length ? pr.size : 1;
+    S.voice = typeof pr.voice === 'string' ? pr.voice : '';
+    const m = store.get(KEY + '.mode', null) || store.get(LEGACY + '.mode', null);
+    if (m && OPTS.len[m.len] && OPTS.aud[m.aud]) { MODE.len = m.len; MODE.aud = m.aud; MODE.spd = OPTS.spd[m.spd] ? m.spd : 0; }
+  }
+  const validTurn = t => t && typeof t.id === 'string' && typeof t.q === 'string' && t.ans && Array.isArray(t.ans.paras);
+  function saveTurns(){ if (!store.set(KEY, { turns: db.turns })) toast('บันทึกไม่ได้ ข้อมูลจะหายเมื่อปิดหน้า'); }
+  function savePrefs(){ store.set(KEY + '.prefs', { rate:S.rate, size:S.size, voice:S.voice }); }
+  function saveMode(){ store.set(KEY + '.mode', MODE); }
+  function saveDS(){ if (!store.set(KEY + '.ds', DS)) toast('พื้นที่ในเครื่องเต็ม บันทึกชุดข้อมูลไม่ได้'); }
+  function applySize(){ document.documentElement.style.setProperty('--para', SIZES[S.size] + 'px'); }
+
+  /* =====================================================================
+     7. DATASETS (retrieval over user-owned text, stored locally)
+     ===================================================================== */
+  const Datasets = {
+    grams(x) { const t = x.toLowerCase().replace(/\s+/g, ''), g = new Set(); for (let i = 0; i < t.length - 1; i++) g.add(t.slice(i, i + 2)); return g; },
+    retrieve(q) {
+      const on = DS.filter(d => d.on);
+      if (!on.length) return '';
+      const total = on.reduce((n, d) => n + d.text.length, 0);
+      const chunks = [];
+      on.forEach(d => d.text.split(/\n{2,}/).forEach(p => {
+        p = p.trim();
+        for (let i = 0; p && i < p.length; i += 700) chunks.push({ t:d.title, x:p.slice(i, i + 700), s:0 });
+      }));
+      let out = '';
+      if (total <= 3500) chunks.forEach(c => { out += '[' + c.t + '] ' + c.x + '\n'; });
+      else {
+        const qg = this.grams(q);
+        chunks.forEach(c => { const cg = this.grams(c.x); let n = 0; qg.forEach(g => { if (cg.has(g)) n++; }); c.s = n / Math.sqrt(cg.size + 1); });
+        chunks.sort((a, b) => b.s - a.s);
+        let used = 0;
+        for (const c of chunks) { if (c.s <= 0 || used >= 5 || out.length > 3800) break; out += '[' + c.t + '] ' + c.x + '\n'; used++; }
+      }
+      return out ? '\n[ชุดข้อมูลโครงการ]\n' + out : '';
+    },
+    usedTitles(q) { return DS.filter(d => d.on && this.grams(d.text).size && this.retrieve(q).indexOf('[' + d.title + ']') !== -1).map(d => d.title); },
+    add(title, text) {
+      text = (text || '').trim();
+      if (!text) return toast('ไม่มีข้อความ');
+      if (DS.length >= MAX_DS) return toast('ชุดข้อมูลเต็ม ' + MAX_DS + ' ชุด');
+      DS.unshift({ id:uid(), title:(title || '').trim().slice(0, 60) || 'ไม่มีชื่อ', text:text.slice(0, 60000), on:true });
+      saveDS();
+    }
+  };
+
+  /* =====================================================================
+     8. PROMPT COMPOSITION
+     ===================================================================== */
+  const Prompt = {
+    modeText() {
+      const len = MODE.spd === 0 ? '2–3 ย่อหน้า' : LEN_RULE[OPTS.len[MODE.len]];
+      let t = '[ตั้งค่าบทพูด] ความยาว ' + len + ' (ยึดตามนี้แทนกฎความยาวในข้อ 3) ผู้ฟังคือ' + OPTS.aud[MODE.aud] + ' ปรับระดับศัพท์และน้ำเสียงให้เหมาะ';
+      if (MODE.spd === 0) t += ' โหมดด่วน: ผู้ใช้กำลังถูกถามสดในที่ประชุม live ต้องตอบตรงคำถามใน 1–2 ประโยคที่พูดได้ทันที paras เพียง 2–3 ย่อหน้า ห้ามถามกลับถ้าตอบได้';
+      const prev = db.turns.slice(-2);
+      if (prev.length) t += '\n[บริบทก่อนหน้า ใช้เมื่อคำถามใหม่อ้างถึง]\n' + prev.map(x => 'ถาม: ' + x.q + '\nตอบ: ' + x.ans.live).join('\n');
+      return t;
+    },
+    identity() { return '\n[โปรไฟล์ผู้ใช้ (ข้อเท็จจริงจริง)]\n' + PROFILE + '\n'; },
+    build(q, opts) {
+      const parts = [q, this.modeText(), this.identity()];
+      const ret = Datasets.retrieve(q);
+      if (ret) parts.push(ret);
+      if (opts && opts.instruction) parts.push('[คำสั่งเพิ่มเติม] ' + opts.instruction);
+      if (S.web) parts.push('[web=true] ค้นหาเว็บทุกครั้งก่อนตอบ แล้วเขียนคำตอบสั้นและบทพูดจากผลการค้นหา อ้างอิง [n] ให้ครบทุกข้อเท็จจริงจากเว็บ');
+      return parts.join('\n');
+    }
+  };
+
+  /* =====================================================================
+     9. MODEL TRANSPORT
+     ===================================================================== */
+  class ContractError extends Error {}
+  class NoEndpoint extends Error { constructor(){ super('no endpoint'); this.code = 'NO_ENDPOINT'; } }
+  class Timeout extends Error { constructor(){ super('timeout'); this.code = 'TIMEOUT'; } }
+
+  const Model = {
+    async call(input, signal) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), API_TIMEOUT_MS);
+      const onAbort = () => ctrl.abort();
+      signal.addEventListener('abort', onAbort, { once:true });
+      try {
+        const res = await fetch(API_URL, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({ system: SYSTEM_PROMPT, input, web: S.web, version: VERSION }),
+          signal: ctrl.signal
+        });
+        if (res.status === 404 || res.status === 501) throw new NoEndpoint();
+        if (!res.ok) throw new Error('http ' + res.status);
+        const d = await res.json();
+        return d && d.content !== undefined ? d.content : d;
+      } catch (err) {
+        if (signal.aborted) throw new DOMException('aborted', 'AbortError');
+        if (ctrl.signal.aborted) throw new Timeout();
+        if (err && err.code) throw err;
+        if (err instanceof TypeError) throw new NoEndpoint();
+        throw err;
+      } finally {
+        clearTimeout(timer);
+        signal.removeEventListener('abort', onAbort);
+      }
+    }
+  };
+
+  /* =====================================================================
+     10. CONTRACT: extract, validate, normalise
+     ===================================================================== */
+  function extractJson(text){
+    if (typeof text !== 'string') throw new ContractError('empty');
+    const t = text.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+    const a = t.indexOf('{'), b = t.lastIndexOf('}');
+    if (a === -1 || b === -1) throw new ContractError('no json');
+    return JSON.parse(t.slice(a, b + 1));
+  }
+  function parseSources(v){
+    return (Array.isArray(v) ? v : []).map(s => ({
+      title: s && typeof s.title === 'string' ? s.title.trim().slice(0, 120) : '',
+      url: s && typeof s.url === 'string' ? s.url.trim() : ''
+    })).filter(s => s.title && /^https:\/\//.test(s.url)).slice(0, 8);
+  }
+  function validate(raw){
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new ContractError('not object');
+    const title = str(raw.title, 90);
+    const paras = strArr(raw.paras, 700, 12);
+    if (!title) throw new ContractError('title');
+    if (!paras.length) throw new ContractError('paras');
+    const followups = (Array.isArray(raw.followups) ? raw.followups : [])
+      .map(f => ({ q: str(f && f.q, 160), a: str(f && f.a, 300) })).filter(f => f.q && f.a).slice(0, 4);
+    return {
+      title,
+      live: str(raw.live, 400) || firstSentence(paras[0]),
+      kind: KINDS.includes(raw.kind) ? raw.kind : 'explain',
+      paras,
+      summary: str(raw.summary, 300),
+      plain: str(raw.plain, 500),
+      key_points: strArr(raw.key_points, 200, 4),
+      confidence: CONF.includes(raw.confidence) ? raw.confidence : 'medium',
+      followups,
+      from_data: strArr(raw.from_data, 80, 6),
+      clarify: strArr(raw.clarify, 120, 4),
+      assumptions: strArr(raw.assumptions, 200, 6),
+      needs_check: strArr(raw.needs_check, 200, 6),
+      sources: parseSources(raw.sources)
+    };
+  }
+
+  /* =====================================================================
+     11. DEMO ANSWERS (used only when no endpoint is reachable). Facts come from PROFILE.
+     ===================================================================== */
+  function demoGeneric(q){
+    if (/เทียบ|ต่างกัน|\bvs\b/i.test(q)) return {
+      title: 'Clean Architecture กับ MVC: เลือกแบบไหนดี', kind:'compare', confidence:'medium',
+      live: 'ถ้าทีมโตและแอปจะใหญ่ ผมเลือก Clean Architecture ถ้างานเล็กและต้องเริ่มเร็ว MVC ก็พอ',
+      paras: [
+        'คำถามนี้ขึ้นกับขนาดทีมและอายุของแอปเป็นหลัก ผมจะดูสองเรื่องนี้ก่อนตัดสินใจ',
+        'Clean Architecture แบ่งชั้น data, domain และ presentation ทำให้ทีมใหญ่ทำงานขนานกันได้ และทดสอบแต่ละชั้นแยกกันได้',
+        'MVC เรียบง่ายและเริ่มได้เร็ว เหมาะกับทีมเล็กที่มีไม่กี่คน แต่เมื่อ controller ใหญ่ขึ้น การแก้ไขจะกระทบหลายส่วน',
+        'ข้อแลกเปลี่ยนคือ Clean ต้องวางโครงสร้างก่อน ใช้เวลาเพิ่มในช่วงแรก ส่วน MVC ได้ผลเร็วกว่าแต่โตยากกว่า',
+        'สรุปคือถ้าแอปจะโตมากและทีมจะใหญ่ ผมเลือก Clean Architecture ถ้างานเล็กและต้องเริ่มเร็ว ผมเลือก MVC'
+      ],
+      key_points: ['ทีมใหญ่ทำงานขนานกันได้', 'MVC โตยากกว่าเมื่อ controller ใหญ่ขึ้น'],
+      summary: 'ขนาดทีมและอายุของแอปคือตัวตัดสินใจหลัก',
+      plain: 'ลองนึกถึงการสร้างตึกสูงกับบ้านชั้นเดียว ตึกต้องมีแบบแปลนชัดเจนแต่ใช้เวลานาน บ้านชั้นเดียวสร้างเร็วแต่ขยายยาก',
+      followups: [{ q:'แล้วทีมเล็กควรเริ่มด้วยอะไร', a:'ผมจะเริ่มด้วย MVC หรือ MVVM ก่อน แล้วแยกชั้นเมื่อโค้ดเริ่มใหญ่ขึ้นครับ' }],
+      from_data: ['โปรไฟล์หลัก'], clarify: [], assumptions: ['สมมติว่าเป็นแอปมือถือที่มีทีมพัฒนาหลายคน'], needs_check: [], sources: []
+    };
+    if (/ขั้นตอน|วิธี|how/i.test(q)) return {
+      title: q.slice(0, 80) || 'ขั้นตอนการทำงาน', kind:'how-to', confidence:'medium',
+      live: 'ผมจะเริ่มจากข้อกำหนดให้ชัด แล้วทำทีละขั้นและตรวจผลก่อนไปต่อ',
+      paras: [
+        'ขั้นแรกให้เตรียมข้อกำหนดของงานให้ชัด ว่าต้องการผลลัพธ์อะไรและมีข้อจำกัดอะไรบ้าง',
+        'ต่อมาลงมือทำทีละขั้น และตรวจผลหลังแต่ละขั้นก่อนไปต่อ เพื่อให้ปัญหาถูกจับได้ตั้งแต่ต้น',
+        'สุดท้ายบันทึกสิ่งที่ได้เรียนรู้ เพื่อให้ครั้งหน้าทำได้เร็วขึ้น'
+      ],
+      key_points: ['ตรวจผลหลังแต่ละขั้นก่อนไปต่อ'], summary: 'ทำทีละขั้นและตรวจผลทุกครั้ง',
+      plain: 'เหมือนการทำอาหารตามสูตร ทำทีละขั้นแล้วชิมก่อนไปขั้นถัดไป',
+      followups: [], from_data: [], clarify: [], assumptions: ['สมมติว่ายังไม่มีข้อกำหนดละเอียดจากผู้ใช้'],
+      needs_check: ['ควรตรวจกับเอกสารหรือเครื่องมือที่ใช้จริงอีกครั้ง'], sources: []
+    };
+    return {
+      title: q.slice(0, 90) || 'บทพูด', kind:'interview', confidence:'medium',
+      live: 'ผมเลือกแยกชั้นของแอปด้วย Clean Architecture ร่วมกับ Riverpod เพื่อให้ทีมทำงานขนานกันได้',
+      paras: [
+        'ในโปรเจกต์แอปขนาดกลางที่มีหลายฟีเจอร์ ผมเลือกแยกชั้นเป็น data, domain และ presentation ด้วย Clean Architecture',
+        'ผมใช้ Riverpod จัดการสถานะ เพื่อให้หน้าจอรับข้อมูลจาก domain โดยไม่ต้องรู้รายละเอียดการดึงข้อมูล',
+        'ผลที่เห็นคือทีมแก้บั๊กได้ตรงจุดมากขึ้น และงานของแต่ละคนไม่ทับกัน ตัวเลขผลลัพธ์ [ใส่ตัวเลขจริง]',
+        'ข้อควรระวังคือช่วงแรกต้องลงแรงวางโครงสร้าง จึงเหมาะกับแอปที่จะโตต่อเนื่อง'
+      ],
+      key_points: ['ใช้ Clean Architecture ร่วมกับ Riverpod', 'ทีมทำงานขนานกันได้'],
+      summary: 'แยกความรับผิดชอบให้ชัด แล้วเลือกความซับซ้อนให้พอดีกับขนาดของงาน',
+      plain: 'ลองนึกภาพห้องเก็บของที่แบ่งเป็นหมวดชัดเจน ทุกคนรู้ว่าของแต่ละอย่างอยู่ตรงไหน',
+      followups: [{ q:'ใช้เวลาเท่าไรในการวางโครงสร้าง', a:'ช่วงแรกใช้เวลาเพิ่มครับ ตัวเลขจริงผมจะยืนยันให้ก่อนพูดครับ' }],
+      from_data: ['โปรไฟล์หลัก'], clarify: [], assumptions: ['สมมติว่าเป็นโปรเจกต์ Flutter ขนาดกลางที่ทีมกำลังโตต่อเนื่อง'],
+      needs_check: ['ตัวเลขผลลัพธ์เป็นช่องว่าง ควรแทนด้วยค่าจริงของโปรเจกต์ก่อนพูด'], sources: []
+    };
+  }
+
+  /* =====================================================================
+     12. PIPELINE: intake -> retrieve -> compose -> model -> validate -> lint
+     ===================================================================== */
+  const Pipeline = {
+    async run(q, opts, onStage, signal) {
+      onStage(1);
+      const input = Prompt.build(q, opts);
+      onStage(2);
+      let lastErr = null;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const raw = await Model.call(attempt ? input + '\n[แก้ไข] ตอบเป็น JSON ตามรูปแบบที่กำหนดเท่านั้น' : input, signal);
+          const data = typeof raw === 'string' ? extractJson(raw) : raw;
+          onStage(3);
+          const ans = validate(data);
+          S.demo = false;
+          return { ans, demo: false };
+        } catch (err) {
+          if (err && err.name === 'AbortError') throw err;
+          if (err && err.code === 'TIMEOUT') throw err;
+          if (err && err.code === 'NO_ENDPOINT') break;
+          lastErr = err;
+          if (!(err instanceof ContractError || err instanceof SyntaxError)) break;
+        }
+      }
+      if (lastErr instanceof ContractError || lastErr instanceof SyntaxError) throw lastErr;
+      if (lastErr && !(lastErr.code === 'NO_ENDPOINT')) throw lastErr;
+      onStage(2);
+      await sleep(reduce ? 120 : 650, signal);
+      onStage(3);
+      S.demo = true;
+      return { ans: validate(demoAnswer(q)), demo: true };
+    }
+  };
+
+  /* Lint: deterministic checks that run after validation. Returns warning strings. */
+  function lint(a, q){
+    const w = [];
+    const n = a.paras.length;
+    if (a.kind !== 'fact' && n < 2) w.push('ย่อหน้าน้อยกว่า 2 ข้อ');
+    if (n > 10) w.push('ย่อหน้าเกิน 10 ข้อ');
+    if (a.paras.some(p => p.length > 400)) w.push('มีย่อหน้ายาวเกินหนึ่งลมหายใจ');
+    if (!a.key_points.length) w.push('ไม่มีจุดสำคัญ');
+    if (a.paras.some(p => /\[ใส่/.test(p))) w.push('มีช่องที่ต้องใส่ตัวเลขจริง');
+    if (a.confidence === 'low') w.push('ความมั่นใจต่ำ ควรตรวจก่อนพูด');
+    const src = PROFILE + ' ' + DS.filter(d => d.on).map(d => d.text).join(' ') + ' ' + (q || '');
+    const bad = new Set();
+    (a.paras.join(' ').replace(/\[\d{1,2}\]/g, '').match(/\d+(?:[.,]\d+)?\s?(?:%|เปอร์เซ็นต์|เท่า|ms|มิลลิวินาที)?/g) || []).forEach(m => {
+      const token = m.trim(), bare = token.match(/\d+(?:[.,]\d+)?/)[0], num = parseFloat(bare.replace(',', '.'));
+      const unit = /%|เปอร์เซ็นต์|เท่า|ms|มิลลิวินาที/.test(token);
+      if ((unit || num > 10) && !new RegExp('(^|[^0-9])' + bare.replace(/[.,]/g, '[.,]') + '([^0-9]|$)').test(src)) bad.add(token);
+    });
+    if (bad.size) w.push('ตัวเลขที่ไม่มีในข้อมูลของคุณ: ' + [...bad].slice(0, 4).join(', ') + ' ห้ามพูดว่าเป็นของจริง');
+    return w;
+  }
+
+  /* Key sentences: model-provided first, otherwise chosen from numbers and known terms. */
+  function keyPairs(a){
+    if (a.key_points && a.key_points.length) {
+      return a.key_points.map(k => { let i = a.paras.findIndex(p => p.indexOf(k) !== -1); if (i < 0) i = a.paras.findIndex(p => plainText(p).indexOf(plainText(k)) !== -1); return { text:k, para:i }; }).filter(k => k.para >= 0);
+    }
+    const out = [];
+    a.paras.forEach((p, pi) => {
+      const hit = p.split(/(?<=[.!?])\s+|(?<=ครับ)\s+/).find(s => /\d/.test(s) || TERM_KEYS.some(k => s.toLowerCase().indexOf(k.toLowerCase()) !== -1));
+      if (hit && out.length < 4) out.push({ text:hit.trim(), para:pi });
+    });
+    return out;
+  }
+
+  /* =====================================================================
+     13. ANNOTATION: spelling and meaning in parentheses
+     ===================================================================== */
+  let SEEN = new Set(), SRC = [];
+  function annotate(text, key){
+    if (!key || text.indexOf(key) === -1) return annotateInline(text);
+    const i = text.indexOf(key);
+    const frag = document.createDocumentFragment();
+    frag.appendChild(annotateInline(text.slice(0, i)));
+    const mark = h('span', 'key');
+    mark.appendChild(annotateInline(key));
+    frag.appendChild(mark);
+    frag.appendChild(annotateInline(text.slice(i + key.length)));
+    return frag;
+  }
+  function annotateInline(text){
+    const frag = document.createDocumentFragment();
+    let last = 0;
+    text.replace(TERM_RE, (m, term, cite, num, offset) => {
+      if (offset > last) frag.appendChild(document.createTextNode(text.slice(last, offset)));
+      if (term) {
+        const en = TERM_BY_EN.get(term.toLowerCase()), th = TERM_BY_TH.get(term);
+        if (en) {
+          frag.appendChild(h('span', 'en', en.en));
+          if (!SEEN.has(en.en)) { SEEN.add(en.en); frag.appendChild(h('span', 'spell', ' (' + en.th + ', ' + en.gloss + ')')); }
+        } else if (th) {
+          frag.appendChild(h('span', 'th', th.th));
+          if (!SEEN.has(th.en)) { SEEN.add(th.en); frag.appendChild(h('span', 'spell', ' (' + th.en + ', ' + th.gloss + ')')); }
+        } else frag.appendChild(document.createTextNode(m));
+      } else if (cite) {
+        const sr = SRC[Number(cite) - 1];
+        if (sr && /^https:\/\//.test(sr.url)) { const a = h('a', 'cite', '[' + cite + ']'); a.href = sr.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.title = sr.title || ''; a.addEventListener('click', ev => ev.stopPropagation()); frag.appendChild(a); }
+        else frag.appendChild(document.createTextNode(m));
+      } else frag.appendChild(h('span', 'num', m));
+      last = offset + m.length;
+      return m;
+    });
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    return frag;
+  }
+  function collectTerms(paras){
+    const seen = new Map();
+    paras.forEach((p, pi) => (p.match(TERM_RE) || []).forEach(m => {
+      const e = TERM_BY_EN.get(m.toLowerCase()) || TERM_BY_TH.get(m);
+      if (e && !seen.has(e.en)) seen.set(e.en, { entry:e, para:pi });
+    }));
+    return [...seen.values()];
+  }
+
+  /* =====================================================================
+     14. RENDER: answer card, thread, pipeline
+     ===================================================================== */
+  const Render = {
+    badge(text, cls) { return h('span', 'badge' + (cls ? ' ' + cls : ''), text); },
+    card(turn) {
+      const a = turn.ans;
+      const c = h('article', 'card');
+      c.dataset.id = turn.id;
+      c.setAttribute('aria-label', 'บทพูด: ' + a.title);
+
+      const head = h('header', 'card-head');
+      const badges = h('div', 'badges');
+      [this.badge(KIND_LABEL[a.kind] || a.kind),
+       this.badge(CONF_LABEL[a.confidence], a.confidence === 'high' ? 'high' : a.confidence === 'low' ? 'low' : ''),
+       a.from_data.length ? this.badge('ใช้ข้อมูลของคุณ', 'web') : null,
+       turn.demo ? this.badge('โหมดตัวอย่าง', 'alt') : null,
+       turn.web ? this.badge('ค้นหาเว็บ', 'web') : null
+      ].filter(Boolean).forEach(b => badges.appendChild(b));
+      head.appendChild(badges);
+      head.appendChild(h('h3', 'card-title', a.title));
+      const meta = h('div', 'meta');
+      meta.append(h('span', null, 'ประมาณ ' + minutesOf(a.paras) + ' นาที'), h('span', null, a.paras.length + ' ช่วง'), (db.turns[0] && db.turns[0].id === turn.id ? h('span', 'legend', 'จุดสำคัญมีพื้นสีฟ้า ตัวเล็กในวงเล็บคือคำอ่านและความหมาย') : ''));
+      head.appendChild(meta);
+      c.appendChild(head);
+
+      const lb = h('section', 'live-box');
+      lb.appendChild(h('div', 'live-label', 'พูดได้ทันที'));
+      lb.appendChild(h('p', 'live-text', a.live));
+      const lr = h('div', 'live-row');
+      const cpl = h('button', 'tool', 'คัดลอกประโยคสั้น'); cpl.type = 'button';
+      cpl.addEventListener('click', async () => { const ok = await copyText(a.live); flash(cpl, ok ? 'คัดลอกแล้ว' : 'คัดลอกไม่ได้', ok); });
+      const spk = h('button', 'tool', 'อ่านประโยคสั้น'); spk.type = 'button';
+      spk.addEventListener('click', () => speakOne(a.live, S.rate));
+      const brg = h('button', 'tool', 'วลีขอเวลายืนยัน'); brg.type = 'button';
+      brg.addEventListener('click', async () => { const ok = await copyText(BRIDGE); flash(brg, ok ? 'คัดลอกแล้ว' : 'คัดลอกไม่ได้', ok); });
+      lr.append(cpl, spk, brg);
+      lb.appendChild(lr);
+      c.appendChild(lb);
+
+      const prog = h('div', 'progress'); prog.setAttribute('aria-hidden', 'true'); prog.appendChild(h('span'));
+      c.appendChild(prog);
+
+      const keys = keyPairs(a);
+      const keyByPara = new Map(keys.map(k => [k.para, k.text]));
+      SEEN = new Set(); SRC = a.sources || [];
+      const script = h('div', 'script');
+      a.paras.forEach((p, i) => {
+        const el = h('p', 'para');
+        el.dataset.i = i; el.tabIndex = 0; el.setAttribute('role', 'button');
+        el.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); el.click(); } });
+        el.appendChild(annotate(p, keyByPara.get(i)));
+        el.addEventListener('click', () => {
+          setActive(turn.id);
+          if (S.play && S.play.card === c) jumpTo(i); else startPlay(turn, c, i);
+        });
+        script.appendChild(el);
+      });
+      c.appendChild(script);
+
+      if (a.plain) {
+        const d = h('details', 'plain');
+        d.appendChild(h('summary', null, 'อธิบายแบบเข้าใจง่าย'));
+        d.appendChild(h('p', null, a.plain));
+        c.appendChild(d);
+      }
+      if (a.summary) {
+        const s = h('div', 'summary');
+        s.append(h('b', null, 'สรุป'), h('p', null, a.summary));
+        c.appendChild(s);
+      }
+      if (a.followups.length) {
+        const f = h('section', 'follow');
+        f.appendChild(h('div', 'side-h', 'คำถามที่อาจโดนซักต่อ'));
+        a.followups.forEach(x => {
+          const box = h('div', 'fu');
+          box.appendChild(h('q', null, x.q));
+          box.appendChild(h('p', null, x.a));
+          const r = h('div', 'row');
+          const cp = h('button', 'tool', 'คัดลอกคำตอบ'); cp.type = 'button';
+          cp.addEventListener('click', async () => { const ok = await copyText(x.a); flash(cp, ok ? 'คัดลอกแล้ว' : 'คัดลอกไม่ได้', ok); });
+          const sp = h('button', 'tool', 'อ่านให้ฟัง'); sp.type = 'button';
+          sp.addEventListener('click', () => speakOne(x.a, S.rate));
+          r.append(cp, sp);
+          box.appendChild(r);
+          f.appendChild(box);
+        });
+        c.appendChild(f);
+      }
+
+      const warnings = lint(a, turn.q);
+      if (a.assumptions.length || a.needs_check.length || warnings.length) {
+        const notes = h('div', 'notes');
+        if (a.assumptions.length) notes.appendChild(this.noteBox('สมมติฐานที่ใช้', a.assumptions, ''));
+        const checks = a.needs_check.concat(warnings);
+        if (checks.length) notes.appendChild(this.noteBox('ควรตรวจสอบก่อนพูด', checks, 'warn'));
+        c.appendChild(notes);
+      }
+      if (a.sources.length) {
+        const box = h('div', 'sources');
+        box.appendChild(h('h4', null, 'แหล่งอ้างอิงจากการค้นหาเว็บ'));
+        const ol = h('ol');
+        a.sources.forEach(s => {
+          const li = h('li');
+          const link = h('a', null, s.title);
+          link.href = s.url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+          li.appendChild(link); ol.appendChild(li);
+        });
+        box.appendChild(ol);
+        c.appendChild(box);
+      }
+
+      const foot = h('footer', 'card-foot');
+      const copy = h('button', 'tool', 'คัดลอกบทพูด'); copy.type = 'button';
+      copy.addEventListener('click', async () => {
+        const text = a.title + '\n\n' + a.paras.join('\n\n') + (a.summary ? '\n\nสรุป: ' + a.summary : '') +
+          (a.sources.length ? '\n\nแหล่งอ้างอิง:\n' + a.sources.map((s, i) => '[' + (i + 1) + '] ' + s.title + ' ' + s.url).join('\n') : '');
+        const ok = await copyText(text); flash(copy, ok ? 'คัดลอกแล้ว' : 'คัดลอกไม่ได้', ok);
+      });
+      const shorter = h('button', 'tool', 'สั้นลง'); shorter.type = 'button';
+      shorter.addEventListener('click', () => regenerate(turn.id, 'ตอบให้สั้นลงเหลือ 2–3 ย่อหน้า และคงประเด็นหลัก'));
+      const deeper = h('button', 'tool', 'ละเอียดขึ้น'); deeper.type = 'button';
+      deeper.addEventListener('click', () => regenerate(turn.id, 'ขยายรายละเอียดเชิงเทคนิคและข้อแลกเปลี่ยนเพิ่มขึ้น'));
+      const regen = h('button', 'tool', 'ตอบใหม่'); regen.type = 'button';
+      regen.addEventListener('click', () => regenerate(turn.id, ''));
+      foot.append(h('span', 'spacer'), copy, shorter, deeper, regen);
+      c.appendChild(foot);
+      return c;
+    },
+    noteBox(title, items, cls) {
+      const n = h('div', 'note ' + cls);
+      n.appendChild(h('h4', null, title));
+      const ul = h('ul');
+      items.forEach(x => ul.appendChild(h('li', null, x)));
+      n.appendChild(ul);
+      return n;
+    },
+    pipeline() {
+      const w = h('section', 'pipe');
+      w.setAttribute('aria-label', 'กำลังเตรียมบทพูด');
+      w.appendChild(h('div', 'pipe-title', S.web ? 'กำลังเตรียมบทพูด พร้อมค้นหาเว็บ' : 'กำลังเตรียมบทพูด'));
+      const list = h('ol', 'stages');
+      STAGES.forEach((s, i) => { const li = h('li'); li.dataset.s = i; li.append(h('span', 'dot', String(i + 1)), h('span', null, s)); list.appendChild(li); });
+      w.appendChild(list);
+      const bar = h('div', 'bar'); bar.appendChild(h('span')); w.appendChild(bar);
+      w.appendChild(h('p', 'pv'));
+      return w;
+    },
+    setStage(w, idx){
+      w.querySelectorAll('.stages li').forEach(li => {
+        const i = Number(li.dataset.s);
+        li.classList.toggle('done', i < idx);
+        li.classList.toggle('on', i === idx);
+      });
+      w.querySelector('.bar span').style.width = ((idx + 1) / STAGES.length * 100) + '%';
+    },
+    error(onRetry, msg){
+      const e = h('div', 'err'); e.setAttribute('role', 'alert');
+      e.append(h('strong', null, 'เตรียมบทพูดไม่สำเร็จ'), h('p', null, msg));
+      const b = h('button', null, 'ลองอีกครั้ง'); b.type = 'button'; b.addEventListener('click', onRetry);
+      e.appendChild(b);
+      return e;
+    },
+    clarify(q, opts){
+      const box = h('section', 'clarify-box');
+      box.setAttribute('role', 'group');
+      box.appendChild(h('p', 'clarify-q', 'คำถามนี้อาจหมายถึงหลายอย่าง เลือกหนึ่งข้อก่อนตอบ'));
+      const row = h('div', 'live-row');
+      opts.forEach(o => {
+        const b = h('button', 'tool', o); b.type = 'button';
+        b.addEventListener('click', () => { box.remove(); submit(q + ' (' + o + ')'); });
+        row.appendChild(b);
+      });
+      box.appendChild(row);
+      return box;
+    },
+    empty(){
+      const wrap = h('section', 'empty');
+      const t = h('h1'); t.append(document.createTextNode('ถามได้เลย '), h('em', null, 'ได้บทพูดพร้อมพูด'));
+      wrap.append(t, h('p', null, 'ได้ประโยคตอบทันที ตามด้วยบทพูดเต็ม คำศัพท์พร้อมสะกด และคำถามที่อาจโดนซักต่อ'));
+      const s = h('div', 'sugg');
+      pickChips().forEach(c => {
+        const b = h('button', 'chip'); b.type = 'button';
+        const tx = h('span', 'ct'); tx.append(h('i', null, c.tag), h('span', null, c.q));
+        b.appendChild(tx);
+        b.insertAdjacentHTML('beforeend', '<svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>');
+        b.addEventListener('click', () => submit(c.q));
+        s.appendChild(b);
+      });
+      wrap.appendChild(s);
+      return wrap;
+    },
+    question(q){
+      const w = h('div', 'q');
+      w.append(h('span', 'q-label', 'คำถาม'), h('h2', 'q-text', q));
+      return w;
+    }
+  };
+
+  function flash(btn, text, ok){
+    const old = btn.dataset.label || btn.textContent;
+    btn.dataset.label = old;
+    btn.textContent = text;
+    btn.classList.toggle('ok', !!ok);
+    setTimeout(() => { btn.textContent = old; btn.classList.remove('ok'); }, 1500);
+  }
+  function revealCard(card){
+    if (!card) return;
+    [...card.querySelectorAll('.para')].forEach((p, i) => setTimeout(() => p.classList.add('in'), reduce ? 0 : 90 + i * 110));
+  }
+  function scrollToLast(instant){
+    const cards = $('col').querySelectorAll('.card');
+    const last = cards[cards.length - 1];
+    if (last) last.scrollIntoView({ block:'start', behavior: instant || reduce ? 'auto' : 'smooth' });
+  }
+  function renderThread(){
+    const col = $('col');
+    col.replaceChildren();
+    if (!db.turns.length) { col.appendChild(Render.empty()); updatePlayer(); return; }
+    db.turns.forEach(t => { col.appendChild(Render.question(t.q)); col.appendChild(Render.card(t)); });
+    revealCard(col.lastElementChild);
+    setActive(db.turns[db.turns.length - 1].id);
+    scrollToLast(true);
+    updatePlayer();
+  }
+  function setActive(id){
+    S.active = id;
+    const t = db.turns.find(x => x.id === id);
+    $('nowLabel').textContent = t ? t.ans.title : '';
+    if (S.panel) renderSide();
+  }
+  const activeTurn = () => S.active ? (db.turns.find(t => t.id === S.active) || null) : (db.turns[db.turns.length - 1] || null);
+  const cardOf = turn => turn && $('col').querySelector('.card[data-id="' + turn.id + '"]');
+
+  /* =====================================================================
+     15. SIDE PANEL: gloss, key points, datasets, reading
+     ===================================================================== */
+  function renderSide(){
+    const box = $('sideBody');
+    box.replaceChildren();
+    const turn = activeTurn();
+    if (S.tab === 'data') return renderDataTab(box);
+    if (S.tab === 'read') return renderReadTab(box);
+    if (!turn) { box.appendChild(h('div', 'side-empty', 'ยังไม่มีเนื้อหาให้แสดง')); return; }
+    if (S.tab === 'gloss') {
+      const items = collectTerms(turn.ans.paras);
+      if (!items.length) box.appendChild(h('div', 'side-empty', 'ไม่พบคำศัพท์เทคนิคในบทนี้'));
+      items.forEach(it => {
+        const b = h('button', 'side-item'); b.type = 'button';
+        b.append(h('b', null, it.entry.en), h('span', null, 'สะกด ' + it.entry.en + ', อ่าน ' + it.entry.th), h('span', null, it.entry.gloss));
+        b.addEventListener('click', () => jumpTo(it.para));
+        box.appendChild(b);
+      });
+    } else {
+      const items = keyPairs(turn.ans);
+      if (!items.length) box.appendChild(h('div', 'side-empty', 'ยังไม่มีจุดสำคัญ'));
+      items.forEach((it, i) => {
+        const b = h('button', 'side-item'); b.type = 'button';
+        b.append(h('b', null, 'จุดที่ ' + (i + 1) + ', ช่วงที่ ' + (it.para + 1)), h('span', null, it.text));
+        b.addEventListener('click', () => jumpTo(it.para));
+        box.appendChild(b);
+      });
+    }
+  }
+  function renderDataTab(box){
+    const total = DS.filter(d => d.on).reduce((n, d) => n + d.text.length, 0);
+    box.appendChild(h('div', 'side-empty', 'ชุดข้อมูลที่เปิดอยู่จะถูกค้นหาและใช้ตอบทุกคำถาม เก็บในเครื่องนี้เท่านั้น รองรับ .txt .md .csv .json เปิดอยู่ ' + total.toLocaleString() + ' ตัวอักษร'));
+    const pin = h('div', 'side-item');
+    pin.append(h('b', null, 'โปรไฟล์หลัก (ฝังในระบบ)'), h('span', null, 'ใช้กับทุกคำถาม ' + PROFILE.length.toLocaleString() + ' ตัวอักษร'));
+    box.appendChild(pin);
+    const t = h('input'); t.type = 'text'; t.placeholder = 'ชื่อชุดข้อมูล เช่น สถาปัตยกรรมโครงการ'; t.maxLength = 60;
+    const ta = h('textarea'); ta.rows = 5; ta.placeholder = 'วางข้อมูลโครงการ ตัวเลขจริง หรือคำถามที่เคยโดน';
+    ta.style.cssText = 'resize:vertical;width:100%;background:var(--s2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px;outline:none';
+    const row = h('div', 'row');
+    const add = h('button', 'tool', 'เพิ่ม'); add.type = 'button';
+    add.addEventListener('click', () => { Datasets.add(t.value, ta.value); renderSide(); });
+    const up = h('button', 'tool', 'อัปโหลดไฟล์'); up.type = 'button';
+    const fi = h('input'); fi.type = 'file'; fi.multiple = true; fi.accept = '.txt,.md,.csv,.json,text/*'; fi.hidden = true;
+    up.addEventListener('click', () => fi.click());
+    fi.addEventListener('change', async () => {
+      for (const f of [...fi.files]) {
+        if (f.size > 400000) { toast(f.name + ' ใหญ่เกินไป'); continue; }
+        Datasets.add(f.name, await f.text());
+      }
+      fi.value = ''; renderSide();
+    });
+    const sd = h('button', 'tool', 'โหลดชุดตัวอย่าง'); sd.type = 'button';
+    sd.addEventListener('click', () => { const add = buildSeed().filter(x => !DS.some(d => d.id === x.id)); DS = DS.concat(add).slice(0, MAX_DS); saveDS(); toast(add.length ? 'โหลดชุดตัวอย่าง ' + add.length + ' ชุด' : 'มีชุดตัวอย่างครบแล้ว'); renderSide(); });
+    row.append(add, up, sd, fi);
+    box.append(t, ta, row);
+    DS.forEach(d => {
+      const it = h('div', 'side-item');
+      const top = h('div', 'row');
+      top.style.alignItems = 'center';
+      const cb = h('input'); cb.type = 'checkbox'; cb.checked = !!d.on; cb.setAttribute('aria-label', 'เปิดใช้ ' + d.title);
+      cb.addEventListener('change', () => { d.on = cb.checked; saveDS(); renderSide(); });
+      const nm = h('b', null, d.title); nm.style.flex = '1';
+      const del = h('button', 'tool danger', 'ลบ'); del.type = 'button';
+      let armed = false;
+      del.addEventListener('click', () => {
+        if (!armed) { armed = true; del.textContent = 'ยืนยัน'; setTimeout(() => { armed = false; del.textContent = 'ลบ'; }, 2500); return; }
+        DS = DS.filter(x => x.id !== d.id); saveDS(); renderSide();
+      });
+      top.append(cb, nm, del);
+      it.append(top, h('span', null, d.text.length.toLocaleString() + ' ตัวอักษร · ' + d.text.slice(0, 70).replace(/\s+/g, ' ')));
+      box.appendChild(it);
+    });
+  }
+  function renderReadTab(box){
+    const f1 = h('div', 'field');
+    f1.appendChild(h('label', null, 'ความเร็วการอ่านออกเสียง ' + S.rate + 'x'));
+    const range = h('input'); range.type = 'range'; range.min = '0.9'; range.max = '1.15'; range.step = '0.25'; range.value = String(S.rate);
+    range.setAttribute('aria-label', 'ความเร็ว');
+    range.addEventListener('input', () => { S.rate = Number(range.value); $('speed').textContent = S.rate + 'x'; savePrefs(); renderSide(); });
+    f1.appendChild(range);
+
+    const f2 = h('div', 'field');
+    f2.appendChild(h('label', null, 'ขนาดตัวอักษรบทพูด'));
+    const st = h('div', 'stepper');
+    const minus = h('button', null, 'A-'); minus.type = 'button'; minus.setAttribute('aria-label', 'ลดขนาดตัวอักษร');
+    const plus = h('button', null, 'A+'); plus.type = 'button'; plus.setAttribute('aria-label', 'เพิ่มขนาดตัวอักษร');
+    const out = h('output', null, SIZES[S.size] + ' px');
+    minus.addEventListener('click', () => { S.size = Math.max(0, S.size - 1); applySize(); savePrefs(); out.textContent = SIZES[S.size] + ' px'; });
+    plus.addEventListener('click', () => { S.size = Math.min(SIZES.length - 1, S.size + 1); applySize(); savePrefs(); out.textContent = SIZES[S.size] + ' px'; });
+    st.append(minus, out, plus);
+    f2.appendChild(st);
+
+    const f3 = h('div', 'field');
+    f3.appendChild(h('label', null, 'เสียงอ่าน'));
+    const sel = h('select'); sel.setAttribute('aria-label', 'เลือกเสียงอ่าน');
+    const voices = synth ? synth.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith('th')) : [];
+    const def = h('option', null, voices.length ? 'เสียงเริ่มต้นของเครื่อง (ภาษาไทย)' : 'ไม่พบเสียงภาษาไทยในเครื่องนี้'); def.value = '';
+    sel.appendChild(def);
+    voices.forEach(v => { const o = h('option', null, v.name); o.value = v.name; sel.appendChild(o); });
+    sel.value = voices.some(v => v.name === S.voice) ? S.voice : '';
+    sel.addEventListener('change', () => { S.voice = sel.value; savePrefs(); toast('ตั้งค่าเสียงอ่านแล้ว'); });
+    f3.appendChild(sel);
+    box.append(f1, f2, f3);
+  }
+  function setTab(name){
+    S.tab = name;
+    ['gloss','key','data','read'].forEach(n => {
+      const id = 'tab' + n.charAt(0).toUpperCase() + n.slice(1);
+      $(id).setAttribute('aria-selected', String(n === name));
+    });
+    renderSide();
+  }
+  function setPanel(on){
+    S.panel = on;
+    $('body').classList.toggle('panel-on', on);
+    $('panelBtn').setAttribute('aria-pressed', String(on));
+    if (on) renderSide();
+  }
+
+  /* =====================================================================
+     16. PLAYER: read aloud with highlight, presentation with auto-advance
+     ===================================================================== */
+  function speakOne(text, rate){
+    if (!synth) return toast('เบราว์เซอร์นี้ไม่รองรับการอ่านออกเสียง');
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'th-TH'; u.rate = rate;
+    const v = pickVoice(); if (v) u.voice = v;
+    synth.speak(u);
+  }
+  function pickVoice(){
+    if (!synth || !S.voice) return null;
+    return synth.getVoices().find(v => v.name === S.voice) || null;
+  }
+  function highlight(card, idx){
+    const els = [...card.querySelectorAll('.para')];
+    els.forEach((p, i) => { p.classList.toggle('now', i === idx); p.classList.toggle('past', i < idx); });
+    if (els[idx]) els[idx].scrollIntoView({ block:'center', behavior: reduce ? 'auto' : 'smooth' });
+    card.querySelector('.progress span').style.width = ((idx + 1) / els.length * 100) + '%';
+    $('nowLabel').textContent = (idx + 1) + ' / ' + els.length;
+  }
+  function clearHighlight(card){
+    card.querySelectorAll('.para').forEach(p => p.classList.remove('now', 'past'));
+    card.querySelector('.progress span').style.width = '0%';
+  }
+  function setPlayUI(on){
+    const b = $('play');
+    b.dataset.on = String(on);
+    b.innerHTML = '<svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px">' + (on ? ICON.stop : ICON.play) + '</svg><span>' + (on ? 'หยุดอ่าน' : 'อ่านบทพูด') + '</span>';
+  }
+  function updatePlayer(){
+    const t = activeTurn();
+    const has = !!t && !!synth;
+    const n = t ? t.ans.paras.length : 0;
+    const idx = S.play ? S.play.idx : -1;
+    $('play').disabled = !has;
+    $('speed').disabled = !has;
+    $('present').disabled = !t;
+    $('prev').disabled = !has || idx <= 0;
+    $('next').disabled = !has || (idx < 0 ? n === 0 : idx >= n - 1);
+    $('speed').textContent = S.rate + 'x';
+    if (!S.play) { setPlayUI(false); $('nowLabel').textContent = t ? t.ans.title : ''; }
+  }
+  function togglePlay(){
+    if (S.play) return stopPlay();
+    const t = activeTurn(), card = cardOf(t);
+    if (t && card) startPlay(t, card, 0);
+  }
+  function startPlay(turn, card, from){
+    stopPlay();
+    if (!synth) return toast('เบราว์เซอร์นี้ไม่รองรับการอ่านออกเสียง');
+    S.play = { card, turn, idx: from };
+    setPlayUI(true);
+    speakFrom(S.play);
+  }
+  function speakFrom(tok){
+    if (S.play !== tok) return;
+    if (tok.idx >= tok.turn.ans.paras.length) return finishPlay(tok.card, false);
+    highlight(tok.card, tok.idx);
+    const u = new SpeechSynthesisUtterance(tok.turn.ans.paras[tok.idx]);
+    u.lang = 'th-TH'; u.rate = S.rate;
+    const v = pickVoice(); if (v) u.voice = v;
+    u.onend = () => { if (S.play !== tok) return; tok.idx++; speakFrom(tok); };
+    u.onerror = () => { if (S.play === tok) finishPlay(tok.card, true); };
+    synth.speak(u);
+  }
+  function jumpTo(idx){
+    const t = activeTurn(), card = cardOf(t);
+    if (!t || !card) return;
+    const els = [...card.querySelectorAll('.para')];
+    if (els[idx]) els[idx].scrollIntoView({ block:'center', behavior: reduce ? 'auto' : 'smooth' });
+    if (S.play && S.play.card === card) {
+      synth.cancel();
+      S.play.idx = idx;
+      setTimeout(() => speakFrom(S.play), 80);
+    }
+  }
+  function step(d){
+    const t = activeTurn(); if (!t) return;
+    const base = S.play ? S.play.idx : -1;
+    jumpTo(Math.max(0, Math.min(t.ans.paras.length - 1, base + d)));
+  }
+  function finishPlay(card, failed){
+    if (failed) toast('อ่านออกเสียงไม่สำเร็จ');
+    S.play = null;
+    clearHighlight(card);
+    setPlayUI(false);
+    updatePlayer();
+  }
+  function stopPlay(){
+    if (!S.play) return;
+    const card = S.play.card;
+    S.play = null;
+    if (synth) synth.cancel();
+    clearHighlight(card);
+    setPlayUI(false);
+    updatePlayer();
+  }
+
+  const Present = {
+    open(){
+      const t = activeTurn(); if (!t) return;
+      stopPlay();
+      S.presIdx = 0; S.presOpen = true;
+      $('pres').classList.add('open');
+      this.render();
+      $('presClose').focus();
+    },
+    close(){
+      this.autoStop();
+      if (synth) synth.cancel();
+      S.presOpen = false;
+      $('pres').classList.remove('open');
+      $('present').focus();
+    },
+    render(){
+      const t = activeTurn(); if (!t) return;
+      const paras = t.ans.paras;
+      $('presText').textContent = paras[S.presIdx];
+      $('presCount').textContent = (S.presIdx + 1) + ' / ' + paras.length;
+      $('presBar').style.width = ((S.presIdx + 1) / paras.length * 100) + '%';
+      $('presPrev').disabled = S.presIdx === 0;
+      $('presNext').disabled = S.presIdx === paras.length - 1;
+    },
+    step(d){
+      const t = activeTurn(); if (!t) return;
+      S.presIdx = Math.max(0, Math.min(t.ans.paras.length - 1, S.presIdx + d));
+      this.render();
+    },
+    autoStop(){
+      clearTimeout(S.presTimer); S.presTimer = null;
+      $('presAuto').textContent = 'เลื่อนอัตโนมัติ';
+    },
+    autoTick(){
+      const t = activeTurn(); if (!t) return this.autoStop();
+      const p = t.ans.paras[S.presIdx] || '';
+      S.presTimer = setTimeout(() => {
+        if (S.presIdx >= t.ans.paras.length - 1) return this.autoStop();
+        this.step(1); this.autoTick();
+      }, Math.max(2500, p.length * 140 / S.rate));
+    },
+    toggleAuto(){
+      if (S.presTimer) return this.autoStop();
+      $('presAuto').textContent = 'หยุดเลื่อน';
+      this.autoTick();
+    },
+    speak(){
+      const t = activeTurn(), card = cardOf(t);
+      if (!t || !card) return;
+      this.close();
+      startPlay(t, card, S.presIdx);
+    }
+  };
+
+  /* =====================================================================
+     17. MODES (speed, length, audience) and stall phrases
+     ===================================================================== */
+  function renderMods(){
+    const box = $('mods'); box.replaceChildren();
+    [['spd','โหมด', OPTS.spd], ['len','ความยาว', OPTS.len], ['aud','ผู้ฟัง', OPTS.aud]].forEach(([k, label, list]) => {
+      const b = h('button', 'mod', label + ': ' + list[MODE[k]]); b.type = 'button'; b.title = 'กดเพื่อสลับ';
+      b.addEventListener('click', () => { MODE[k] = (MODE[k] + 1) % list.length; saveMode(); renderMods(); });
+      box.appendChild(b);
+    });
+    const sb = h('button', 'mod', 'ซื้อเวลา'); sb.type = 'button';
+    sb.addEventListener('click', showStall);
+    box.appendChild(sb);
+  }
+  function showStall(){
+    const p = STALLS[S.stallI++ % STALLS.length];
+    const el = $('stall');
+    el.textContent = p; el.style.display = 'block';
+    copyText(p);
+    clearTimeout(S.stallT);
+    S.stallT = setTimeout(() => { el.style.display = 'none'; }, 9000);
+  }
+
+  /* =====================================================================
+     18. SUBMIT, REGENERATE, BUSY STATE
+     ===================================================================== */
+  function setBusy(on){
+    S.busy = on;
+    $('body').classList.toggle('busy', on);
+    $('send').dataset.stop = String(on);
+    $('send').setAttribute('aria-label', on ? 'หยุดการตอบ' : 'ส่ง');
+    $('sendIco').innerHTML = on ? ICON.stop : ICON.send;
+    $('thread').setAttribute('aria-busy', String(on));
+    $('statusTxt').textContent = on ? (S.web ? 'กำลังค้นหาและประมวลผล' : 'กำลังประมวลผล') : (S.demo ? 'โหมดตัวอย่าง' : 'ออนไลน์');
+    $('status').classList.toggle('demo', S.demo && !on);
+    updateSend();
+  }
+  function setPv(pipe, text){
+    const el = pipe.querySelector('.pv');
+    if (el) el.textContent = text || '';
+  }
+  async function submit(raw, opts){
+    const q = (raw || '').trim();
+    if (S.busy || !q) return;
+    stopListening();
+    const col = $('col');
+    if (!db.turns.length) col.replaceChildren();
+    const qEl = Render.question(q);
+    const pipe = Render.pipeline();
+    col.append(qEl, pipe);
+    $('input').value = ''; sizeInput(); setBusy(true);
+    scrollToLast(false);
+    S.ctrl = new AbortController();
+    const stallTimer = setTimeout(() => setPv(pipe, STALLS[S.stallI++ % STALLS.length]), 6000);
+    try {
+      const { ans, demo } = await Pipeline.run(q, opts || {}, idx => Render.setStage(pipe, idx), S.ctrl.signal);
+      if (ans.clarify.length && q.indexOf('(') === -1 && !(opts && opts.instruction)) {
+        pipe.remove();
+        col.appendChild(Render.clarify(q, ans.clarify));
+        scrollToLast(false);
+        return;
+      }
+      const turn = { id: uid(), q, ans, demo, web: S.web, ts: Date.now() };
+      db.turns = [...db.turns, turn].slice(-MAX_TURNS);
+      saveTurns();
+      pipe.remove();
+      const card = Render.card(turn);
+      col.appendChild(card);
+      revealCard(card);
+      setActive(turn.id);
+      updatePlayer();
+      scrollToLast(false);
+    } catch (err) {
+      pipe.remove();
+      if (err && err.name === 'AbortError') { qEl.remove(); toast('หยุดการตอบแล้ว'); }
+      else {
+        const msg = err instanceof ContractError || err instanceof SyntaxError
+          ? 'คำตอบที่ได้รับไม่อยู่ในรูปแบบที่กำหนด ลองอีกครั้ง'
+          : err && err.code === 'TIMEOUT' ? 'รอคำตอบนานเกินไป ลองอีกครั้ง' : 'เชื่อมต่อไม่ได้ในขณะนี้ ลองอีกครั้ง';
+        col.appendChild(Render.error(() => { col.lastElementChild && col.lastElementChild.remove(); qEl.remove(); submit(q, opts); }, msg));
+      }
+    } finally {
+      clearTimeout(stallTimer);
+      S.ctrl = null; setBusy(false);
+    }
+  }
+  async function regenerate(id, instruction){
+    if (S.busy) return toast('รอให้คำตอบเสร็จก่อน');
+    const turn = db.turns.find(t => t.id === id);
+    if (!turn) return;
+    const old = cardOf(turn);
+    if (S.play && S.play.card === old) stopPlay();
+    setBusy(true);
+    if (old) old.style.opacity = '.45';
+    S.ctrl = new AbortController();
+    try {
+      const { ans, demo } = await Pipeline.run(turn.q, { instruction }, () => {}, S.ctrl.signal);
+      turn.ans = ans; turn.demo = demo; saveTurns();
+      const fresh = Render.card(turn);
+      if (old) old.replaceWith(fresh); else $('col').appendChild(fresh);
+      revealCard(fresh); setActive(id); updatePlayer();
+    } catch (err) {
+      if (old) old.style.opacity = '';
+      if (!(err && err.name === 'AbortError')) toast('สร้างบทพูดใหม่ไม่สำเร็จ');
+    } finally { S.ctrl = null; setBusy(false); }
+  }
+  function stopGeneration(){ if (S.ctrl) S.ctrl.abort(); }
+
+  /* =====================================================================
+     19. COMPOSER AND VOICE
+     ===================================================================== */
+  function sizeInput(){
+    const input = $('input');
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 140) + 'px';
+    const n = input.value.length;
+    $('count').textContent = n > 1600 ? n + ' / 2000' : '';
+  }
+  function updateSend(){ $('send').disabled = S.busy ? false : !$('input').value.trim(); }
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let rec = null;
+  if (SR) {
+    rec = new SR();
+    rec.lang = 'th-TH'; rec.continuous = true; rec.interimResults = true;
+    rec.onresult = e => {
+      let fin = '', interim = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const t = e.results[i][0].transcript;
+        if (e.results[i].isFinal) fin += t; else interim += t;
+      }
+      if (fin) S.base = (S.base + ' ' + fin).trim();
+      const input = $('input');
+      input.value = (S.base + ' ' + interim).trim();
+      input.classList.toggle('interim', !!interim);
+      sizeInput(); updateSend();
+    };
+    rec.onend = () => { if (S.listening) { try { rec.start(); } catch (_) {} } };
+    rec.onerror = () => { stopListening(); toast('ไมโครโฟนใช้ไม่ได้ ตรวจสอบสิทธิ์การเข้าถึง'); };
+  } else { $('mic').disabled = true; $('mic').title = 'เบราว์เซอร์นี้ไม่รองรับการพูด'; }
+  function startListening(){
+    if (!rec || S.busy) return;
+    S.listening = true; S.base = $('input').value.trim();
+    $('form').classList.add('listening');
+    $('mic').setAttribute('aria-pressed', 'true'); $('micTxt').textContent = 'หยุด';
+    try { rec.start(); } catch (_) {}
+  }
+  function stopListening(){
+    if (!S.listening) return;
+    S.listening = false;
+    $('form').classList.remove('listening');
+    $('input').classList.remove('interim');
+    $('mic').setAttribute('aria-pressed', 'false'); $('micTxt').textContent = 'พูด';
+    try { rec && rec.stop(); } catch (_) {}
+  }
+
+  /* =====================================================================
+     20. EVENTS
+     ===================================================================== */
+  function bind(){
+    const input = $('input');
+    $('form').addEventListener('submit', e => { e.preventDefault(); if (S.busy) return stopGeneration(); submit(input.value); });
+    input.addEventListener('input', () => { sizeInput(); updateSend(); });
+    input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); $('form').requestSubmit(); } });
+    $('mic').addEventListener('click', () => S.listening ? stopListening() : startListening());
+    $('play').addEventListener('click', togglePlay);
+    $('prev').addEventListener('click', () => step(-1));
+    $('next').addEventListener('click', () => step(1));
+    $('speed').addEventListener('click', () => {
+      S.rate = RATES[(RATES.indexOf(S.rate) + 1) % RATES.length];
+      $('speed').textContent = S.rate + 'x';
+      savePrefs();
+      if (S.play) jumpTo(S.play.idx);
+      renderSide();
+    });
+    $('present').addEventListener('click', () => Present.open());
+    $('presClose').addEventListener('click', () => Present.close());
+    $('presPrev').addEventListener('click', () => Present.step(-1));
+    $('presNext').addEventListener('click', () => Present.step(1));
+    $('presPlay').addEventListener('click', () => Present.speak());
+    $('presAuto').addEventListener('click', () => Present.toggleAuto());
+    $('panelBtn').addEventListener('click', () => setPanel(!S.panel));
+    ['gloss','key','data','read'].forEach(n => {
+      $('tab' + n.charAt(0).toUpperCase() + n.slice(1)).addEventListener('click', () => setTab(n));
+    });
+    let armed = false, armTimer = null;
+    $('newBtn').addEventListener('click', () => {
+      if (S.busy) return toast('รอให้คำตอบเสร็จก่อน');
+      if (!db.turns.length) return input.focus();
+      if (!armed) {
+        armed = true; toast('กดอีกครั้งเพื่อเริ่มคำถามใหม่');
+        clearTimeout(armTimer); armTimer = setTimeout(() => armed = false, 2600);
+        return;
+      }
+      armed = false; stopPlay(); Present.autoStop();
+      db.turns = []; S.active = null; saveTurns(); renderThread(); input.focus();
+    });
+    $('thread').addEventListener('click', ev => { if (S.panel && window.innerWidth < 900 && !ev.target.closest('.para,a,button,summary,input,textarea')) setPanel(false); });
+    document.addEventListener('keydown', e => {
+      if (S.presOpen) {
+        if (e.key === 'Tab') {
+          const f = [...$('pres').querySelectorAll('button:not(:disabled)')], ac = document.activeElement;
+          if (f.length) {
+            if (!$('pres').contains(ac)) { e.preventDefault(); f[0].focus(); }
+            else if (e.shiftKey && ac === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+            else if (!e.shiftKey && ac === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+          }
+          return;
+        }
+        if (e.key === 'Escape') return Present.close();
+        if (e.key === 'ArrowRight') return Present.step(1);
+        if (e.key === 'ArrowLeft') return Present.step(-1);
+        if (e.key === ' ') { e.preventDefault(); return Present.speak(); }
+        return;
+      }
+      const editing = e.target === input || (e.target.matches && e.target.matches('input,textarea,select'));
+      if (e.key === '/' && !editing) { e.preventDefault(); input.focus(); return; }
+      if (e.key === ' ' && !editing && !e.target.closest('button,a')) { e.preventDefault(); togglePlay(); return; }
+      if (e.key === 'ArrowRight' && !editing) return step(1);
+      if (e.key === 'ArrowLeft' && !editing) return step(-1);
+      if (e.key === 'Escape') {
+        if (S.busy) stopGeneration();
+        if (S.play) stopPlay();
+        if (S.panel && window.innerWidth < 1280) setPanel(false);
+      }
+    });
+    addEventListener('online', () => { netSync(); toast('กลับมาออนไลน์แล้ว'); });
+    addEventListener('offline', () => { netSync(); toast('ออฟไลน์ ข้อมูลยังอยู่ในเครื่อง'); });
+    addEventListener('pagehide', () => { if (S.play) stopPlay(); Present.autoStop(); });
+    addEventListener('resize', () => { if (window.innerWidth >= 1280 && !S.panel) setPanel(true); });
+    if (synth) synth.onvoiceschanged = () => { if (S.panel && S.tab === 'read') renderSide(); };
+  }
+  function netSync(){
+    const on = navigator.onLine;
+    $('status').classList.toggle('off', !on);
+    if (!S.busy) $('statusTxt').textContent = on ? (S.demo ? 'โหมดตัวอย่าง' : 'ออนไลน์') : 'ออฟไลน์';
+  }
+
+  /* =====================================================================
+     MOCK DATA (embedded so the file stays a single file). Console: ARTYVERSE_MOCK.load('main' | 'stress' | 'ds')
+     ===================================================================== */
+  const MOCK = {"main":[{"id":"mock001","q":"อธิบาย Clean Architecture ให้ฟังหน่อย","ans":{"title":"Clean Architecture ในแอปมือถือ","live":"Clean Architecture คือการแบ่งโค้ดเป็นชั้นตามหน้าที่ โดยให้กฎธุรกิจไม่ขึ้นกับหน้าจอหรือฐานข้อมูล ผลคือแก้ส่วนหนึ่งได้โดยไม่รื้อทั้งระบบครับ","kind":"explain","paras":["Clean Architecture แบ่งแอปเป็นสามชั้นหลัก คือ presentation ดูแลหน้าจอ domain เก็บกฎทางธุรกิจ และ data คุยกับ API หรือฐานข้อมูล","หัวใจคือทิศทางการพึ่งพา domain ไม่รู้ว่าข้างนอกใช้ Flutter หรือ API ตัวไหน จึงทดสอบ use case ด้วย unit test ได้โดยไม่ต้องเปิดแอป","ข้อแลกเปลี่ยนคือไฟล์และ boilerplate เพิ่มขึ้น แอปเล็กอาจเกินความจำเป็น จึงเลือกใช้เมื่อทีมโตหรืออายุแอปยาว","สรุปคือ Clean Architecture ซื้อความเปลี่ยนแปลงง่ายในอนาคตด้วยโครงสร้างที่มากขึ้นตั้งแต่วันนี้ครับ"],"summary":"แยกชั้นให้ชัดเพื่อแก้ง่าย แลกกับโครงสร้างที่มากขึ้น","plain":"Clean Architecture คือการแบ่งโค้ดเป็นชั้นตามหน้าที่ โดยให้กฎธุรกิจไม่ขึ้นกับหน้าจอหรือฐานข้อมูล ผลคือแก้ส่วนหนึ่งได้โดยไม่รื้อทั้งระบบครับ","key_points":["Clean Architecture","สรุปคือ Clean"],"confidence":"high","followups":[{"q":"ยกตัวอย่างสั้นๆ ได้ไหม","a":"ได้ครับ ผมยกตัวอย่างที่ผู้ฟังเห็นภาพได้ใน 1 ประโยค แล้วค่อยลงรายละเอียดถ้าถูกถามต่อ"}],"from_data":[],"clarify":[],"assumptions":["สมมติว่าเป็นแอปมือถือที่มีทีมมากกว่าหนึ่งคน"],"needs_check":[],"sources":[]},"demo":false,"ts":1793430962775,"web":false},{"id":"mock002","q":"Riverpod คืออะไร ทำไมไม่ใช้ setState ธรรมดา","ans":{"title":"Riverpod กับการจัดการสถานะ","live":"Riverpod เป็นไลบรารีจัดการสถานะของ Flutter ที่แยก state ออกจาก widget ทำให้แชร์ข้อมูลข้ามหน้าและทดสอบได้ง่ายกว่า setState ครับ","kind":"explain","paras":["setState เหมาะกับสถานะเล็กๆ ที่อยู่ใน widget เดียว แต่พอข้อมูลต้องใช้ร่วมกันหลายหน้า การส่งต่อผ่านพารามิเตอร์จะยุ่งเหยิงเร็ว","Riverpod ประกาศ provider ไว้ข้างนอก widget แล้วให้หน้าจอ watch ค่าที่ต้องการ เมื่อค่าเปลี่ยน เฉพาะ widget ที่ดูอยู่จะถูกสร้างใหม่","ข้อดีคือ dependency injection และ state management อยู่ที่เดียว ข้อจำกัดคือทีมต้องเรียนรู้แนวคิด provider ก่อนจึงจะใช้คล่อง"],"summary":"ใช้ setState กับสถานะเล็ก ใช้ Riverpod เมื่อข้อมูลถูกแชร์หลายจุด","plain":"Riverpod เป็นไลบรารีจัดการสถานะของ Flutter ที่แยก state ออกจาก widget ทำให้แชร์ข้อมูลข้ามหน้าและทดสอบได้ง่ายกว่า setState ครับ","key_points":["setState เหมาะกับสถานะเล็กๆ","ข้อดีคือ dependency"],"confidence":"medium","followups":[{"q":"ยกตัวอย่างสั้นๆ ได้ไหม","a":"ได้ครับ ผมยกตัวอย่างที่ผู้ฟังเห็นภาพได้ใน 1 ประโยค แล้วค่อยลงรายละเอียดถ้าถูกถามต่อ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"Riverpod","url":"https://riverpod.dev"},{"title":"Flutter documentation","url":"https://docs.flutter.dev"}]},"demo":false,"ts":1793431022775,"web":false},{"id":"mock003","q":"dependency injection คืออะไร พูดให้ผู้บริหารเข้าใจ","ans":{"title":"dependency injection แบบเข้าใจง่าย","live":"dependency injection คือการส่งของที่โค้ดต้องใช้เข้ามาจากข้างนอก แทนที่จะให้โค้ดไปสร้างเอง ทำให้เปลี่ยนหรือจำลองของนั้นได้ง่ายครับ","kind":"explain","paras":["ลองนึกถึงร้านกาแฟ ถ้าบาริสต้าต้องปลูกเมล็ดเองทุกครั้งจะช้าและเปลี่ยนซัพพลายเออร์ไม่ได้ แต่ถ้ามีคนส่งเมล็ดมาให้ เขาโฟกัสที่การชงได้เต็มที่","ในโค้ดก็เหมือนกัน คลาสที่ต้องใช้ repository จะรับ repository เข้ามา ตอนทดสอบเราส่งตัวจำลองเข้าไปแทนได้ ไม่ต้องต่อ API จริง","ผลต่อธุรกิจคือแก้ไขเร็วขึ้นและบั๊กหลุดน้อยลง แต่ต้องวางโครงสร้างตั้งแต่ต้น ซึ่งเป็นต้นทุนช่วงแรกครับ"],"summary":"ส่งของที่ต้องใช้เข้ามาแทนการสร้างเอง ได้โค้ดที่ทดสอบและเปลี่ยนง่าย","plain":"dependency injection คือการส่งของที่โค้ดต้องใช้เข้ามาจากข้างนอก แทนที่จะให้โค้ดไปสร้างเอง ทำให้เปลี่ยนหรือจำลองของนั้นได้ง่ายครับ","key_points":["ลองนึกถึงร้านกาแฟ ถ้าบาริสต้าต้องปลูกเมล็ดเองทุกครั้งจะช้าและเปลี่ยนซัพพลายเออร์ไม่ได้","ผลต่อธุรกิจคือแก้ไขเร็วขึ้นและบั๊กหลุดน้อยลง"],"confidence":"medium","followups":[{"q":"ยกตัวอย่างสั้นๆ ได้ไหม","a":"ได้ครับ ผมยกตัวอย่างที่ผู้ฟังเห็นภาพได้ใน 1 ประโยค แล้วค่อยลงรายละเอียดถ้าถูกถามต่อ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793431082775,"web":false},{"id":"mock004","q":"Flutter วาดหน้าจอยังไง ต่างจาก native ตรงไหน","ans":{"title":"Flutter วาดหน้าจอเอง","live":"Flutter วาดทุกพิกเซลด้วยเอนจินของตัวเอง ไม่ได้ใช้ widget ของระบบ ทำให้หน้าตาเหมือนกันทั้งสองแพลตฟอร์มครับ","kind":"explain","paras":["ต่างจาก native ที่เรียกใช้ UI ของ iOS หรือ Android โดยตรง Flutter มีชุด widget ของตัวเองและให้เอนจินกราฟิกวาดลงหน้าจอ","ข้อดีคือหน้าตาและพฤติกรรมสม่ำเสมอ และใช้โค้ดชุดเดียวได้ ข้อจำกัดคือฟีเจอร์เฉพาะแพลตฟอร์มต้องเขียนสะพานเชื่อมเพิ่ม และขนาดแอปเริ่มต้นใหญ่กว่า"],"summary":"วาดเองจึงเหมือนกันทุกเครื่อง แต่ต้องเขียนสะพานสำหรับฟีเจอร์เฉพาะแพลตฟอร์ม","plain":"Flutter วาดทุกพิกเซลด้วยเอนจินของตัวเอง ไม่ได้ใช้ widget ของระบบ ทำให้หน้าตาเหมือนกันทั้งสองแพลตฟอร์มครับ","key_points":["ต่างจาก native","ข้อดีคือหน้าตาและพฤติกรรมสม่ำเสมอ"],"confidence":"low","followups":[{"q":"ยกตัวอย่างสั้นๆ ได้ไหม","a":"ได้ครับ ผมยกตัวอย่างที่ผู้ฟังเห็นภาพได้ใน 1 ประโยค แล้วค่อยลงรายละเอียดถ้าถูกถามต่อ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"Flutter documentation","url":"https://docs.flutter.dev"}]},"demo":false,"ts":1793431142775,"web":false},{"id":"mock005","q":"push notification ทำงานยังไงตั้งแต่เซิร์ฟเวอร์ถึงเครื่อง","ans":{"title":"เส้นทางของ push notification","live":"เซิร์ฟเวอร์ไม่ได้ส่งถึงเครื่องตรงๆ แต่ส่งผ่านบริการกลางของ Apple หรือ Google ซึ่งเป็นผู้ส่งต่อให้ตาม token ของเครื่องครับ","kind":"explain","paras":["ตอนแอปเปิดครั้งแรก มันขอ token จากระบบปฏิบัติการ แล้วส่ง token นั้นมาเก็บที่เซิร์ฟเวอร์เรา","เมื่ออยากแจ้งเตือน เซิร์ฟเวอร์ส่งข้อความพร้อม token ไปที่ FCM หรือ APNs แล้วบริการเหล่านั้นส่งต่อถึงเครื่อง","จุดที่พลาดบ่อยคือ token หมดอายุ และเครื่อง Android บางรุ่นหยุดแอปเบื้องหลังเพื่อประหยัดแบตเตอรี่ จึงควรเก็บ token ล่าสุดและลบตัวที่ใช้ไม่ได้"],"summary":"ส่งผ่าน FCM หรือ APNs ตาม token ที่เครื่องลงทะเบียนไว้","plain":"เซิร์ฟเวอร์ไม่ได้ส่งถึงเครื่องตรงๆ แต่ส่งผ่านบริการกลางของ Apple หรือ Google ซึ่งเป็นผู้ส่งต่อให้ตาม token ของเครื่องครับ","key_points":["ตอนแอปเปิดครั้งแรก มันขอ","จุดที่พลาดบ่อยคือ token"],"confidence":"high","followups":[{"q":"ยกตัวอย่างสั้นๆ ได้ไหม","a":"ได้ครับ ผมยกตัวอย่างที่ผู้ฟังเห็นภาพได้ใน 1 ประโยค แล้วค่อยลงรายละเอียดถ้าถูกถามต่อ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"Firebase Cloud Messaging","url":"https://firebase.google.com/docs/cloud-messaging"},{"title":"Apple Developer Documentation","url":"https://developer.apple.com/documentation"}]},"demo":false,"ts":1793431202775,"web":false},{"id":"mock006","q":"idempotency ใน API คืออะไร","ans":{"title":"idempotency ใน API","live":"idempotency คือคุณสมบัติที่เรียกคำขอเดิมซ้ำกี่ครั้งก็ได้ผลลัพธ์เท่าเดิม ช่วยกันการตัดเงินหรือสร้างข้อมูลซ้ำเวลาเน็ตสะดุดครับ","kind":"explain","paras":["ปัญหาจริงคือผู้ใช้กดจ่ายเงิน เน็ตหลุด แอปลองส่งซ้ำ ถ้าระบบไม่รู้ว่าเป็นคำขอเดิม ลูกค้าจะโดนตัดสองรอบ","วิธีแก้คือให้ไคลเอนต์แนบ idempotency key ที่ไม่ซ้ำต่อหนึ่งการกระทำ เซิร์ฟเวอร์เก็บผลไว้ แล้วถ้าเจอ key เดิมก็คืนผลเดิมแทนทำซ้ำ"],"summary":"ส่ง key ประจำคำขอ แล้วให้เซิร์ฟเวอร์คืนผลเดิมเมื่อเจอ key ซ้ำ","plain":"idempotency คือคุณสมบัติที่เรียกคำขอเดิมซ้ำกี่ครั้งก็ได้ผลลัพธ์เท่าเดิม ช่วยกันการตัดเงินหรือสร้างข้อมูลซ้ำเวลาเน็ตสะดุดครับ","key_points":["ปัญหาจริงคือผู้ใช้กดจ่ายเงิน","วิธีแก้คือให้ไคลเอนต์แนบ"],"confidence":"medium","followups":[{"q":"ยกตัวอย่างสั้นๆ ได้ไหม","a":"ได้ครับ ผมยกตัวอย่างที่ผู้ฟังเห็นภาพได้ใน 1 ประโยค แล้วค่อยลงรายละเอียดถ้าถูกถามต่อ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793431262775,"web":false},{"id":"mock007","q":"เทียบ Riverpod กับ Bloc","ans":{"title":"Riverpod กับ Bloc เลือกอะไรดี","live":"ถ้าทีมเล็กและอยากได้โค้ดสั้นยืดหยุ่น เลือก Riverpod ถ้าทีมใหญ่และต้องการแบบแผนที่เข้มงวด Bloc เหมาะกว่าครับ","kind":"compare","paras":["Riverpod เน้น provider ที่ประกาศง่าย โค้ดน้อย และจัดการ dependency ได้ในตัว ส่วน Bloc แยกเหตุการณ์กับสถานะชัดเจน ทุกการเปลี่ยนแปลงตามรอยได้","ข้อแลกเปลี่ยนคือ Riverpod ยืดหยุ่นจนทีมอาจเขียนคนละแบบ ส่วน Bloc มี boilerplate มากกว่าแต่ได้ความสม่ำเสมอ","เกณฑ์ตัดสินคือขนาดทีมและความต้องการตรวจย้อนหลัง ซึ่งเปลี่ยนภายหลังได้ แต่ต้นทุนย้ายสูงถ้าแอปโตแล้วครับ"],"summary":"ทีมเล็กเลือก Riverpod ทีมใหญ่ที่ต้องการแบบแผนเลือก Bloc","plain":"","key_points":["Riverpod เน้น","เกณฑ์ตัดสินคือขนาดทีมและความต้องการตรวจย้อนหลัง"],"confidence":"medium","followups":[{"q":"ถ้าเลือกผิดแล้วย้อนกลับได้ไหม","a":"ได้ แต่ต้นทุนขึ้นกับขนาดโค้ดตอนนั้น จึงควรลองกับโมดูลเล็กก่อนตัดสินใจทั้งระบบ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"Riverpod","url":"https://riverpod.dev"},{"title":"Flutter documentation","url":"https://docs.flutter.dev"}]},"demo":false,"ts":1793431322775,"web":false},{"id":"mock008","q":"Clean Architecture กับ MVC ต่างกันอย่างไร","ans":{"title":"Clean Architecture เทียบ MVC","live":"ขึ้นกับขนาดและอายุของแอปครับ MVC เร็วและเรียบง่ายสำหรับงานเล็ก Clean Architecture คุ้มเมื่อแอปจะโตและทีมใหญ่","kind":"compare","paras":["MVC แบ่งเป็น model view และ controller เหมาะกับทีมเล็กที่ต้องการเริ่มเร็ว แต่ controller มักบวมเมื่อฟีเจอร์เพิ่ม","Clean Architecture แยกกฎธุรกิจออกจากหน้าจอและข้อมูล ทดสอบง่ายและเปลี่ยนส่วนนอกได้ แต่ต้องวางโครงสร้างก่อนและใช้เวลาตั้งต้นมากกว่า","ถ้าไม่แน่ใจให้เริ่มแบบเรียบง่ายและแยกชั้นเมื่อเริ่มเจ็บจริง ซึ่งย้อนกลับได้ง่ายกว่าการเริ่มหนักเกินจำเป็น"],"summary":"งานเล็กใช้ MVC งานโตใช้ Clean Architecture","plain":"","key_points":["MVC แบ่งเป็น","ถ้าไม่แน่ใจให้เริ่มแบบเรียบง่ายและแยกชั้นเมื่อเริ่มเจ็บจริง"],"confidence":"low","followups":[{"q":"ถ้าเลือกผิดแล้วย้อนกลับได้ไหม","a":"ได้ แต่ต้นทุนขึ้นกับขนาดโค้ดตอนนั้น จึงควรลองกับโมดูลเล็กก่อนตัดสินใจทั้งระบบ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793431382775,"web":false},{"id":"mock009","q":"Flutter กับ native เลือกอะไรสำหรับแอปใหม่","ans":{"title":"Flutter หรือ native","live":"ถ้าต้องออกทั้งสองแพลตฟอร์มด้วยทีมเล็ก Flutter คุ้มกว่า ถ้าต้องใช้ฟีเจอร์ระบบลึกหรือประสิทธิภาพสุดขีด native ตอบโจทย์กว่าครับ","kind":"compare","paras":["Flutter ใช้โค้ดชุดเดียว ลดเวลาและต้นทุนทีม ส่วน native เข้าถึงฟีเจอร์ใหม่ของระบบได้ทันทีและมีเครื่องมือครบ","ความเสี่ยงของ Flutter คือต้องเขียนสะพานเองเมื่อมีฟีเจอร์เฉพาะแพลตฟอร์ม ความเสี่ยงของ native คือต้องดูแลสองโค้ดเบส","ผมจะถามก่อนว่าฟีเจอร์หลักต้องพึ่ง API ระบบลึกแค่ไหน และทีมถนัดอะไร แล้วค่อยตัดสินใจครับ"],"summary":"ทีมเล็กและสองแพลตฟอร์มเลือก Flutter ฟีเจอร์ระบบลึกเลือก native","plain":"","key_points":["Flutter ใช้โค้ดชุดเดียว","ผมจะถามก่อนว่าฟีเจอร์หลักต้องพึ่ง"],"confidence":"high","followups":[{"q":"ถ้าเลือกผิดแล้วย้อนกลับได้ไหม","a":"ได้ แต่ต้นทุนขึ้นกับขนาดโค้ดตอนนั้น จึงควรลองกับโมดูลเล็กก่อนตัดสินใจทั้งระบบ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":["ตรวจรายการฟีเจอร์ที่ต้องใช้ API เฉพาะแพลตฟอร์มก่อนตัดสินใจ"],"sources":[]},"demo":false,"ts":1793431442775,"web":false},{"id":"mock010","q":"Next.js แบบ SSR SSG และ CSR ต่างกันยังไง","ans":{"title":"SSR SSG CSR ใน Next.js","live":"SSG สร้างหน้าไว้ล่วงหน้า SSR สร้างตามคำขอ และ CSR สร้างในเบราว์เซอร์ เลือกตามว่าข้อมูลเปลี่ยนบ่อยแค่ไหนครับ","kind":"compare","paras":["SSG เร็วที่สุดและถูก เหมาะกับหน้าที่เนื้อหาไม่ค่อยเปลี่ยน SSR เหมาะกับหน้าที่ต้องสดและต้องการ SEO ส่วน CSR เหมาะกับหน้าหลังล็อกอินที่ไม่ต้องติดอันดับ","ข้อแลกเปลี่ยนคือ SSR ใช้เซิร์ฟเวอร์ทุกคำขอ ทำให้ latency และต้นทุนสูงขึ้น ส่วน SSG ต้องสร้างใหม่เมื่อข้อมูลเปลี่ยน"],"summary":"เนื้อหาคงที่ใช้ SSG ต้องสดและ SEO ใช้ SSR หลังล็อกอินใช้ CSR","plain":"","key_points":["SSG เร็วที่สุดและถูก","ข้อแลกเปลี่ยนคือ SSR"],"confidence":"medium","followups":[{"q":"ถ้าเลือกผิดแล้วย้อนกลับได้ไหม","a":"ได้ แต่ต้นทุนขึ้นกับขนาดโค้ดตอนนั้น จึงควรลองกับโมดูลเล็กก่อนตัดสินใจทั้งระบบ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"Next.js documentation","url":"https://nextjs.org/docs"},{"title":"web.dev","url":"https://web.dev"}]},"demo":false,"ts":1793431502775,"web":false},{"id":"mock011","q":"REST กับ GraphQL ควรเลือกอะไร","ans":{"title":"REST หรือ GraphQL","live":"REST ง่ายและแคชได้ดี GraphQL ยืดหยุ่นเมื่อหน้าจอหลากหลาย เริ่มที่ REST แล้วค่อยพิจารณา GraphQL เมื่อเจอปัญหาจริงครับ","kind":"compare","paras":["REST ใช้งานตรงไปตรงมา เครื่องมือครบ และแคชผ่าน HTTP ได้ GraphQL ให้ไคลเอนต์เลือกฟิลด์เอง ลดข้อมูลเกินและจำนวนรอบการเรียก","แต่ GraphQL เพิ่มความซับซ้อนฝั่งเซิร์ฟเวอร์ ทั้งการแคชและการควบคุมคำขอหนักๆ จึงต้องมีทีมที่พร้อมดูแล"],"summary":"เริ่มที่ REST ใช้ GraphQL เมื่อไคลเอนต์หลายแบบต้องการข้อมูลต่างกันมาก","plain":"","key_points":["REST ใช้งานตรงไปตรงมา","แต่ GraphQL"],"confidence":"medium","followups":[{"q":"ถ้าเลือกผิดแล้วย้อนกลับได้ไหม","a":"ได้ แต่ต้นทุนขึ้นกับขนาดโค้ดตอนนั้น จึงควรลองกับโมดูลเล็กก่อนตัดสินใจทั้งระบบ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"MDN Web Docs","url":"https://developer.mozilla.org"}]},"demo":false,"ts":1793431562775,"web":false},{"id":"mock012","q":"monolith กับ microservices","ans":{"title":"monolith หรือ microservices","live":"ทีมเล็กควรเริ่มจาก monolith ที่แยกโมดูลดี แล้วค่อยแยกเป็นบริการเมื่อมีเหตุผลชัด เช่น ขนาดทีมหรือการขยายตัวไม่เท่ากันครับ","kind":"compare","paras":["monolith ดีบั๊กและ deploy ง่าย ต้นทุนต่ำ แต่เมื่อโตมากทุกทีมต้องปล่อยพร้อมกัน","microservices ให้ทีมแยกกันปล่อยและขยายเฉพาะส่วนได้ แต่ต้องจ่ายค่าความซับซ้อนของเครือข่าย การสังเกตการณ์ และข้อมูลที่กระจาย","การแยกภายหลังทำได้ถ้าโมดูลเดิมขอบเขตชัด จึงเป็นการตัดสินใจที่ย้อนกลับได้ง่ายกว่าฝั่งตรงข้าม"],"summary":"เริ่ม monolith ที่แยกโมดูลดี แล้วแยกบริการเมื่อมีเหตุผลจริง","plain":"","key_points":["monolith ดีบั๊กและ","การแยกภายหลังทำได้ถ้าโมดูลเดิมขอบเขตชัด"],"confidence":"low","followups":[{"q":"ถ้าเลือกผิดแล้วย้อนกลับได้ไหม","a":"ได้ แต่ต้นทุนขึ้นกับขนาดโค้ดตอนนั้น จึงควรลองกับโมดูลเล็กก่อนตัดสินใจทั้งระบบ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793431622775,"web":false},{"id":"mock013","q":"ลดขนาดแอป Flutter ทำยังไง","ans":{"title":"ลดขนาดแอป Flutter","live":"เริ่มจากวัดก่อนว่าอะไรใหญ่ แล้วตัดแพ็กเกจ ฟอนต์ และรูปที่ไม่จำเป็น พร้อมสร้างไฟล์แบบ release ที่แยกตามสถาปัตยกรรมครับ","kind":"how-to","paras":["ขั้นแรกสร้างแอปแบบ release แล้วใช้เครื่องมือวิเคราะห์ขนาดของ Flutter ดูว่าไลบรารีหรือ asset ตัวไหนกินพื้นที่","ขั้นต่อมาตัดแพ็กเกจที่ไม่ใช้ บีบอัดรูป ใช้ฟอนต์เฉพาะน้ำหนักที่จำเป็น และแยกไฟล์ตาม ABI สำหรับ Android","สุดท้ายวัดซ้ำหลังแก้ทุกครั้ง เพื่อรู้ว่าสิ่งที่ตัดได้ผลจริงกี่เมกะไบต์"],"summary":"วัดก่อน ตัดของหนัก แล้ววัดซ้ำ","plain":"","key_points":["ขั้นแรกสร้างแอปแบบ release","สุดท้ายวัดซ้ำหลังแก้ทุกครั้ง"],"confidence":"high","followups":[{"q":"ขั้นไหนที่คนมักพลาดที่สุด","a":"มักพลาดตรงข้ามขั้นวัดผลก่อนแก้ ทำให้ไม่รู้ว่าสิ่งที่แก้ได้ผลจริงหรือไม่"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"Flutter documentation","url":"https://docs.flutter.dev"}]},"demo":false,"ts":1793431682775,"web":false},{"id":"mock014","q":"ตั้ง CI/CD ให้แอปมือถือต้องทำอะไรบ้าง","ans":{"title":"CI/CD สำหรับแอปมือถือ","live":"ต้องมีสามอย่างคือรันเทสต์อัตโนมัติทุก pull request สร้างไฟล์ติดตั้งในเครื่องเดียวกันทุกครั้ง และอัปโหลดขึ้นช่องทางทดสอบอัตโนมัติครับ","kind":"how-to","paras":["เริ่มจากให้ทุก pull request รัน analyze และ unit test ถ้าไม่ผ่านห้าม merge","จากนั้นสร้าง build จากสภาพแวดล้อมคงที่ จัดการ signing key เป็นความลับของระบบ ไม่เก็บไว้ในรีโพซิทอรี","สุดท้ายอัปโหลดไปยัง TestFlight หรือ Play Internal Testing อัตโนมัติ แล้วค่อยปล่อยแบบทยอยเพื่อย้อนกลับได้"],"summary":"เทสต์ทุก PR สร้างในสภาพแวดล้อมคงที่ ปล่อยทีละส่วน","plain":"","key_points":["เริ่มจากให้ทุก pull","สุดท้ายอัปโหลดไปยัง TestFlight"],"confidence":"medium","followups":[{"q":"ขั้นไหนที่คนมักพลาดที่สุด","a":"มักพลาดตรงข้ามขั้นวัดผลก่อนแก้ ทำให้ไม่รู้ว่าสิ่งที่แก้ได้ผลจริงหรือไม่"}],"from_data":[],"clarify":[],"assumptions":["สมมติว่าใช้ Git และมีบริการ CI ให้เลือกแล้ว"],"needs_check":[],"sources":[]},"demo":false,"ts":1793431742775,"web":false},{"id":"mock015","q":"เพิ่ม unit test ให้โค้ดเก่าที่ไม่มีเทสต์","ans":{"title":"เพิ่มเทสต์ให้โค้ดเก่า","live":"อย่าพยายามครอบทุกอย่างทีเดียว เริ่มจากจุดที่พังบ่อยและกระทบเงินหรือผู้ใช้มากที่สุด แล้วเขียนเทสต์ก่อนแก้ทุกครั้งครับ","kind":"how-to","paras":["ขั้นแรกหาจุดเสี่ยงจากประวัติบั๊กและโมดูลที่แก้บ่อย","ขั้นต่อมาเขียน characterization test จับพฤติกรรมปัจจุบันไว้ก่อน แม้ยังไม่สวย เพื่อให้กล้า refactor","เมื่อมีตาข่ายนิรภัยแล้วค่อยแยก logic ออกจากหน้าจอเพื่อทดสอบระดับ unit ได้ง่ายขึ้น"],"summary":"จับพฤติกรรมเดิมไว้ก่อน แล้วค่อยปรับโครงสร้างทีละจุด","plain":"","key_points":["ขั้นแรกหาจุดเสี่ยงจากประวัติบั๊กและโมดูลที่แก้บ่อย","เมื่อมีตาข่ายนิรภัยแล้วค่อยแยก"],"confidence":"medium","followups":[{"q":"ขั้นไหนที่คนมักพลาดที่สุด","a":"มักพลาดตรงข้ามขั้นวัดผลก่อนแก้ ทำให้ไม่รู้ว่าสิ่งที่แก้ได้ผลจริงหรือไม่"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793431802775,"web":false},{"id":"mock016","q":"ทำ rate limit ให้ API ต้องคิดอะไรบ้าง","ans":{"title":"ออกแบบ rate limit","live":"ตัดสินใจก่อนว่าจะจำกัดตามอะไร ผู้ใช้ IP หรือ API key แล้วเลือกอัลกอริทึมและตอบกลับด้วย 429 พร้อมบอกเวลาให้ลองใหม่ครับ","kind":"how-to","paras":["เลือกตัวระบุให้ตรงกับความเสี่ยง ถ้าต้องกัน abuse ใช้ IP ถ้าต้องคิดโควตาลูกค้าใช้ API key","อัลกอริทึมที่ใช้บ่อยคือ token bucket ที่อนุญาตให้พุ่งชั่วคราวได้ เก็บตัวนับใน Redis เพื่อใช้ร่วมกันหลายเซิร์ฟเวอร์","ตอบ HTTP 429 พร้อม header Retry-After และให้ไคลเอนต์ถอยหลังแบบทวีคูณ"],"summary":"เลือกตัวระบุ ใช้ token bucket เก็บใน Redis ตอบ 429 พร้อมเวลาลองใหม่","plain":"","key_points":["เลือกตัวระบุให้ตรงกับความเสี่ยง","ตอบ HTTP"],"confidence":"low","followups":[{"q":"ขั้นไหนที่คนมักพลาดที่สุด","a":"มักพลาดตรงข้ามขั้นวัดผลก่อนแก้ ทำให้ไม่รู้ว่าสิ่งที่แก้ได้ผลจริงหรือไม่"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":["ตัวเลขโควตาต่อนาทีควรกำหนดจากข้อมูลการใช้งานจริง [ใส่ตัวเลขจริง]"],"sources":[{"title":"MDN Web Docs","url":"https://developer.mozilla.org"}]},"demo":false,"ts":1793431862775,"web":false},{"id":"mock017","q":"แอปกระตุกเวลาเลื่อนลิสต์ ต้องเช็คอะไร","ans":{"title":"แก้อาการแอปกระตุก","live":"เปิดโปรไฟล์ในโหมด profile ก่อน อย่าเดา เพราะต้นเหตุมักเป็นการสร้าง widget ซ้ำเกินจำเป็นหรือรูปที่ถอดรหัสบน main thread ครับ","kind":"debug","paras":["อาการคือเฟรมตกต่ำกว่า 60 เฟรมต่อวินาทีตอนเลื่อน สมมติฐานอันดับแรกคือลิสต์ไม่ได้ใช้ builder แบบ lazy และ widget ถูก rebuild ทั้งแผง","ตรวจด้วย Flutter DevTools ดูว่าเฟรมไหนใช้เวลานานใน build หรือ raster","แก้โดยแยก widget ให้เล็ก ใช้ const ลดการ rebuild ย่อรูปให้พอดีขนาดแสดงผล และวัดซ้ำบนเครื่องรุ่นต่ำ"],"summary":"วัดใน profile mode หาต้นเหตุจริง แล้วลด rebuild และขนาดรูป","plain":"","key_points":["อาการคือเฟรมตกต่ำกว่า","แก้โดยแยก widget"],"confidence":"high","followups":[{"q":"ถ้าทำตามแล้วยังไม่หาย ต้องทำอะไรต่อ","a":"ย้อนไปแยกตัวแปรทีละตัว และเก็บข้อมูลก่อนหลังเพื่อตัดสมมติฐานออกทีละข้อ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":["ตัวเลขเฟรมเรตควรวัดบนเครื่องจริงรุ่นต่ำที่ผู้ใช้ใช้"],"sources":[{"title":"Flutter documentation","url":"https://docs.flutter.dev"}]},"demo":false,"ts":1793431922775,"web":false},{"id":"mock018","q":"API ช้าเป็นบางช่วง ไล่ปัญหายังไง","ans":{"title":"ไล่สาเหตุ API ช้าเป็นช่วง","live":"แยกให้ได้ก่อนว่าช้าที่ไหน เครือข่าย แอป หรือฐานข้อมูล แล้วดู latency แบบเปอร์เซ็นไทล์ไม่ใช่ค่าเฉลี่ยครับ","kind":"debug","paras":["เริ่มจากดู latency ที่ p95 และ p99 เทียบกับเวลาที่ช้า เพราะค่าเฉลี่ยบังปัญหาไว้","ถ้าช้าพร้อมกันทุกจุดมักเป็นฐานข้อมูลหรือ resource เต็ม ถ้าช้าเฉพาะบาง endpoint ให้ดู query ที่ไม่มี index","หลังแก้ให้ตั้ง alert ที่ p95 เพื่อรู้ก่อนผู้ใช้บ่น"],"summary":"แยกตำแหน่งที่ช้า ดู p95 แล้วแก้ที่ query หรือทรัพยากร","plain":"","key_points":["เริ่มจากดู latency","หลังแก้ให้ตั้ง alert"],"confidence":"medium","followups":[{"q":"ถ้าทำตามแล้วยังไม่หาย ต้องทำอะไรต่อ","a":"ย้อนไปแยกตัวแปรทีละตัว และเก็บข้อมูลก่อนหลังเพื่อตัดสมมติฐานออกทีละข้อ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793431982775,"web":false},{"id":"mock019","q":"memory leak ใน Flutter เจอได้ยังไง","ans":{"title":"หา memory leak ใน Flutter","live":"อาการคือหน่วยความจำเพิ่มขึ้นเรื่อยๆ แม้ผู้ใช้ออกจากหน้าไปแล้ว ให้ใช้ DevTools memory ดูว่าอ็อบเจกต์ไหนไม่ถูกคืนครับ","kind":"debug","paras":["สาเหตุบ่อยคือลืม dispose controller หรือ cancel stream subscription และ listener ที่ยังค้างอยู่","วิธีตรวจคือเข้าออกหน้าเดิมซ้ำหลายรอบ ถ้าจำนวนอินสแตนซ์เพิ่มตามแสดงว่ารั่ว","วิธีป้องกันคือกำหนดมาตรฐานว่าทุกอย่างที่สร้างใน initState ต้องถูกปล่อยใน dispose และทำ review เช็คจุดนี้"],"summary":"ดูอินสแตนซ์ที่ไม่ถูกคืน และบังคับ dispose ทุกที่ที่สร้างไว้","plain":"","key_points":["สาเหตุบ่อยคือลืม dispose","วิธีป้องกันคือกำหนดมาตรฐานว่าทุกอย่างที่สร้างใน"],"confidence":"medium","followups":[{"q":"ถ้าทำตามแล้วยังไม่หาย ต้องทำอะไรต่อ","a":"ย้อนไปแยกตัวแปรทีละตัว และเก็บข้อมูลก่อนหลังเพื่อตัดสมมติฐานออกทีละข้อ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"Flutter documentation","url":"https://docs.flutter.dev"}]},"demo":false,"ts":1793432042775,"web":false},{"id":"mock020","q":"push ไม่ถึงบางเครื่องเท่านั้น","ans":{"title":"push ไม่ถึงบางเครื่อง","live":"ให้แยกก่อนว่าเป็น Android หรือ iOS และเครื่องรุ่นไหน เพราะต้นเหตุต่างกัน ทั้ง token หมดอายุ สิทธิ์แจ้งเตือน และโหมดประหยัดแบตเตอรี่ครับ","kind":"debug","paras":["สมมติฐานตามลำดับ คือผู้ใช้ปิดสิทธิ์แจ้งเตือน token ที่เก็บไว้เก่าแล้ว และผู้ผลิต Android บางรายจำกัดแอปเบื้องหลัง","ตรวจจาก log ของ FCM ว่าส่งสำเร็จแต่ไม่ถึง หรือส่งไม่สำเร็จตั้งแต่ต้น","แก้โดยอัปเดต token ทุกครั้งที่เปิดแอป และให้คำแนะนำผู้ใช้ปรับการตั้งค่าแบตเตอรี่เมื่อจำเป็น"],"summary":"แยกแพลตฟอร์ม ตรวจ log ของ FCM แล้วจัดการ token ให้สด","plain":"","key_points":["สมมติฐานตามลำดับ คือผู้ใช้ปิดสิทธิ์แจ้งเตือน","แก้โดยอัปเดต token"],"confidence":"low","followups":[{"q":"ถ้าทำตามแล้วยังไม่หาย ต้องทำอะไรต่อ","a":"ย้อนไปแยกตัวแปรทีละตัว และเก็บข้อมูลก่อนหลังเพื่อตัดสมมติฐานออกทีละข้อ"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"Firebase Cloud Messaging","url":"https://firebase.google.com/docs/cloud-messaging"},{"title":"Android Developers","url":"https://developer.android.com"}]},"demo":false,"ts":1793432102775,"web":false},{"id":"mock021","q":"ออกแบบระบบแจ้งเตือนที่ส่งให้ผู้ใช้หลักแสนคน","ans":{"title":"ระบบแจ้งเตือนขนาดใหญ่","live":"ใช้คิวคั่นระหว่างตัวสร้างข้อความกับตัวส่ง และให้ worker ส่งขนานกัน เพื่อรับโหลดพุ่งและลองส่งซ้ำได้อย่างปลอดภัยครับ","kind":"design","paras":["ความต้องการคือส่งเป็นกลุ่มใหญ่ในเวลาสั้น ไม่ซ้ำ และรู้ว่าส่งสำเร็จหรือไม่","องค์ประกอบหลักคือ API รับคำสั่ง คิวข้อความ worker ที่ส่งไป FCM หรือ APNs และตารางเก็บสถานะการส่ง","จุดคอขวดคือโควตาของ FCM และ APNs จึงต้องมี throughput limit ฝั่งเรา และ idempotency key ต่อข้อความ","ด้านความปลอดภัยต้องเก็บ token แบบจำกัดสิทธิ์ และด้านการทดสอบให้ยิงโหลดบนสภาพแวดล้อมจำลองก่อนปล่อยจริง"],"summary":"คิว บวก worker ขนาน บวกสถานะการส่ง และควบคุมอัตราตามโควตา","plain":"","key_points":["ความต้องการคือส่งเป็นกลุ่มใหญ่ในเวลาสั้น","ด้านความปลอดภัยต้องเก็บ"],"confidence":"high","followups":[{"q":"ส่วนไหนเป็นความเสี่ยงสูงสุด","a":"จุดที่ขยายไม่ทันหรือพังแล้วกระทบผู้ใช้มากที่สุด ซึ่งควรทดสอบโหลดก่อนปล่อย"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":["จำนวนผู้ใช้และข้อความต่อวินาทีเป็นตัวเลขสมมติ ควรใช้ข้อมูลจริง [ใส่ตัวเลขจริง]"],"sources":[{"title":"Firebase Cloud Messaging","url":"https://firebase.google.com/docs/cloud-messaging"}]},"demo":false,"ts":1793432162775,"web":false},{"id":"mock022","q":"ออกแบบหลังบ้านแชต AI ที่ตอบแบบสตรีม","ans":{"title":"หลังบ้านแชต AI","live":"ให้เซิร์ฟเวอร์เป็นตัวกลางที่ถือคีย์ จำกัดอัตรา และสตรีมคำตอบกลับ เพื่อคุมต้นทุนและลดเวลารอที่ผู้ใช้รู้สึกครับ","kind":"design","paras":["ไคลเอนต์ไม่ควรถือคีย์ของโมเดลเอง ให้เรียกผ่าน API ของเราซึ่งตรวจผู้ใช้ จำกัดโควตา แล้วจึงส่งต่อให้โมเดล","ใช้การสตรีมเพื่อให้ข้อความแรกขึ้นเร็ว ลด latency ที่ผู้ใช้รับรู้ แม้เวลาประมวลผลรวมเท่าเดิม","ต้นทุนคุมด้วยการจำกัดความยาว บันทึกการใช้ต่อผู้ใช้ และแคชคำถามที่ซ้ำ พร้อมตั้ง alert เมื่อค่าใช้จ่ายผิดปกติ"],"summary":"เซิร์ฟเวอร์กลางถือคีย์ จำกัดอัตรา สตรีมคำตอบ และวัดต้นทุนต่อผู้ใช้","plain":"","key_points":["ไคลเอนต์ไม่ควรถือคีย์ของโมเดลเอง","ต้นทุนคุมด้วยการจำกัดความยาว"],"confidence":"medium","followups":[{"q":"ส่วนไหนเป็นความเสี่ยงสูงสุด","a":"จุดที่ขยายไม่ทันหรือพังแล้วกระทบผู้ใช้มากที่สุด ซึ่งควรทดสอบโหลดก่อนปล่อย"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793432222775,"web":false},{"id":"mock023","q":"ออกแบบแอป offline-first","ans":{"title":"แอปที่ใช้ได้เมื่อไม่มีเน็ต","live":"เก็บข้อมูลในเครื่องเป็นแหล่งความจริงของหน้าจอ แล้วซิงก์เบื้องหลังเมื่อมีเน็ต พร้อมกติกาแก้ความขัดแย้งที่ตกลงไว้ล่วงหน้าครับ","kind":"design","paras":["หน้าจออ่านจากฐานข้อมูลในเครื่องเสมอ ส่วนการเขียนถูกใส่คิวและส่งขึ้นเซิร์ฟเวอร์เมื่อออนไลน์","จุดยากคือความขัดแย้งเมื่อแก้ข้อมูลเดียวกันสองที่ ต้องเลือกกติกา เช่น เวลาล่าสุดชนะ หรือให้ผู้ใช้เลือก","ต้องทดสอบสถานการณ์เน็ตขาดกลางการซิงก์ด้วย เพราะเป็นจุดที่ข้อมูลเพี้ยนบ่อย"],"summary":"อ่านจากเครื่อง เขียนผ่านคิว และกำหนดกติกาแก้ความขัดแย้งตั้งแต่ต้น","plain":"","key_points":["หน้าจออ่านจากฐานข้อมูลในเครื่องเสมอ","ต้องทดสอบสถานการณ์เน็ตขาดกลางการซิงก์ด้วย"],"confidence":"medium","followups":[{"q":"ส่วนไหนเป็นความเสี่ยงสูงสุด","a":"จุดที่ขยายไม่ทันหรือพังแล้วกระทบผู้ใช้มากที่สุด ซึ่งควรทดสอบโหลดก่อนปล่อย"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793432282775,"web":false},{"id":"mock024","q":"ระบบชำระเงินของแอป B2C ต้องระวังอะไร","ans":{"title":"ระบบชำระเงินแอป B2C","live":"อย่าเก็บข้อมูลบัตรเอง ให้ใช้ผู้ให้บริการชำระเงินที่รับรองมาตรฐานแล้ว และออกแบบให้การตัดเงินซ้ำเกิดไม่ได้ครับ","kind":"design","paras":["ความเสี่ยงหลักคือข้อมูลบัตรรั่วและการตัดเงินซ้ำ จึงให้ผู้ให้บริการเก็บข้อมูลบัตร เรามีแค่ token","ทุกคำขอจ่ายเงินต้องมี idempotency key และยืนยันผลจาก webhook ของผู้ให้บริการ ไม่เชื่อแค่ผลที่แอปรายงาน","ต้องมีบันทึกธุรกรรมที่ตรวจสอบย้อนหลังได้ และขั้นตอนคืนเงินที่ชัดเจน"],"summary":"ไม่เก็บบัตรเอง ใช้ idempotency key และยืนยันผ่าน webhook","plain":"","key_points":["ความเสี่ยงหลักคือข้อมูลบัตรรั่วและการตัดเงินซ้ำ","ต้องมีบันทึกธุรกรรมที่ตรวจสอบย้อนหลังได้"],"confidence":"low","followups":[{"q":"ส่วนไหนเป็นความเสี่ยงสูงสุด","a":"จุดที่ขยายไม่ทันหรือพังแล้วกระทบผู้ใช้มากที่สุด ซึ่งควรทดสอบโหลดก่อนปล่อย"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":["ข้อกำหนดด้านกฎหมายและมาตรฐานการชำระเงินควรตรวจกับผู้เชี่ยวชาญของบริษัท"],"sources":[]},"demo":false,"ts":1793432342775,"web":false},{"id":"mock025","q":"เล่าโปรเจกต์ที่ภูมิใจที่สุด","ans":{"title":"โปรเจกต์ที่ภูมิใจที่สุด","live":"ผมขอเล่าโปรเจกต์ที่ผมรับผิดชอบตั้งแต่โครงสร้างจนปล่อยใช้งานจริง และวัดผลได้ชัดเจนครับ","kind":"interview","paras":["สถานการณ์คือ [ใส่ชื่อโปรเจกต์] ซึ่งมีผู้ใช้ [ใส่ตัวเลขจริง] คน และโค้ดเดิมแก้ยาก ทุกฟีเจอร์ใหม่ทำให้ส่วนอื่นพัง","หน้าที่ของผมคือวางสถาปัตยกรรมใหม่และพาทีมย้ายโดยไม่หยุดให้บริการ","สิ่งที่ผมทำคือแยกชั้นโค้ด เพิ่มเทสต์ในจุดเสี่ยง และย้ายทีละโมดูลพร้อมปล่อยแบบทยอย","ผลลัพธ์คือเวลาแก้บั๊กลดลง [ใส่ตัวเลขจริง] และสิ่งที่ผมเรียนรู้คือการวัดผลก่อนเริ่มช่วยให้พิสูจน์คุณค่าได้ครับ"],"summary":"แยกชั้น เพิ่มเทสต์ ย้ายทีละโมดูล และวัดผลก่อนหลัง","plain":"","key_points":["สถานการณ์คือ [ใส่ชื่อโปรเจกต์]","ผลลัพธ์คือเวลาแก้บั๊กลดลง"],"confidence":"high","followups":[{"q":"ถ้าถูกถามลึกว่าผมทำส่วนไหนเอง ตอบยังไง","a":"บอกส่วนที่ผมรับผิดชอบเองให้ชัด แยกจากส่วนของทีม พร้อมผลลัพธ์ที่ผมวัดได้"}],"from_data":["โปรไฟล์หลัก"],"clarify":[],"assumptions":[],"needs_check":["ตัวเลขทุกตัวเป็นช่องว่าง ให้ใส่ข้อมูลจริงของโปรเจกต์ก่อนพูด"],"sources":[]},"demo":false,"ts":1793432402775,"web":false},{"id":"mock026","q":"เล่าตอนที่เห็นต่างกับเพื่อนร่วมทีม","ans":{"title":"เมื่อเห็นต่างในทีม","live":"ผมเริ่มจากฟังเหตุผลของอีกฝ่าย แล้วใช้ข้อมูลเปรียบเทียบทางเลือกแทนการเถียงด้วยความเห็นครับ","kind":"interview","paras":["สถานการณ์คือทีมเห็นต่างเรื่องเครื่องมือจัดการสถานะ ฝั่งหนึ่งอยากได้ของที่คุ้นเคย อีกฝั่งอยากเปลี่ยน","หน้าที่ของผมคือหาข้อสรุปที่ทีมยอมรับได้ภายในสัปดาห์นั้น","ผมทำต้นแบบเล็กด้วยทั้งสองแบบ วัดความยาวโค้ดและเวลาเขียนเทสต์ แล้วนำตัวเลขมาคุยกัน","ทีมเลือกจากข้อมูลโดยไม่มีใครเสียหน้า และผมเรียนรู้ว่าต้นแบบสั้นๆ ช่วยลดความขัดแย้งได้ดีกว่าการโต้เถียงครับ"],"summary":"ฟังก่อน ทำต้นแบบ วัดผล แล้วให้ข้อมูลตัดสิน","plain":"","key_points":["สถานการณ์คือทีมเห็นต่างเรื่องเครื่องมือจัดการสถานะ","ทีมเลือกจากข้อมูลโดยไม่มีใครเสียหน้า"],"confidence":"medium","followups":[{"q":"ถ้าถูกถามลึกว่าผมทำส่วนไหนเอง ตอบยังไง","a":"บอกส่วนที่ผมรับผิดชอบเองให้ชัด แยกจากส่วนของทีม พร้อมผลลัพธ์ที่ผมวัดได้"}],"from_data":["โปรไฟล์หลัก"],"clarify":[],"assumptions":[],"needs_check":["เปลี่ยนเรื่องในตัวอย่างให้ตรงกับเหตุการณ์จริงของคุณ"],"sources":[]},"demo":false,"ts":1793432462775,"web":false},{"id":"mock027","q":"เล่าตอนที่ต้องส่งงานกระชั้นชิด","ans":{"title":"เมื่อเดดไลน์กระชั้น","live":"ผมตัดขอบเขตให้เหลือสิ่งที่จำเป็นต่อผู้ใช้ก่อน แล้วสื่อสารสิ่งที่เลื่อนออกไปให้ทุกฝ่ายรู้ตั้งแต่ต้นครับ","kind":"interview","paras":["สถานการณ์คือต้องปล่อยฟีเจอร์ก่อนงานแสดงสินค้าในเวลาเหลือ [ใส่ตัวเลขจริง] วัน ขณะที่งานยังค้างจำนวนมาก","ผมจัดลำดับงานเป็นต้องมี ควรมี และเลื่อนได้ แล้วคุยกับเจ้าของผลิตภัณฑ์ให้ตกลงเส้นแบ่งร่วมกัน","เราปล่อยส่วนที่ต้องมีทันเวลา ส่วนที่เลื่อนทำตามในรอบถัดไป โดยไม่ลดคุณภาพของเทสต์ในจุดสำคัญ"],"summary":"จัดลำดับ ตกลงขอบเขต และไม่ลดคุณภาพจุดสำคัญ","plain":"","key_points":["สถานการณ์คือต้องปล่อยฟีเจอร์ก่อนงานแสดงสินค้าในเวลาเหลือ","เราปล่อยส่วนที่ต้องมีทันเวลา"],"confidence":"medium","followups":[{"q":"ถ้าถูกถามลึกว่าผมทำส่วนไหนเอง ตอบยังไง","a":"บอกส่วนที่ผมรับผิดชอบเองให้ชัด แยกจากส่วนของทีม พร้อมผลลัพธ์ที่ผมวัดได้"}],"from_data":["โปรไฟล์หลัก"],"clarify":[],"assumptions":[],"needs_check":["ใส่จำนวนวันและผลลัพธ์จริงก่อนเล่า"],"sources":[]},"demo":false,"ts":1793432522775,"web":false},{"id":"mock028","q":"เล่าความผิดพลาดครั้งใหญ่ที่เคยทำ","ans":{"title":"ความผิดพลาดและสิ่งที่เรียนรู้","live":"ผมเล่าตรงๆ ว่าเกิดอะไรขึ้น ผมรับผิดชอบส่วนไหน และกระบวนการที่เปลี่ยนไปหลังจากนั้นครับ","kind":"interview","paras":["สถานการณ์คือผมปล่อยการแก้ไขโดยไม่ได้ทดสอบกรณีขอบ ทำให้ผู้ใช้บางกลุ่มใช้งานไม่ได้ชั่วคราว","ผมประกาศปัญหาทันที ย้อนกลับเวอร์ชัน และแก้ให้เสร็จภายในวันเดียว","หลังจากนั้นผมเพิ่มเช็กลิสต์ก่อนปล่อย และเทสต์ที่ครอบกรณีนั้นเข้า CI เพื่อไม่ให้เกิดซ้ำ"],"summary":"รับผิด แก้เร็ว และเปลี่ยนกระบวนการให้พลาดซ้ำยาก","plain":"","key_points":["สถานการณ์คือผมปล่อยการแก้ไขโดยไม่ได้ทดสอบกรณีขอบ","หลังจากนั้นผมเพิ่มเช็กลิสต์ก่อนปล่อย"],"confidence":"low","followups":[{"q":"ถ้าถูกถามลึกว่าผมทำส่วนไหนเอง ตอบยังไง","a":"บอกส่วนที่ผมรับผิดชอบเองให้ชัด แยกจากส่วนของทีม พร้อมผลลัพธ์ที่ผมวัดได้"}],"from_data":["โปรไฟล์หลัก"],"clarify":[],"assumptions":[],"needs_check":["ใช้เหตุการณ์จริงของคุณแทนตัวอย่างนี้"],"sources":[]},"demo":false,"ts":1793432582775,"web":false},{"id":"mock029","q":"ถ้าถูกถามว่าไม่มีปริญญา ทำไมควรจ้าง","ans":{"title":"เมื่อไม่มีวุฒิตรงสาย","live":"ผมขอให้ดูจากสิ่งที่ผมสร้างและพิสูจน์ได้ ทั้งระบบที่ใช้งานจริงและความสามารถที่ทดสอบได้ในรอบงานนี้ครับ","kind":"interview","paras":["ผมเรียนรู้ด้วยการลงมือทำ จึงมีผลงานจริงที่ตรวจสอบได้ ไม่ใช่แค่ทฤษฎี","ผมยินดีให้ทดสอบเทคนิคหรืองานตัวอย่างในโจทย์ที่ใกล้เคียงงานจริง เพื่อให้เห็นฝีมือก่อนตัดสินใจ","และผมยังเรียนรู้ต่อเนื่อง เพราะเทคโนโลยีเปลี่ยนเร็ว ความอยากเรียนสำคัญไม่น้อยกว่าวุฒิ"],"summary":"ให้ผลงานและการทดสอบจริงเป็นหลักฐาน","plain":"","key_points":["ผมเรียนรู้ด้วยการลงมือทำ","และผมยังเรียนรู้ต่อเนื่อง"],"confidence":"high","followups":[{"q":"ถ้าถูกถามลึกว่าผมทำส่วนไหนเอง ตอบยังไง","a":"บอกส่วนที่ผมรับผิดชอบเองให้ชัด แยกจากส่วนของทีม พร้อมผลลัพธ์ที่ผมวัดได้"}],"from_data":["โปรไฟล์หลัก"],"clarify":[],"assumptions":[],"needs_check":["เตรียมลิงก์ผลงานหรือระบบที่เปิดให้ดูได้"],"sources":[]},"demo":false,"ts":1793432642775,"web":false},{"id":"mock030","q":"ควรใช้ AI ช่วยเขียนโค้ดไหม","ans":{"title":"AI ช่วยเขียนโค้ด","live":"ใช้ได้และคุ้มกับงานซ้ำๆ แต่ต้องมีคนอ่านและทดสอบทุกครั้ง เพราะความรับผิดชอบยังเป็นของเราครับ","kind":"opinion","paras":["ฝั่งที่สนับสนุนมองว่า AI ช่วยร่างโค้ด เทสต์ และเอกสารได้เร็ว ลดงานซ้ำ ส่วนฝั่งระวังห่วงโค้ดที่ดูถูกแต่ผิดเงียบๆ และช่องโหว่ด้านความปลอดภัย","เกณฑ์ตัดสินของผมคือความเสี่ยงของงานนั้น งานต้นแบบใช้ได้เต็มที่ แต่งานที่แตะเงินหรือข้อมูลผู้ใช้ต้องรีวิวเข้มกว่าเดิม"],"summary":"ใช้เป็นผู้ช่วยร่าง แต่รีวิวและทดสอบเหมือนโค้ดของคนอื่นเสมอ","plain":"","key_points":["ฝั่งที่สนับสนุนมองว่า","เกณฑ์ตัดสินของผมคือความเสี่ยงของงานนั้น"],"confidence":"medium","followups":[{"q":"ถ้าอีกฝ่ายไม่เห็นด้วย จะตอบยังไง","a":"ยอมรับเหตุผลของเขา แล้วเสนอเกณฑ์ที่ใช้ตัดสินร่วมกัน แทนการเถียงความเห็น"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793432702775,"web":false},{"id":"mock031","q":"ควรเขียนเทสต์ให้ครบทุกส่วนไหม","ans":{"title":"เทสต์ทุกส่วนคุ้มไหม","live":"ไม่จำเป็นต้องครบทุกบรรทัด ควรเขียนให้หนักในจุดที่พังแล้วเสียหายมากและเปลี่ยนบ่อยครับ","kind":"opinion","paras":["ฝั่งที่อยากได้ coverage สูงเห็นว่ากันพลาดได้มาก ส่วนอีกฝั่งเห็นว่าเทสต์ที่ผูกกับรายละเอียดภายในกลายเป็นภาระเมื่อต้องแก้โค้ด","เกณฑ์ที่ผมใช้คือความเสี่ยงคูณความถี่ในการเปลี่ยน แล้วทุ่มเทสต์ไปจุดนั้นก่อน"],"summary":"เน้นเทสต์ตามความเสี่ยง ไม่ไล่ตัวเลข coverage อย่างเดียว","plain":"","key_points":["ฝั่งที่อยากได้ coverage","เกณฑ์ที่ผมใช้คือความเสี่ยงคูณความถี่ในการเปลี่ยน"],"confidence":"medium","followups":[{"q":"ถ้าอีกฝ่ายไม่เห็นด้วย จะตอบยังไง","a":"ยอมรับเหตุผลของเขา แล้วเสนอเกณฑ์ที่ใช้ตัดสินร่วมกัน แทนการเถียงความเห็น"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793432762775,"web":false},{"id":"mock032","q":"ทำงานแบบ remote กับเข้าออฟฟิศ แบบไหนดีกว่า","ans":{"title":"remote หรือออฟฟิศ","live":"ไม่มีแบบเดียวที่ดีที่สุด ขึ้นกับลักษณะงานและวินัยของทีม ผมถนัดผสมกัน คือวันโฟกัสที่บ้านและวันประสานงานที่ออฟฟิศครับ","kind":"opinion","paras":["remote ให้สมาธิและประหยัดเวลาเดินทาง แต่การสื่อสารต้องตั้งใจกว่าเดิม ส่วนออฟฟิศช่วยถามตอบเร็วและสร้างความสัมพันธ์ในทีม","เกณฑ์ตัดสินคือช่วงของโปรเจกต์ ช่วงออกแบบควรเจอกัน ช่วงลงมือเขียนควรมีเวลาโฟกัสยาว"],"summary":"เลือกตามช่วงงานและความพร้อมของทีม","plain":"","key_points":["remote ให้สมาธิและประหยัดเวลาเดินทาง","เกณฑ์ตัดสินคือช่วงของโปรเจกต์"],"confidence":"low","followups":[{"q":"ถ้าอีกฝ่ายไม่เห็นด้วย จะตอบยังไง","a":"ยอมรับเหตุผลของเขา แล้วเสนอเกณฑ์ที่ใช้ตัดสินร่วมกัน แทนการเถียงความเห็น"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793432822775,"web":false},{"id":"mock033","q":"Flutter ใช้ภาษาอะไรเขียน","ans":{"title":"ภาษาของ Flutter","live":"Flutter ใช้ภาษา Dart ครับ","kind":"fact","paras":["Flutter เขียนด้วยภาษา Dart ซึ่งคอมไพล์เป็นโค้ดเนทีฟสำหรับแอป release และรองรับ hot reload ระหว่างพัฒนา"],"summary":"ภาษา Dart","plain":"","key_points":["Flutter เขียนด้วยภาษา"],"confidence":"high","followups":[{"q":"มีข้อยกเว้นไหม","a":"มีในบางบริบท แต่คำตอบข้างต้นเป็นกรณีทั่วไปที่ใช้ได้ในงานส่วนใหญ่"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"Flutter documentation","url":"https://docs.flutter.dev"}]},"demo":false,"ts":1793432882775,"web":false},{"id":"mock034","q":"HTTP 429 คืออะไร","ans":{"title":"ความหมายของ HTTP 429","live":"HTTP 429 แปลว่าส่งคำขอถี่เกินกำหนด เซิร์ฟเวอร์ขอให้รอแล้วลองใหม่ครับ","kind":"fact","paras":["รหัสนี้มักมาพร้อม header Retry-After ที่บอกว่าควรรอกี่วินาที ฝั่งไคลเอนต์ควรถอยหลังแบบทวีคูณแทนการยิงซ้ำทันที"],"summary":"ส่งถี่เกิน ให้รอตาม Retry-After แล้วลองใหม่","plain":"","key_points":["รหัสนี้มักมาพร้อม header"],"confidence":"medium","followups":[{"q":"มีข้อยกเว้นไหม","a":"มีในบางบริบท แต่คำตอบข้างต้นเป็นกรณีทั่วไปที่ใช้ได้ในงานส่วนใหญ่"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"MDN Web Docs","url":"https://developer.mozilla.org"}]},"demo":false,"ts":1793432942775,"web":false},{"id":"mock035","q":"JWT ย่อมาจากอะไร","ans":{"title":"JWT คืออะไร","live":"JWT ย่อมาจาก JSON Web Token เป็นรูปแบบโทเค็นที่เซิร์ฟเวอร์เซ็นรับรองไว้เพื่อยืนยันตัวตนครับ","kind":"fact","paras":["โทเค็นมีสามส่วนคือ header payload และ signature ตัว payload อ่านได้โดยใครก็ได้ จึงไม่ควรใส่ข้อมูลลับไว้ข้างใน"],"summary":"JSON Web Token อ่านได้แต่แก้ไม่ได้โดยไม่ทำให้ลายเซ็นพัง","plain":"","key_points":["โทเค็นมีสามส่วนคือ header"],"confidence":"medium","followups":[{"q":"มีข้อยกเว้นไหม","a":"มีในบางบริบท แต่คำตอบข้างต้นเป็นกรณีทั่วไปที่ใช้ได้ในงานส่วนใหญ่"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[{"title":"MDN Web Docs","url":"https://developer.mozilla.org"}]},"demo":false,"ts":1793433002775,"web":false},{"id":"mock036","q":"ผู้บริหารถามว่าทำไมโปรเจกต์ล่าช้า","ans":{"title":"เมื่อถูกถามเรื่องความล่าช้า","live":"ผมจะบอกสาเหตุตรงๆ สถานะปัจจุบัน และแผนใหม่ที่มีวันส่งชัดเจน แทนการแก้ตัวครับ","kind":"opinion","paras":["เริ่มด้วยข้อเท็จจริง ล่าช้าไป [ใส่ตัวเลขจริง] วัน เพราะ [ใส่สาเหตุจริง] ไม่โทษใคร","จากนั้นบอกสิ่งที่ทำเสร็จแล้ว สิ่งที่ยังเหลือ และตัวเลือกที่ผู้บริหารตัดสินใจได้ เช่น ลดขอบเขตหรือเพิ่มคน","ปิดด้วยวันส่งใหม่พร้อมจุดตรวจระหว่างทาง เพื่อให้ไว้ใจได้ว่าจะไม่พลาดซ้ำ"],"summary":"บอกจริง เสนอทางเลือก และให้วันส่งใหม่ที่ตรวจได้","plain":"","key_points":["เริ่มด้วยข้อเท็จจริง","ปิดด้วยวันส่งใหม่พร้อมจุดตรวจระหว่างทาง"],"confidence":"low","followups":[{"q":"ถ้าอีกฝ่ายไม่เห็นด้วย จะตอบยังไง","a":"ยอมรับเหตุผลของเขา แล้วเสนอเกณฑ์ที่ใช้ตัดสินร่วมกัน แทนการเถียงความเห็น"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":["ตัวเลขและสาเหตุต้องเป็นของจริง ห้ามพูดตามตัวอย่าง"],"sources":[]},"demo":false,"ts":1793433062775,"web":false},{"id":"mock037","q":"ต้องขอเพิ่มงบหรือเพิ่มคนต่อที่ประชุม","ans":{"title":"การขอทรัพยากรเพิ่ม","live":"ผมจะเริ่มที่ผลกระทบต่อธุรกิจ แล้วเทียบต้นทุนที่ขอกับต้นทุนของการไม่ทำ ไม่เริ่มจากรายละเอียดเทคนิคครับ","kind":"opinion","paras":["สื่อสารเป็นภาษาผลลัพธ์ เช่น ถ้าไม่เพิ่ม [ใส่ตัวเลขจริง] คน งานจะเลื่อนไป [ใส่ตัวเลขจริง] สัปดาห์","เสนอสองทางเลือก คือเพิ่มทรัพยากรหรือลดขอบเขต พร้อมความเสี่ยงของแต่ละทาง","และบอกว่าจะวัดผลอย่างไรหลังได้รับอนุมัติ เพื่อให้เห็นว่าคุ้มจริง"],"summary":"พูดเรื่องผลต่อธุรกิจ เสนอสองทางเลือก และบอกวิธีวัดผล","plain":"","key_points":["สื่อสารเป็นภาษาผลลัพธ์","และบอกว่าจะวัดผลอย่างไรหลังได้รับอนุมัติ"],"confidence":"high","followups":[{"q":"ถ้าอีกฝ่ายไม่เห็นด้วย จะตอบยังไง","a":"ยอมรับเหตุผลของเขา แล้วเสนอเกณฑ์ที่ใช้ตัดสินร่วมกัน แทนการเถียงความเห็น"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":["ใส่ตัวเลขต้นทุนและผลกระทบจริง"],"sources":[]},"demo":false,"ts":1793433122775,"web":false},{"id":"mock038","q":"ถูกขอให้ประเมินเวลาทั้งที่ยังไม่รู้รายละเอียด","ans":{"title":"ประเมินเวลาเมื่อข้อมูลไม่ครบ","live":"ผมจะให้เป็นช่วงเวลาพร้อมสมมติฐาน แล้วบอกว่าข้อมูลอะไรจะทำให้แคบลงได้ครับ","kind":"opinion","paras":["ให้ช่วง เช่น ระหว่าง [ใส่ตัวเลขจริง] ถึง [ใส่ตัวเลขจริง] สัปดาห์ แทนตัวเลขเดียวที่อาจผิดและกลายเป็นคำมั่นสัญญา","ระบุสมมติฐานที่ช่วงนี้อิงอยู่ และสิ่งที่ยังไม่รู้ที่เสี่ยงที่สุด","เสนอใช้เวลาสั้นๆ ทำต้นแบบหรือสำรวจ เพื่อลดความไม่แน่นอนก่อนยืนยันวันส่ง"],"summary":"ให้เป็นช่วง ระบุสมมติฐาน และเสนอลดความไม่แน่นอนก่อน","plain":"","key_points":["ให้ช่วง เช่น","เสนอใช้เวลาสั้นๆ ทำต้นแบบหรือสำรวจ"],"confidence":"medium","followups":[{"q":"ถ้าอีกฝ่ายไม่เห็นด้วย จะตอบยังไง","a":"ยอมรับเหตุผลของเขา แล้วเสนอเกณฑ์ที่ใช้ตัดสินร่วมกัน แทนการเถียงความเห็น"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":["ใส่ช่วงเวลาที่คุณประเมินจริง"],"sources":[]},"demo":false,"ts":1793433182775,"web":false},{"id":"mock039","q":"ลูกค้าขอเพิ่มฟีเจอร์ตอนใกล้ส่งมอบ","ans":{"title":"เมื่อลูกค้าขอเพิ่มตอนท้าย","live":"ผมจะไม่ปฏิเสธทันที แต่แสดงผลกระทบต่อวันส่งและให้ลูกค้าเลือกว่าจะเลื่อนวันหรือเอาฟีเจอร์นี้ไปรอบถัดไปครับ","kind":"opinion","paras":["รับฟังก่อนว่าฟีเจอร์นี้แก้ปัญหาอะไรให้ลูกค้า บางครั้งมีทางเลือกที่เล็กกว่า","จากนั้นประเมินผลกระทบอย่างโปร่งใส ทั้งเวลา ต้นทุน และความเสี่ยง","ตกลงเป็นลายลักษณ์อักษรว่าเลือกทางไหน เพื่อไม่ให้ขอบเขตขยายโดยไม่มีใครรับผิดชอบ"],"summary":"รับฟัง ประเมินผลกระทบ แล้วให้ลูกค้าเลือกพร้อมบันทึกไว้","plain":"","key_points":["รับฟังก่อนว่าฟีเจอร์นี้แก้ปัญหาอะไรให้ลูกค้า","ตกลงเป็นลายลักษณ์อักษรว่าเลือกทางไหน"],"confidence":"medium","followups":[{"q":"ถ้าอีกฝ่ายไม่เห็นด้วย จะตอบยังไง","a":"ยอมรับเหตุผลของเขา แล้วเสนอเกณฑ์ที่ใช้ตัดสินร่วมกัน แทนการเถียงความเห็น"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793433242775,"web":false},{"id":"mock040","q":"ทำไมมันช้า","ans":{"title":"ขอทราบว่าอะไรช้า","live":"ขอถามก่อนว่าที่ช้าคืออะไร เพราะสาเหตุและวิธีแก้ต่างกันมากครับ","kind":"debug","paras":["คำถามนี้ยังกว้างเกินไปที่จะตอบให้ถูกต้อง ช่วยเลือกว่าหมายถึงข้อไหน"],"summary":"ต้องระบุก่อนว่าช้าตรงไหน","plain":"","key_points":["คำถามนี้ยังกว้างเกินไปที่จะตอบให้ถูกต้อง"],"confidence":"low","followups":[{"q":"ถ้าทำตามแล้วยังไม่หาย ต้องทำอะไรต่อ","a":"ย้อนไปแยกตัวแปรทีละตัว และเก็บข้อมูลก่อนหลังเพื่อตัดสมมติฐานออกทีละข้อ"}],"from_data":[],"clarify":["แอปมือถือกระตุก","API ตอบช้า","หน้าเว็บโหลดช้า","บิลด์หรือ CI ช้า"],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793433302775,"web":false},{"id":"mock041","q":"ควรใช้อะไรดี","ans":{"title":"ขอรายละเอียดเพิ่ม","live":"คำถามยังไม่ระบุว่าใช้ทำอะไร ขอให้เลือกบริบทก่อนครับ","kind":"compare","paras":["ช่วยบอกว่ากำลังเลือกเครื่องมือสำหรับงานด้านไหน ผมจะเทียบตัวเลือกและเกณฑ์ให้ตรงงาน"],"summary":"ต้องรู้บริบทก่อนจึงแนะนำได้","plain":"","key_points":["ช่วยบอกว่ากำลังเลือกเครื่องมือสำหรับงานด้านไหน"],"confidence":"high","followups":[{"q":"ถ้าเลือกผิดแล้วย้อนกลับได้ไหม","a":"ได้ แต่ต้นทุนขึ้นกับขนาดโค้ดตอนนั้น จึงควรลองกับโมดูลเล็กก่อนตัดสินใจทั้งระบบ"}],"from_data":[],"clarify":["จัดการสถานะแอป","ฐานข้อมูล","เฟรมเวิร์กเว็บ"],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793433362775,"web":false},{"id":"mock042","q":"(ถอดเสียงไม่ได้)","ans":{"title":"ขอข้อมูลเพิ่มเติม","live":"ยังไม่ได้รับคำถามที่อ่านออก ช่วยพิมพ์หรือพูดใหม่อีกครั้งครับ","kind":"fact","paras":["ผมไม่ได้ยินคำถามที่ชัดเจน คุณอยากให้ช่วยเรื่องอะไรเป็นพิเศษ"],"summary":"ขอคำถามที่ชัดเจนกว่านี้","plain":"","key_points":["ผมไม่ได้ยินคำถามที่ชัดเจน"],"confidence":"medium","followups":[{"q":"มีข้อยกเว้นไหม","a":"มีในบางบริบท แต่คำตอบข้างต้นเป็นกรณีทั่วไปที่ใช้ได้ในงานส่วนใหญ่"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793433422775,"web":false},{"id":"mock043","q":"Flutter เวอร์ชันล่าสุดมีอะไรใหม่","ans":{"title":"ข้อมูลที่ควรตรวจกับแหล่งล่าสุด","live":"ผมให้ภาพรวมได้ แต่รายละเอียดเวอร์ชันเปลี่ยนเร็ว ควรเปิดบันทึกการปล่อยของ Flutter ยืนยันก่อนพูดครับ [1]","kind":"fact","paras":["Flutter ปล่อยเวอร์ชันใหม่สม่ำเสมอ และแต่ละรอบมักปรับประสิทธิภาพและ widget [1]","เนื่องจากรายละเอียดเปลี่ยนตามเวลา ควรอ้างหมายเลขเวอร์ชันและฟีเจอร์จากบันทึกการปล่อยล่าสุดเท่านั้น [1]"],"summary":"ตรวจบันทึกการปล่อยก่อนอ้างเวอร์ชันและฟีเจอร์","plain":"","key_points":["Flutter ปล่อยเวอร์ชันใหม่สม่ำเสมอ","เนื่องจากรายละเอียดเปลี่ยนตามเวลา"],"confidence":"medium","followups":[{"q":"มีข้อยกเว้นไหม","a":"มีในบางบริบท แต่คำตอบข้างต้นเป็นกรณีทั่วไปที่ใช้ได้ในงานส่วนใหญ่"}],"from_data":[],"clarify":[],"assumptions":[],"needs_check":["หมายเลขเวอร์ชันและฟีเจอร์ล่าสุดต้องยืนยันกับเอกสารทางการ"],"sources":[{"title":"Flutter documentation","url":"https://docs.flutter.dev"}]},"demo":false,"ts":1793433482775,"web":false}],"stress":[{"id":"mock044","q":"ทดสอบ: 12 ย่อหน้า","ans":{"title":"ทดสอบ 12 ย่อหน้า ความสูงการ์ดและการเลื่อนอ่านออกเสียง","live":"ทดสอบการ์ดที่ยาวที่สุดที่ระบบรับได้ครับ","kind":"explain","paras":["ย่อหน้าที่ 1 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 7% และ 40 ms","ย่อหน้าที่ 2 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 14% และ 80 ms","ย่อหน้าที่ 3 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 21% และ 120 ms","ย่อหน้าที่ 4 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 28% และ 160 ms","ย่อหน้าที่ 5 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 35% และ 200 ms","ย่อหน้าที่ 6 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 42% และ 240 ms","ย่อหน้าที่ 7 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 49% และ 280 ms","ย่อหน้าที่ 8 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 56% และ 320 ms","ย่อหน้าที่ 9 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 63% และ 360 ms","ย่อหน้าที่ 10 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 70% และ 400 ms","ย่อหน้าที่ 11 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 77% และ 440 ms","ย่อหน้าที่ 12 ทดสอบการเลื่อนและไฮไลต์ระหว่างอ่านออกเสียง ตัวเลข 84% และ 480 ms"],"summary":"ทดสอบจำนวนย่อหน้าสูงสุด 12","plain":"","key_points":["ย่อหน้าที่ 1","ย่อหน้าที่ 12"],"confidence":"low","followups":[],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793433542775,"web":false},{"id":"mock045","q":"ทดสอบ: ย่อหน้ายาว 600 ตัวอักษร","ans":{"title":"ทดสอบย่อหน้ายาวสุด","live":"ทดสอบข้อความยาวครับ","kind":"explain","paras":["ย่อหน้ายาวสุดตามขีดจำกัด ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก ทดสอบการตัดบรรทัดและการเลื่อนของบทพูดที่ยาวมาก "],"summary":"ทดสอบความยาวสูงสุดของย่อหน้า","plain":"","key_points":["ย่อหน้ายาวสุดตามขีดจำกัด"],"confidence":"high","followups":[],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793433602775,"web":false},{"id":"mock046","q":"ทดสอบ: รหัสพิเศษ <img src=x onerror=alert(1)> & \"quote\" 'single'","ans":{"title":"ทดสอบ <script>alert(1)<\/script> ต้องแสดงเป็นข้อความ","live":"ข้อความ <b>ตัวหนา<\/b> และ & \" ' ต้องไม่ถูกตีความเป็นโค้ดครับ","kind":"explain","paras":["<img src=x onerror=alert(1)> ต้องแสดงเป็นตัวอักษร ไม่ถูกรัน","ทดสอบเครื่องหมาย &amp; &lt;div&gt; และ ${x} กับ `backtick` ในบทพูด"],"summary":"ทดสอบการ escape ทั้งหมด","plain":"","key_points":["<img src=x","ทดสอบเครื่องหมาย &amp;"],"confidence":"medium","followups":[],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793433662775,"web":false},{"id":"mock047","q":"ทดสอบ: ขอบเขตคำ guide build quick capital start","ans":{"title":"ทดสอบการจับศัพท์ไม่ติดกลางคำ","live":"คำว่า guide build quick capital start ต้องไม่ถูกแปะคำอธิบายของ UI API หรือ STAR ครับ","kind":"explain","paras":["คำเหล่านี้มี ui api star อยู่ข้างใน guide build quick capital start restart แต่ต้องไม่ถูกจับ","ส่วนคำเต็ม UI API STAR และ MVC ต้องถูกจับครั้งแรกเท่านั้น แล้ว API ที่สองต้องไม่มีวงเล็บซ้ำ"],"summary":"ทดสอบ regex ขอบเขตคำและการแสดงคำอธิบายครั้งเดียว","plain":"","key_points":["คำเหล่านี้มี ui","ส่วนคำเต็ม UI"],"confidence":"medium","followups":[],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793433722775,"web":false},{"id":"mock048","q":"ทดสอบ: ตัวเลขและหน่วย","ans":{"title":"ทดสอบการเน้นตัวเลข","live":"ตัวเลข 99.9 เปอร์เซ็นต์ 250 ms 3 สัปดาห์ 12 คน 2 เท่า ต้องแสดงเป็นตัวเลขกว้างเท่ากันครับ","kind":"explain","paras":["เวลาตอบสนอง 250 ms ที่ p95 ความพร้อมใช้งาน 99.9 เปอร์เซ็นต์ ทีม 12 คน ใช้เวลา 3 สัปดาห์ ได้ผลดีขึ้น 2 เท่า และลดข้อผิดพลาด 40 เปอร์เซ็นต์"],"summary":"ทดสอบ regex ตัวเลขกับหน่วยภาษาไทย","plain":"","key_points":["เวลาตอบสนอง 250"],"confidence":"low","followups":[],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793433782775,"web":false},{"id":"mock049","q":"ทดสอบ: emoji และอักขระผสม","ans":{"title":"ทดสอบ emoji 🚀 ไทย English 日本語","live":"ข้อความผสมหลายภาษา 🚀 English ภาษาไทย 日本語 ต้องแสดงได้ครบครับ","kind":"explain","paras":["ทดสอบ emoji 🚀✨ กับภาษาอังกฤษล้วน This paragraph is fully English to test mixed scripts และคำยาวต่อเนื่องไม่มีเว้นวรรค กกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกก"],"summary":"ทดสอบอักขระผสมและคำยาวไม่มีช่องว่าง","plain":"","key_points":["ทดสอบ emoji"],"confidence":"high","followups":[],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793433842775,"web":false},{"id":"mock050","q":"ทดสอบ: ไม่มี live ไม่มี summary","ans":{"title":"ทดสอบ fallback ของ live","live":"","kind":"explain","paras":["ประโยคแรกของย่อหน้านี้ต้องถูกใช้เป็นประโยคพูดได้ทันทีโดยอัตโนมัติ ส่วนประโยคถัดมาไม่ควรถูกใช้ครับ","ย่อหน้าที่สองเพื่อทดสอบการแสดงผลโดยไม่มีสรุป"],"summary":"","plain":"","key_points":["ประโยคแรกของย่อหน้านี้ต้องถูกใช้เป็นประโยคพูดได้ทันทีโดยอัตโนมัติ","ย่อหน้าที่สองเพื่อทดสอบการแสดงผลโดยไม่มีสรุป"],"confidence":"medium","followups":[],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793433902775,"web":false},{"id":"mock051","q":"ทดสอบ: แหล่งอ้างอิงสูงสุดและคำเตือนสูงสุด","ans":{"title":"ทดสอบกล่องสมมติฐาน คำเตือน และแหล่งอ้างอิงเต็ม","live":"ทดสอบกล่องเสริมทุกชนิดพร้อมกันครับ [1][2]","kind":"explain","paras":["ย่อหน้าเดียวสำหรับทดสอบกล่องสมมติฐาน ควรตรวจสอบ และแหล่งอ้างอิงที่มีหกรายการ"],"summary":"ทดสอบกล่องเสริมเต็มจำนวน","plain":"","key_points":["ย่อหน้าเดียวสำหรับทดสอบกล่องสมมติฐาน"],"confidence":"medium","followups":[],"from_data":[],"clarify":[],"assumptions":["สมมติฐานข้อ 1 ทดสอบความกว้างและการตัดบรรทัดของกล่อง","สมมติฐานข้อ 2 ทดสอบความกว้างและการตัดบรรทัดของกล่อง","สมมติฐานข้อ 3 ทดสอบความกว้างและการตัดบรรทัดของกล่อง","สมมติฐานข้อ 4 ทดสอบความกว้างและการตัดบรรทัดของกล่อง","สมมติฐานข้อ 5 ทดสอบความกว้างและการตัดบรรทัดของกล่อง"],"needs_check":["ควรตรวจข้อ 1 ให้แน่ใจก่อนพูดในที่ประชุม","ควรตรวจข้อ 2 ให้แน่ใจก่อนพูดในที่ประชุม","ควรตรวจข้อ 3 ให้แน่ใจก่อนพูดในที่ประชุม","ควรตรวจข้อ 4 ให้แน่ใจก่อนพูดในที่ประชุม","ควรตรวจข้อ 5 ให้แน่ใจก่อนพูดในที่ประชุม","ควรตรวจข้อ 6 ให้แน่ใจก่อนพูดในที่ประชุม"],"sources":[{"title":"Flutter documentation","url":"https://docs.flutter.dev"},{"title":"Riverpod","url":"https://riverpod.dev"},{"title":"Next.js documentation","url":"https://nextjs.org/docs"},{"title":"Android Developers","url":"https://developer.android.com"},{"title":"Apple Developer Documentation","url":"https://developer.apple.com/documentation"},{"title":"Firebase Cloud Messaging","url":"https://firebase.google.com/docs/cloud-messaging"}]},"demo":false,"ts":1793433962775,"web":false},{"id":"mock052","q":"ทดสอบ: จุดสำคัญสี่ข้อต่อกัน","ans":{"title":"ทดสอบ key points สี่ข้อ","live":"ทดสอบไฮไลต์จุดสำคัญสี่ย่อหน้าครับ","kind":"how-to","paras":["ขั้นที่หนึ่ง เตรียมข้อกำหนดให้ชัดก่อนเริ่มลงมือทำงานจริง ซึ่งเป็นจุดสำคัญ","ขั้นที่สอง ลงมือทำทีละส่วนและตรวจผลทันที ซึ่งเป็นจุดสำคัญ","ขั้นที่สาม บันทึกสิ่งที่เรียนรู้ระหว่างทำ ซึ่งเป็นจุดสำคัญ","ขั้นที่สี่ ทบทวนผลและวางแผนรอบถัดไป ซึ่งเป็นจุดสำคัญ"],"summary":"ทดสอบจุดสำคัญสูงสุดสี่ข้อ","plain":"","key_points":["ขั้นที่หนึ่ง เตรียมข้อกำหนดให้ชัดก่อนเริ่มลงมือทำงานจริง","ขั้นที่สอง ลงมือทำทีละส่วนและตรวจผลทันที","ขั้นที่สาม บันทึกสิ่งที่เรียนรู้ระหว่างทำ","ขั้นที่สี่ ทบทวนผลและวางแผนรอบถัดไป"],"confidence":"low","followups":[],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793434022775,"web":false},{"id":"mock053","q":"ทดสอบ: ศัพท์เทคนิคทุกคำในพจนานุกรม","ans":{"title":"ทดสอบแท็บคำศัพท์","live":"ทดสอบแท็บคำศัพท์ในแผงข้างครับ","kind":"explain","paras":["Clean Architecture MVC Riverpod Bloc Flutter framework domain presentation repository use case dependency injection state management unit test API latency throughput push notification deploy B2C STAR UX UI รวมทุกคำในพจนานุกรมไว้ย่อหน้าเดียว"],"summary":"ทดสอบรายการศัพท์ทั้งหมดในพจนานุกรม","plain":"","key_points":["Clean Architecture"],"confidence":"high","followups":[],"from_data":[],"clarify":[],"assumptions":[],"needs_check":[],"sources":[]},"demo":false,"ts":1793434082775,"web":false}],"ds":[{"id":"ds001","title":"ชื่อ Assadawut Sarakul (Art) หรือ KC Dev","text":"ชื่อ Assadawut Sarakul (Art) หรือ KC Dev ตำแหน่ง Senior Flutter & Mobile Developer อยู่กรุงเทพฯ","on":true},{"id":"ds002","title":"ตัวเลขจากเรซูเม่","text":"ตัวเลขจากเรซูเม่: ประสบการณ์พัฒนาซอฟต์แวร์ 11+ ปี / สร้างระบบและแอป 66+ รายการ (รวม white-label) / 64 subsystems ข้ามโครงการ / ลูกค้าภาครัฐและองค์กร 15+ ราย / แอป AR ท่องเที่ยวให้บริการ 15+ จังหวัด","on":true},{"id":"ds003","title":"สรุป","text":"สรุป: เชี่ยวชาญ Flutter สำหรับงานภาครัฐและองค์กร (MOPH, MRTA, EXAT, PEA, กองทัพเรือ) เน้น Clean Architecture, offline-first GIS และการจัดการข้อมูลปลอดภัยด้วย AES-256-GCM / RSA-4096 ทำเว็บด้วย React, Next.js, TypeScript และทำ native iOS/Android","on":true},{"id":"ds004","title":"ทักษะ Flutter/Dart","text":"ทักษะ Flutter/Dart: Clean Architecture, MVVM, Bloc, Riverpod, Provider, offline-first SQLite sync, GIS/spatial (Mapbox, Google Maps), Google ML Kit OCR, FCM push queues, AR frameworks","on":true},{"id":"ds005","title":"ทักษะ Web/Backend","text":"ทักษะ Web/Backend: React, Next.js, TypeScript, Tailwind CSS, Zustand, Framer Motion, RESTful API (Swagger, Postman), WebSockets, OAuth2, LINE Messaging API / LIFF, Meta Graph API, BullMQ, Redis, Firebase, GCP, Vercel, Cloudflare R2","on":true},{"id":"ds006","title":"ทักษะ AI","text":"ทักษะ AI: Gemini API pipelines, RAG architecture, Vision Engine Studio, WhisperX audio transcription, ใช้ Claude / ChatGPT / Codex ในงานพัฒนา","on":true},{"id":"ds007","title":"ทักษะ Native","text":"ทักษะ Native: Swift, Objective-C, Kotlin, Java","on":true},{"id":"ds008","title":"คุณภาพและการส่งมอบ","text":"คุณภาพและการส่งมอบ: Jest, Vitest, Playwright, Zod, hybrid AES-256-GCM / RSA-4096, Stripe payments, GitHub Actions, App Store Connect, TestFlight, Google Play Console","on":true},{"id":"ds009","title":"ดีไซน์","text":"ดีไซน์: Figma, responsive multi-screen layouts, ทำ design system, server-driven dynamic UI","on":true},{"id":"ds010","title":"งานล่าสุด Senior Software Developer ที่ ","text":"งานล่าสุด Senior Software Developer ที่ Knight Club Co., Ltd. (พฤษภาคม 2022 ถึง พฤษภาคม 2026 กรุงเทพฯ): ออกแบบ Flutter แบบ modular ด้วย Clean Architecture และ MVVM / เชื่อม MOPH Health ID, ASP Open Account (Asia Plus Securities), TUORCA Medical Calendar, LED Portal, NBTC CMS / ตั้ง CI/CD ด้วย GitHub Actions, App Store Connect, Google Play Console พร้อมเทสต์อัตโนมัติ Jest, Vitest, Playwright, Zod","on":true},{"id":"ds011","title":"งานก่อนหน้า Senior Mobile Applications D","text":"งานก่อนหน้า Senior Mobile Applications Developer ที่ 2Fellows Network and Design Co., Ltd. (มิถุนายน 2015 ถึง พฤษภาคม 2022 กรุงเทพฯ): ทำโมดูล offline GIS mapping และ navigation ด้วย SQLite และ Mapbox ให้ DNP Scout Rangers ใช้งานโดยไม่มีสัญญาณ / ทำ hybrid AES-256-GCM และ RSA-4096 encryption ในแอปกองทัพเรือ / ปรับ Firebase Cloud Messaging dispatch queues สำหรับแจ้งเตือน PEA SmartCare / ทำ server-driven Dynamic UI Layout Engine ให้ผู้ดูแลระบบ CMS อัปเดตเลย์เอาต์มือถือได้โดยไม่ต้องผ่าน app store / ทำ on-device Google ML Kit license plate OCR ควบคุมการเข้าออก SRITRANG / ร่วมพัฒนา See Thru Thailand AR tourism framework","on":true},{"id":"ds012","title":"ผลงานเด่น · DNP National Park Thailand","text":"ผลงานเด่น: DNP National Park Thailand (Flutter, Mapbox, Bloc, FCM รองรับ 5 ภาษา GPS SOS นำทาง CCTV สด แคชแผนที่ออฟไลน์)","on":true},{"id":"ds013","title":"ผลงานเด่น · Royal Thai Navy Encryption","text":"ผลงานเด่น: Royal Thai Navy Encryption (Flutter, AES-256-GCM","on":true},{"id":"ds014","title":"ผลงานเด่น · RSA-4096, API Spec V2)","text":"ผลงานเด่น: RSA-4096, API Spec V2)","on":true},{"id":"ds015","title":"ผลงานเด่น · ASP Open Account","text":"ผลงานเด่น: ASP Open Account (เปิดบัญชีลงทุนออนไลน์พร้อมตรวจสอบตัวตนดิจิทัล KYC)","on":true},{"id":"ds016","title":"ผลงานเด่น · DNP Scout Rangers","text":"ผลงานเด่น: DNP Scout Rangers (บันทึกลาดตระเวนป่าแบบ offline-first GIS ซิงก์เมื่อมีสัญญาณ)","on":true},{"id":"ds017","title":"ผลงานเด่น · MOPH Health ID","text":"ผลงานเด่น: MOPH Health ID (REST API และระบบยืนยันตัวตนปลอดภัยของกระทรวงสาธารณสุข)","on":true},{"id":"ds018","title":"ผลงานเด่น · PEA SmartPlus, SmartCare, MWF CRM","text":"ผลงานเด่น: PEA SmartPlus, SmartCare, MWF CRM (ระบบบิลลิ่งและ CRM ภาคสนามของการไฟฟ้าส่วนภูมิภาค)","on":true},{"id":"ds019","title":"โครงการ Flutter","text":"โครงการ Flutter: DNP National Park และ DNP Scout Rangers, Royal Thai Navy, EXAT Portal, DIP IP Mart, SRITRANG Access Control, ERC Thailand, MRTA Application (ที่จอดรถ QR code แจ้งเตือนการเดินทาง), TUORCA Medical Calendar","on":true},{"id":"ds020","title":"โครงการเว็บ","text":"โครงการเว็บ: MOPH Health ID, ASP Open Account และ E-Service, NBTC CMS, OKMD Knowledge Portal, Sports Almanac (กระทรวงการท่องเที่ยวและกีฬา), MB Brandname e-commerce","on":true},{"id":"ds021","title":"โครงการ native iOS/Android","text":"โครงการ native iOS/Android: LED Portal (กรมบังคับคดี ข้อมูลทรัพย์ขายทอดตลาดและโมดูล Bluetooth BLE คุมไฟคลังสินค้า), MWA-OnMobile (การประปานครหลวง ชำระค่าน้ำ ขอติดตั้งมิเตอร์ แจ้งน้ำรั่ว), PEA SmartPlus/SmartCare/MWF CRM, BMTA Transit Tracking, กองทุนการออมแห่งชาติ (NSF), PWA E-Service, MNRE E-Service, EnviRAD, Water4Thai, SOS Tourism (ตำรวจท่องเที่ยว), Pro-Check (NBTC), Buy Burapha, MD to Travel, Muangthai Leasing, NBT2HD Streaming, SAT Platform","on":true},{"id":"ds022","title":"โครงการท่องเที่ยว AR แบบ white-label","text":"โครงการท่องเที่ยว AR แบบ white-label: See Thru Thailand และ Discovery AR ใน 15+ จังหวัด เช่น เชียงใหม่ นนทบุรี น่าน พังงา พิษณุโลก เพชรบุรี","on":true},{"id":"ds023","title":"การเรียนรู้และภาษา","text":"การเรียนรู้และภาษา: เรียนรู้ด้วยตนเองต่อเนื่องตั้งแต่ปี 2015 ร่วมชุมชน GDG Bangkok และ AI BKK / ภาษาไทยเป็นภาษาแม่ อังกฤษระดับใช้งานอ่านเขียนเทคนิคได้ ใช้เครื่องมือแปลและ AI ช่วยงานเอกสาร","on":true}]};
+  /* =====================================================================
+     MOCK KNOWLEDGE BASE: datasets + question bank + demo matcher
+     ===================================================================== */
+  const DS_TITLES = {
+    ds001:'ชื่อและตำแหน่ง', ds002:'ตัวเลขจากเรซูเม่', ds003:'สรุปความเชี่ยวชาญ', ds004:'ทักษะ Flutter/Dart', ds005:'ทักษะ Web/Backend',
+    ds006:'ทักษะ AI', ds007:'ทักษะ Native', ds008:'คุณภาพและการส่งมอบ', ds009:'ดีไซน์', ds010:'งานล่าสุด · Knight Club',
+    ds011:'งานก่อนหน้า · 2Fellows', ds012:'ผลงานเด่น · DNP National Park Thailand', ds013:'ผลงานเด่น · Royal Thai Navy Encryption',
+    ds015:'ผลงานเด่น · ASP Open Account', ds016:'ผลงานเด่น · DNP Scout Rangers', ds017:'ผลงานเด่น · MOPH Health ID',
+    ds018:'ผลงานเด่น · PEA SmartPlus, SmartCare, MWF CRM', ds019:'โครงการ Flutter', ds020:'โครงการเว็บ',
+    ds021:'โครงการ native iOS/Android', ds022:'โครงการท่องเที่ยว AR', ds023:'การเรียนรู้และภาษา'
+  };
+  function buildSeed(){
+    const out = [];
+    MOCK.ds.forEach(d => {
+      if (d.id === 'ds014') return;
+      const x = { id:d.id, title:DS_TITLES[d.id] || d.title, text:d.text, on:true };
+      if (d.id === 'ds013') x.text = 'ผลงานเด่น: Royal Thai Navy Encryption (Flutter, AES-256-GCM / RSA-4096, API Spec V2)';
+      out.push(x);
+    });
+    return out;
+  }
+  function seedIfEmpty(){
+    if (DS.length || store.get(KEY + '.seeded', null)) return;
+    DS = buildSeed(); saveDS(); store.set(KEY + '.seeded', 1);
+  }
+  const T = DS_TITLES;
+  const PQ = (q, title, live, paras, summary, kp, from, fu, extra) => ({ q, personal:true, ans:Object.assign({
+    title, live, kind:'interview', paras, summary, plain:'', key_points:kp, confidence:'high',
+    followups:fu.map(x => ({ q:x[0], a:x[1] })), from_data:from.map(k => T[k]), clarify:[], assumptions:[], needs_check:[], sources:[]
+  }, extra || {}) });
+  const PERSONAL = [
+    PQ('แนะนำตัวหน่อย', 'แนะนำตัว',
+      'ผมอัสดาวุธ สารกุล หรืออาร์ต ทำงานเป็น Senior Flutter และ Mobile Developer อยู่กรุงเทพฯ ประสบการณ์พัฒนาซอฟต์แวร์กว่า 11 ปีครับ',
+      ['ผมชื่ออัสดาวุธ สารกุล เรียกสั้นๆ ว่าอาร์ต หรือใช้ชื่อ KC Dev ตำแหน่งคือ Senior Flutter และ Mobile Developer อยู่ที่กรุงเทพฯ',
+       'ผมพัฒนาซอฟต์แวร์มา 11+ ปี สร้างระบบและแอปแล้ว 66+ รายการ รวมงานแบบ white-label และมีลูกค้าภาครัฐกับองค์กรกว่า 15 ราย',
+       'ความถนัดคือ Flutter สำหรับงานภาครัฐและองค์กร เน้น Clean Architecture, offline-first GIS และการจัดการข้อมูลให้ปลอดภัย',
+       'นอกจากมือถือ ผมทำเว็บด้วย React, Next.js และ TypeScript และเขียน native iOS กับ Android ได้ด้วยครับ'],
+      'Flutter สายภาครัฐและองค์กร ประสบการณ์ 11+ ปี', ['Senior Flutter และ Mobile Developer', '66+ รายการ', 'Clean Architecture'],
+      ['ds001','ds002','ds003'], [['ตัวเลขพวกนี้มาจากไหน','มาจากเรซูเม่ของผมครับ ได้แก่ประสบการณ์ 11+ ปี ระบบและแอป 66+ รายการ และ 64 subsystems ข้ามโครงการ']]),
+    PQ('ประสบการณ์ทำงานที่ผ่านมามีอะไรบ้าง', 'เส้นทางการทำงาน',
+      'ผมทำงานหลักสองที่ครับ ล่าสุดเป็น Senior Software Developer ที่ Knight Club ถึงพฤษภาคม 2026 และก่อนหน้านั้นเป็น Senior Mobile Applications Developer ที่ 2Fellows ตั้งแต่มิถุนายน 2015',
+      ['งานล่าสุดคือ Senior Software Developer ที่ Knight Club Co., Ltd. กรุงเทพฯ ช่วงพฤษภาคม 2022 ถึงพฤษภาคม 2026 ผมออกแบบ Flutter แบบ modular ด้วย Clean Architecture และ MVVM',
+       'ที่นั่นผมเชื่อมระบบ MOPH Health ID, ASP Open Account, TUORCA Medical Calendar, LED Portal และ NBTC CMS พร้อมตั้ง CI/CD ด้วย GitHub Actions',
+       'ก่อนหน้านั้นผมเป็น Senior Mobile Applications Developer ที่ 2Fellows Network and Design Co., Ltd. ตั้งแต่มิถุนายน 2015 ถึงพฤษภาคม 2022 ทำงานอย่าง offline GIS การเข้ารหัส และ Dynamic UI'],
+      'Knight Club 2022–2026 และ 2Fellows 2015–2022', ['Knight Club Co., Ltd.', '2Fellows Network and Design Co., Ltd.'],
+      ['ds010','ds011'], [['ที่ 2Fellows ทำอะไรเด่นที่สุด','ผมจะเล่าเรื่อง offline GIS ของ DNP Scout Rangers และการเข้ารหัสแบบ hybrid ในแอปกองทัพเรือครับ']]),
+    PQ('ทักษะ Flutter หลักๆ มีอะไรบ้าง', 'ทักษะ Flutter และ Dart',
+      'ผมเน้น Clean Architecture กับ MVVM ใช้ Bloc และ Riverpod จัดการสถานะ และถนัดงาน offline-first ที่ซิงก์ผ่าน SQLite ครับ',
+      ['ด้านโครงสร้าง ผมใช้ Clean Architecture และ MVVM เป็นหลัก ส่วนการจัดการสถานะใช้ได้ทั้ง Bloc, Riverpod และ Provider',
+       'งานที่ถนัดคือ offline-first ด้วย SQLite sync และงานแผนที่ GIS ผ่าน Mapbox กับ Google Maps',
+       'นอกจากนั้นผมใช้ Google ML Kit ทำ OCR ทำ FCM push queues และเคยทำงานกับ AR frameworks ครับ'],
+      'โครงสร้างแยกชั้น จัดการสถานะหลายแบบ และงานออฟไลน์กับแผนที่', ['Clean Architecture และ MVVM', 'offline-first ด้วย SQLite sync', 'Google ML Kit'],
+      ['ds004'], [['ทำไมไม่ใช้ setState ล้วน','setState เหมาะกับสถานะเล็กในหน้าเดียว พอข้อมูลถูกแชร์หลายหน้าผมเลือก Bloc หรือ Riverpod ครับ']], { kind:'explain' }),
+    PQ('เคยทำระบบเข้ารหัสข้อมูลไหม', 'การเข้ารหัสในแอปกองทัพเรือ',
+      'เคยครับ ผมทำการเข้ารหัสแบบ hybrid ด้วย AES-256-GCM ร่วมกับ RSA-4096 ในแอปของกองทัพเรือ',
+      ['ผมทำการเข้ารหัสแบบ hybrid ด้วย AES-256-GCM และ RSA-4096 ในแอปกองทัพเรือ ซึ่งพัฒนาด้วย Flutter และมี API Spec V2',
+       'หลักการของ hybrid คือใช้ AES-256-GCM เข้ารหัสข้อมูลเพราะเร็ว และใช้ RSA-4096 ปกป้องกุญแจที่ใช้เข้ารหัสนั้น',
+       'ทั้งนี้ความเชี่ยวชาญของผมรวมการจัดการข้อมูลปลอดภัยด้วยสองอัลกอริทึมนี้ตามที่สรุปไว้ในเรซูเม่ครับ'],
+      'AES-256-GCM กับข้อมูล RSA-4096 กับกุญแจ ในแอปกองทัพเรือ', ['AES-256-GCM และ RSA-4096'],
+      ['ds013','ds011','ds003'], [['ทำไมต้องใช้สองแบบ','AES เร็วสำหรับข้อมูลก้อนใหญ่ ส่วน RSA แจกจ่ายกุญแจได้ปลอดภัย จึงใช้คู่กันครับ']],
+      { kind:'explain', needs_check:['รายละเอียดการแลกเปลี่ยนกุญแจในโปรเจกต์จริงควรยืนยันก่อนพูด'] }),
+    PQ('ทำ offline-first GIS ยังไง', 'Offline GIS ของ DNP Scout Rangers',
+      'ผมใช้ SQLite เก็บข้อมูลในเครื่องและ Mapbox ทำแผนที่ ให้ใช้งานได้โดยไม่มีสัญญาณ แล้วซิงก์เมื่อมีสัญญาณครับ',
+      ['โปรเจกต์ DNP Scout Rangers เป็นแอปบันทึกลาดตระเวนป่าแบบ offline-first GIS ที่ใช้งานได้แม้ไม่มีสัญญาณ',
+       'ผมทำโมดูล offline GIS mapping และ navigation ด้วย SQLite และ Mapbox ให้ใช้งานโดยไม่ต้องมีสัญญาณ',
+       'ข้อมูลที่บันทึกถูกเก็บในเครื่องก่อน แล้วซิงก์ขึ้นระบบเมื่อมีสัญญาณ',
+       'อีกแอปคือ DNP National Park Thailand ที่แคชแผนที่ออฟไลน์ รองรับ 5 ภาษา มี GPS SOS นำทาง และ CCTV สดครับ'],
+      'เก็บในเครื่องก่อน แล้วซิงก์เมื่อมีสัญญาณ', ['offline GIS mapping และ navigation', 'ซิงก์ขึ้นระบบเมื่อมีสัญญาณ'],
+      ['ds016','ds011','ds012'], [['ถ้าข้อมูลซ้อนกันตอนซิงก์ล่ะ','ต้องตกลงกติกาแก้ความขัดแย้งตั้งแต่ต้น เช่น เวลาล่าสุดชนะ หรือให้ผู้ใช้เลือกครับ']],
+      { kind:'explain', needs_check:['กติกาแก้ความขัดแย้งในโปรเจกต์จริงควรยืนยันก่อนพูด'] }),
+    PQ('เคยทำงานให้หน่วยงานรัฐอะไรบ้าง', 'ผลงานภาครัฐ',
+      'ผมทำงานให้หลายหน่วยงาน เช่น กระทรวงสาธารณสุข การไฟฟ้าส่วนภูมิภาค กรมบังคับคดี การประปานครหลวง และกองทัพเรือครับ',
+      ['ภาครัฐและองค์กรที่ผมทำงานด้วยมี MOPH, MRTA, EXAT, PEA และกองทัพเรือ รวมลูกค้าภาครัฐและองค์กรกว่า 15 ราย',
+       'ตัวอย่างงานคือ MOPH Health ID ระบบยืนยันตัวตนปลอดภัยของกระทรวงสาธารณสุข และ PEA SmartPlus, SmartCare, MWF CRM ที่เป็นบิลลิ่งและ CRM ภาคสนามของการไฟฟ้าส่วนภูมิภาค',
+       'ยังมี LED Portal ของกรมบังคับคดี MWA-OnMobile ของการประปานครหลวง กองทุนการออมแห่งชาติ และ BMTA Transit Tracking ครับ'],
+      'งานภาครัฐหลายหน่วย ตั้งแต่สาธารณสุขถึงสาธารณูปโภค', ['MOPH Health ID', 'LED Portal ของกรมบังคับคดี'],
+      ['ds003','ds017','ds018','ds021'], [['งานไหนเสี่ยงสูงสุด','งานที่เกี่ยวกับตัวตนและข้อมูลส่วนบุคคล อย่าง Health ID จึงต้องเน้นความปลอดภัยของ API ครับ']], { kind:'explain' }),
+    PQ('เล่าเรื่อง Dynamic UI Layout Engine หน่อย', 'Server-driven Dynamic UI',
+      'ผมทำ layout engine แบบ server-driven ให้ผู้ดูแล CMS แก้เลย์เอาต์แอปมือถือได้โดยไม่ต้องผ่าน app store ครับ',
+      ['ผมทำ server-driven Dynamic UI Layout Engine ที่ 2Fellows ให้ผู้ดูแลระบบ CMS อัปเดตเลย์เอาต์ของแอปมือถือได้โดยไม่ต้องผ่าน app store',
+       'หลักการทั่วไปคือแอปอ่านโครงหน้าจอจากเซิร์ฟเวอร์ แล้ววาดด้วย widget ที่เตรียมไว้ในแอป',
+       'ทักษะนี้เชื่อมกับงาน design system และ responsive หลายหน้าจอที่ผมทำด้วย Figma ครับ'],
+      'ปรับหน้าตาแอปจาก CMS ได้โดยไม่ต้องรอรอบ app store', ['ไม่ต้องผ่าน app store'],
+      ['ds011','ds009'], [['ข้อจำกัดคืออะไร','ทำได้เฉพาะ widget ที่แอปรองรับไว้แล้ว ส่วนที่ต้องเขียนใหม่ยังต้องปล่อยเวอร์ชันผ่านสโตร์ครับ']],
+      { kind:'explain', needs_check:['รายละเอียดสถาปัตยกรรมภายในของ engine ควรเตรียมจากโปรเจกต์จริงก่อนพูด'] }),
+    PQ('เคยทำระบบแจ้งเตือน push ไหม', 'FCM dispatch queues ของ PEA SmartCare',
+      'เคยครับ ผมปรับ Firebase Cloud Messaging dispatch queues สำหรับการแจ้งเตือนของ PEA SmartCare',
+      ['ที่ 2Fellows ผมปรับ FCM dispatch queues สำหรับการแจ้งเตือนของ PEA SmartCare ของการไฟฟ้าส่วนภูมิภาค',
+       'ฝั่งหลังบ้านผมมีประสบการณ์กับ BullMQ และ Redis ที่ใช้ทำคิวงาน',
+       'แอป DNP National Park Thailand ก็ใช้ FCM สำหรับแจ้งเตือนเช่นกันครับ'],
+      'ปรับคิวส่ง FCM ให้ PEA SmartCare', ['FCM dispatch queues'],
+      ['ds011','ds005','ds012'], [['ถ้า push ไม่ถึงบางเครื่องล่ะ','แยกแพลตฟอร์มก่อน แล้วตรวจ token สิทธิ์แจ้งเตือน และโหมดประหยัดแบตเตอรี่ครับ']]),
+    PQ('ใช้ AI ช่วยงานพัฒนายังไง', 'การใช้ AI ในงาน',
+      'ผมสร้าง pipeline ด้วย Gemini API ทำ RAG ถอดเสียงด้วย WhisperX และใช้ Claude, ChatGPT, Codex ช่วยงานพัฒนาครับ',
+      ['ด้านสร้างระบบ ผมทำ Gemini API pipelines, RAG architecture, Vision Engine Studio และใช้ WhisperX ถอดเสียง',
+       'ด้านการทำงานประจำวัน ผมใช้ Claude, ChatGPT และ Codex ช่วยในงานพัฒนา',
+       'ผมมองว่า AI เป็นผู้ช่วยร่าง ส่วนโค้ดที่ได้ต้องรีวิวและทดสอบก่อนใช้จริงเสมอครับ'],
+      'สร้างระบบด้วย Gemini และ RAG และใช้ AI เป็นผู้ช่วยร่าง', ['Gemini API pipelines, RAG architecture', 'รีวิวและทดสอบ'],
+      ['ds006'], [['กลัวโค้ดผิดเงียบๆ ไหม','กลัวครับ จึงต้องรีวิวและเขียนเทสต์ครอบจุดเสี่ยงก่อนปล่อยทุกครั้ง']],
+      { kind:'opinion', assumptions:['ข้อสุดท้ายเป็นแนวทางที่แนะนำให้พูด ปรับให้ตรงกับมุมมองของคุณ'] }),
+    PQ('ทำเว็บใช้เทคโนโลยีอะไรบ้าง', 'สแตกฝั่งเว็บและหลังบ้าน',
+      'ฝั่งเว็บผมใช้ React, Next.js และ TypeScript กับ Tailwind CSS ส่วนหลังบ้านทำ REST API และเชื่อม LINE กับ Meta Graph API ครับ',
+      ['ฝั่งหน้าเว็บ ผมใช้ React, Next.js, TypeScript, Tailwind CSS, Zustand และ Framer Motion',
+       'ฝั่งหลังบ้านและ API ทำ RESTful API ด้วย Swagger และ Postman, WebSockets, OAuth2 และเชื่อม LINE Messaging API / LIFF กับ Meta Graph API',
+       'โครงสร้างพื้นฐานที่เคยใช้คือ Redis, BullMQ, Firebase, GCP, Vercel และ Cloudflare R2',
+       'ตัวอย่างโครงการเว็บ เช่น MOPH Health ID, ASP Open Account, NBTC CMS และ OKMD Knowledge Portal ครับ'],
+      'React และ Next.js ฝั่งหน้าเว็บ พร้อม REST API และคิวงานฝั่งหลังบ้าน', ['React, Next.js, TypeScript', 'RESTful API ด้วย Swagger และ Postman'],
+      ['ds005','ds020'], [['เลือก SSR หรือ CSR ยังไง','เนื้อหาคงที่ใช้ SSG ต้องสดและต้อง SEO ใช้ SSR หลังล็อกอินใช้ CSR ได้ครับ']], { kind:'explain' }),
+    PQ('ตั้ง CI/CD และเทสต์ยังไง', 'CI/CD และคุณภาพงาน',
+      'ผมตั้ง CI/CD ด้วย GitHub Actions ปล่อยผ่าน App Store Connect และ Google Play Console พร้อมเทสต์อัตโนมัติครับ',
+      ['ที่ Knight Club ผมตั้ง CI/CD ด้วย GitHub Actions และปล่อยผ่าน App Store Connect กับ Google Play Console พร้อมเทสต์อัตโนมัติ',
+       'เครื่องมือทดสอบที่ใช้คือ Jest, Vitest และ Playwright ส่วน Zod ใช้ตรวจรูปแบบข้อมูล',
+       'ผมยังเคยทำระบบชำระเงินด้วย Stripe และใช้ TestFlight ในการส่งทดสอบก่อนปล่อยจริงครับ'],
+      'เทสต์อัตโนมัติ ปล่อยผ่านสโตร์ และส่งทดสอบก่อนปล่อยจริง', ['GitHub Actions', 'Jest, Vitest และ Playwright'],
+      ['ds008','ds010'], [['ขั้นไหนมักพลาด','ขั้นจัดการ signing key และการวัดผลก่อนแก้ครับ']], { kind:'how-to' }),
+    PQ('เล่างาน AR ท่องเที่ยวหน่อย', 'งาน AR ท่องเที่ยว',
+      'ผมร่วมพัฒนา See Thru Thailand AR tourism framework และแอป AR แบบ white-label ที่ให้บริการกว่า 15 จังหวัดครับ',
+      ['ผมร่วมพัฒนา See Thru Thailand AR tourism framework ตอนอยู่ 2Fellows',
+       'โครงการแบบ white-label คือ See Thru Thailand และ Discovery AR ซึ่งให้บริการใน 15+ จังหวัด เช่น เชียงใหม่ นนทบุรี น่าน พังงา พิษณุโลก และเพชรบุรี',
+       'ข้อดีของ white-label คือใช้ framework เดียวกัน แล้วปรับแบรนด์และเนื้อหาให้แต่ละจังหวัดครับ'],
+      'framework เดียว ปรับใช้ได้หลายจังหวัด', ['See Thru Thailand', '15+ จังหวัด'],
+      ['ds011','ds022','ds002'], [['จังหวัดไหนบ้าง','เช่น เชียงใหม่ นนทบุรี น่าน พังงา พิษณุโลก และเพชรบุรีครับ']], { kind:'explain' }),
+    PQ('เคยทำ OCR ป้ายทะเบียนไหม', 'OCR ป้ายทะเบียน SRITRANG',
+      'เคยครับ ผมทำ on-device license plate OCR ด้วย Google ML Kit เพื่อควบคุมการเข้าออกของ SRITRANG',
+      ['ในโปรเจกต์ SRITRANG Access Control ผมทำ on-device Google ML Kit license plate OCR เพื่อควบคุมการเข้าออก',
+       'คำว่า on-device หมายถึงประมวลผลอ่านป้ายบนเครื่องเลย ไม่ต้องส่งภาพขึ้นเซิร์ฟเวอร์ครับ'],
+      'อ่านป้ายบนเครื่องด้วย ML Kit เพื่อคุมการเข้าออก', ['on-device Google ML Kit license plate OCR'],
+      ['ds011','ds019','ds004'], [['ข้อดีของ on-device','ตอบสนองเร็ว ใช้งานได้แม้เน็ตไม่เสถียร และลดการส่งภาพออกนอกเครื่องครับ']], { kind:'explain' }),
+    PQ('มีงาน native iOS Android อะไรบ้าง', 'งาน native iOS และ Android',
+      'ผมเขียน native ด้วย Swift, Objective-C, Kotlin และ Java เช่น LED Portal ที่มีโมดูล Bluetooth BLE คุมไฟคลังสินค้าครับ',
+      ['ภาษา native ที่ผมใช้คือ Swift, Objective-C, Kotlin และ Java',
+       'ตัวอย่างคือ LED Portal ของกรมบังคับคดี ที่แสดงข้อมูลทรัพย์ขายทอดตลาดและมีโมดูล Bluetooth BLE คุมไฟคลังสินค้า',
+       'อีกงานคือ MWA-OnMobile ของการประปานครหลวง สำหรับชำระค่าน้ำ ขอติดตั้งมิเตอร์ และแจ้งน้ำรั่ว',
+       'และมี PEA SmartPlus, SmartCare, MWF CRM, SOS Tourism ของตำรวจท่องเที่ยว และ Pro-Check ของ NBTC ครับ'],
+      'native สี่ภาษา กับงานสาธารณูปโภคและภาครัฐ', ['Bluetooth BLE คุมไฟคลังสินค้า', 'แจ้งน้ำรั่ว'],
+      ['ds007','ds021'], [['ทำไมไม่ใช้ Flutter ทั้งหมด','ฟีเจอร์ระบบลึกอย่าง BLE บางกรณีเหมาะกับ native กว่า ผมเลือกตามงานครับ']], { kind:'explain' }),
+    PQ('เรียนรู้เรื่องใหม่ๆ ยังไง และใช้ภาษาอะไรได้บ้าง', 'การเรียนรู้และภาษา',
+      'ผมเรียนรู้ด้วยตนเองต่อเนื่องตั้งแต่ปี 2015 ร่วมชุมชน GDG Bangkok และ AI BKK ภาษาไทยเป็นภาษาแม่ อังกฤษอ่านเขียนเทคนิคได้ครับ',
+      ['ผมเรียนรู้ด้วยตนเองต่อเนื่องตั้งแต่ปี 2015 และร่วมชุมชน GDG Bangkok กับ AI BKK',
+       'ภาษาไทยเป็นภาษาแม่ ส่วนภาษาอังกฤษอยู่ระดับใช้งาน อ่านและเขียนเอกสารเทคนิคได้ และใช้เครื่องมือแปลกับ AI ช่วยงานเอกสารครับ'],
+      'เรียนรู้เองต่อเนื่อง ไทยเป็นภาษาแม่ อังกฤษระดับใช้งาน', ['GDG Bangkok กับ AI BKK', 'ระดับใช้งาน'],
+      ['ds023'], [['อังกฤษระดับไหน','ระดับใช้งาน อ่านและเขียนเอกสารเทคนิคได้ครับ']], { kind:'fact' }),
+    PQ('เคยทำโปรเจกต์ Flutter อะไรบ้าง', 'โครงการ Flutter ที่เคยทำ',
+      'โครงการ Flutter ของผมมี DNP National Park, DNP Scout Rangers, Royal Thai Navy, EXAT Portal, DIP IP Mart, SRITRANG, ERC Thailand, MRTA Application และ TUORCA Medical Calendar ครับ',
+      ['งาน Flutter ที่ผมทำมี DNP National Park และ DNP Scout Rangers, Royal Thai Navy, EXAT Portal, DIP IP Mart และ SRITRANG Access Control',
+       'ยังมี ERC Thailand, MRTA Application ที่รองรับที่จอดรถ QR code และแจ้งเตือนการเดินทาง และ TUORCA Medical Calendar',
+       'ในงานเหล่านี้ผมออกแบบแบบ modular ด้วย Clean Architecture และ MVVM เป็นหลักครับ'],
+      'Flutter ใช้ทั้งงานอุทยาน กองทัพเรือ ทางพิเศษ ขนส่ง และการแพทย์', ['MRTA Application', 'modular ด้วย Clean Architecture และ MVVM'],
+      ['ds019','ds010'], [['งานไหนใช้ QR code','MRTA Application ครับ ใช้กับที่จอดรถและแจ้งเตือนการเดินทาง']], { kind:'explain' }),
+    PQ('เคยทำระบบเปิดบัญชีหรือชำระเงินไหม', 'ASP Open Account และการชำระเงิน',
+      'เคยครับ ผมทำ ASP Open Account ระบบเปิดบัญชีลงทุนออนไลน์พร้อมตรวจสอบตัวตนดิจิทัล KYC และเคยทำระบบชำระเงินด้วย Stripe',
+      ['ASP Open Account เป็นระบบเปิดบัญชีลงทุนออนไลน์ของ Asia Plus Securities พร้อมตรวจสอบตัวตนดิจิทัลแบบ KYC',
+       'ด้านการชำระเงิน ผมเคยทำระบบชำระเงินด้วย Stripe และทำแอป MWA-OnMobile ที่ชำระค่าน้ำได้',
+       'ส่วนความปลอดภัยของข้อมูล ผมมีประสบการณ์การเข้ารหัสแบบ hybrid AES-256-GCM กับ RSA-4096 และ OAuth2 ครับ'],
+      'เปิดบัญชี KYC และชำระเงินด้วย Stripe', ['ตรวจสอบตัวตนดิจิทัลแบบ KYC', 'Stripe'],
+      ['ds015','ds010','ds008','ds021'], [['กันตัดเงินซ้ำยังไง','ใช้ idempotency key ต่อหนึ่งการจ่าย และยืนยันผลจาก webhook ของผู้ให้บริการครับ']], { kind:'explain' })
+  ];
+  const ALIAS = {
+    'แนะนำตัวหน่อย':'ประสบการณ์กี่ปี อายุงาน เป็นใคร ชื่ออะไร ตำแหน่งอะไร',
+    'ประสบการณ์ทำงานที่ผ่านมามีอะไรบ้าง':'เคยทำงานที่ไหน บริษัท ประวัติการทำงาน อดีต เส้นทางอาชีพ',
+    'เคยทำงานให้หน่วยงานรัฐอะไรบ้าง':'ลูกค้าภาครัฐ ลูกค้ามีใคร หน่วยงานราชการ',
+    'เคยทำโปรเจกต์ Flutter อะไรบ้าง':'ผลงาน Flutter โปรเจกต์ Flutter แอปที่เคยทำ'
+  };
+  let _bank = null;
+  const KIND_TAG = { explain:'อธิบาย', compare:'เปรียบเทียบ', 'how-to':'วิธีทำ', debug:'แก้ปัญหา', design:'ออกแบบ', interview:'สัมภาษณ์', opinion:'ความเห็น', fact:'ข้อเท็จจริง' };
+  function getBank(){
+    if (_bank) return _bank;
+    _bank = PERSONAL.map(x => ({ q:x.q, ans:x.ans, tag:'เกี่ยวกับคุณ', personal:true }));
+    MOCK.main.forEach(t => {
+      const a = t.ans;
+      if (!a || (a.clarify && a.clarify.length) || /ถอดเสียง/.test(t.q)) return;
+      _bank.push({ q:t.q, ans:a, tag:KIND_TAG[a.kind] || 'ทั่วไป', personal:false });
+    });
+    _bank.forEach(b => { b.hay = [b.q, b.ans.title, b.ans.summary, (b.ans.key_points || []).join(' '), ALIAS[b.q] || ''].join(' '); });
+    return _bank;
+  }
+  const STOP = ['เคย','ทำไม','อะไร','บ้าง','หน่อย','ยังไง','อย่างไร','ไหม','คือ','มี','ได้','ที่','การ','ความ','ผม','คุณ','ของ','และ','กับ','ให้','เล่า','ช่วย','ไหน','ใช้','เป็น','ไง','หรือ','แล้ว','จะ','ต้อง','ถาม','อยาก','รู้','ว่า','นี้','นั้น','เรื่อง','งาน'];
+  function toks(x){
+    x = (x || '').toLowerCase();
+    const lat = new Set((x.match(/[a-z0-9]+(?:[.+#][a-z0-9]+)*/g) || []).filter(t => t.length >= 2));
+    let th = x.replace(/[a-z0-9.+#\-_/()]+/g, ' ');
+    STOP.forEach(w => { th = th.split(w).join(' '); });
+    const g = new Set(), parts = th.split(/[\s,.:;!?'"()\[\]/\\-]+/).filter(Boolean);
+    parts.forEach(p => { for (let i = 0; i < p.length - 1; i++) g.add(p.slice(i, i + 2)); });
+    return { lat, th:g };
+  }
+  function sim(q, t){
+    const a = toks(q), b = toks(t);
+    const mass = a.lat.size * 3 + a.th.size;
+    if (!mass) return { cov:0, dice:0, mass:0 };
+    let hit = 0, n = 0;
+    a.lat.forEach(w => { if (b.lat.has(w)) hit += 3; });
+    a.th.forEach(g => { if (b.th.has(g)) { hit += 1; n++; } });
+    const bm = b.lat.size * 3 + b.th.size;
+    return { cov:hit / mass, dice:bm ? 2 * hit / (mass + bm) : 0, mass };
+  }
+  function scoreBank(q){
+    q = (q || '').trim();
+    return getBank().map(b => {
+      const s1 = sim(q, b.q), s2 = sim(q, b.hay);
+      const qn = q.toLowerCase().replace(/\s+/g, ''), sub = qn.length >= 4 && b.hay.toLowerCase().replace(/\s+/g, '').includes(qn) ? .95 : 0;
+      return { b, s:Math.max(s1.dice * 1.15, s2.mass >= 3 ? s2.cov * .9 : 0, sub) };
+    }).sort((x, y) => y.s - x.s);
+  }
+  function suggestFor(q, k){
+    q = (q || '').trim();
+    if (q.length < 2) {
+      const bank = getBank().slice(), out = [];
+      while (out.length < k && bank.length) out.push(bank.splice(Math.floor(Math.random() * bank.length), 1)[0]);
+      return out;
+    }
+    const lc = q.toLowerCase();
+    return scoreBank(q).filter(x => x.s > .3 || x.b.q.toLowerCase().includes(lc)).slice(0, k).map(x => x.b);
+  }
+  function composeFromDS(q){
+    const scored = DS.filter(d => d.on).map(d => ({ d, r:sim(q, d.title + ' ' + d.text) })).filter(x => x.r.mass >= 3 && x.r.cov >= .5).sort((a, b) => b.r.cov - a.r.cov).slice(0, 3);
+    if (!scored.length) return null;
+    const cut = t => { if (t.length <= 380) return t; const i = Math.max(t.lastIndexOf(' / ', 380), t.lastIndexOf(' ', 380)); return t.slice(0, i > 120 ? i : 380); };
+    const paras = scored.map(x => cut(x.d.text.replace(/^[^:]{1,40}:\s*/, '')) + ' ครับ');
+    return {
+      title:'จากชุดข้อมูลของคุณ', kind:'fact', confidence:'medium', live:paras[0].replace(/ \/ .*$/, '').slice(0, 160),
+      paras, key_points:[], summary:'สรุปจากชุดข้อมูลที่เปิดอยู่', plain:'', followups:[], from_data:scored.map(x => x.d.title),
+      clarify:[], assumptions:[], needs_check:['คำตอบนี้ประกอบจากชุดข้อมูลโดยตรง ควรเรียบเรียงเป็นคำพูดของคุณก่อนใช้'], sources:[]
+    };
+  }
+  function notFound(){
+    return {
+      title:'ยังไม่มีข้อมูลเรื่องนี้ในโหมดตัวอย่าง', kind:'fact', confidence:'low',
+      live:'ผมยังไม่มีข้อมูลเรื่องนี้ในชุดข้อมูลครับ ขอให้เชื่อมระบบตอบจริงหรือเพิ่มชุดข้อมูลก่อนนะครับ',
+      paras:['โหมดตัวอย่างตอบได้เฉพาะคำถามที่อยู่ในคลังตัวอย่างและชุดข้อมูลที่เปิดอยู่ในแท็บข้อมูล',
+             'ลองถามเรื่องประสบการณ์ ทักษะ หรือผลงาน และหัวข้อเทคนิค เช่น Riverpod, Clean Architecture, REST กับ GraphQL หรือเพิ่มชุดข้อมูลของคุณเองเพื่อให้ตอบตรงขึ้นครับ'],
+      key_points:['คลังตัวอย่างและชุดข้อมูลที่เปิดอยู่'], summary:'ถามให้ตรงกับคลังตัวอย่าง หรือเชื่อมระบบตอบจริง', plain:'',
+      followups:[], from_data:[], clarify:[], assumptions:[], needs_check:[], sources:[]
+    };
+  }
+  function demoAnswer(q){
+    const top = scoreBank(q)[0];
+    if (top && top.s >= .55) return JSON.parse(JSON.stringify(top.b.ans));
+    return composeFromDS(q) || notFound();
+  }
+  function pickChips(){
+    const bank = getBank(), p = bank.filter(b => b.personal), g = bank.filter(b => !b.personal);
+    const r = (arr, n) => { arr = arr.slice(); const o = []; while (o.length < n && arr.length) o.push(arr.splice(Math.floor(Math.random() * arr.length), 1)[0]); return o; };
+    return r(p, 2).concat(r(g, 2));
+  }
+  function initSuggest(){
+    const input = $('input'), box = $('qsug'); let tm = 0;
+    const hide = () => { box.hidden = true; box.replaceChildren(); };
+    const render = () => {
+      if (S.busy) return hide();
+      const list = suggestFor(input.value, input.value.trim().length < 2 ? 3 : 4);
+      box.replaceChildren();
+      if (!list.length) { box.hidden = true; return; }
+      list.forEach(b => {
+        const it = h('button', 'qs'); it.type = 'button'; it.setAttribute('role', 'option');
+        it.append(h('i', null, b.tag), h('span', null, b.q));
+        it.addEventListener('click', () => { input.value = b.q; input.dispatchEvent(new Event('input', { bubbles:true })); hide(); $('form').requestSubmit(); });
+        box.appendChild(it);
+      });
+      box.hidden = false;
+    };
+    box.addEventListener('pointerdown', e => e.preventDefault());
+    input.addEventListener('focus', () => { clearTimeout(tm); render(); });
+    input.addEventListener('input', render);
+    input.addEventListener('blur', () => { tm = setTimeout(hide, 120); });
+    $('form').addEventListener('submit', hide);
+  }
+
+  window.ARTYVERSE_MOCK = {
+    names: ['main', 'stress', 'ds'],
+    load(n){
+      if (n === 'ds') { DS = buildSeed().slice(0, MAX_DS); saveDS(); }
+      else if (n === 'main' || n === 'stress') { db.turns = MOCK[n].filter(validTurn).slice(-MAX_TURNS); S.active = null; saveTurns(); renderThread(); }
+      else return 'unknown: ' + n;
+      if (S.panel) renderSide();
+      return n + ' loaded';
+    }
+  };
+
+  /* =====================================================================
+     21. BOOT
+     ===================================================================== */
+  loadAll();
+  seedIfEmpty();
+  applySize();
+  bind();
+  initSuggest();
+  renderMods();
+  setTab('gloss');
+  if (window.innerWidth >= 1280) setPanel(true);
+  netSync();
+  renderThread();
+  sizeInput(); updateSend();
+})();
+</script>
+<script>
+/* Interaction layer: ripple */
+(function(){
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  document.addEventListener('pointerdown', function(e){
+    var b = e.target.closest && e.target.closest('button'); if(!b || b.disabled) return;
+    var r = b.getBoundingClientRect(), n = Math.max(r.width, r.height) * 2, d = document.createElement('span');
+    d.className = 'rip'; d.style.cssText = 'width:'+n+'px;height:'+n+'px;left:'+(e.clientX-r.left-n/2)+'px;top:'+(e.clientY-r.top-n/2)+'px';
+    b.appendChild(d); setTimeout(function(){ d.remove(); }, 650);
+  }, {passive:true});
+})();
+</script>
+</body>
+</html>

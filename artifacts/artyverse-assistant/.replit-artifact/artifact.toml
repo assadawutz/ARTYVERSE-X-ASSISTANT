@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ARTYVERSE X AI Assistant"
+description = "A responsive Thai-language live Q&A and speaker-script assistant, reconstructed from the supplied tablet and phone reference screens."
+version = "1.0.0"
+id = "artifacts/artyverse-assistant"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25067
+
+[services.development]
+run = "pnpm --filter @workspace/artyverse-assistant run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/artyverse-assistant", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/artyverse-assistant/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25067"
+BASE_PATH = "/"
